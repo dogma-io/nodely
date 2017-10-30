@@ -19,6 +19,16 @@ type WorkerInfo = {|
   worker: Worker, // worker instance
 |}
 
+type State = {|
+  erred: boolean,
+  isWatching: boolean,
+  queue: string[],
+  workers: WorkerInfo[],
+|}
+
+const FAILURE_EXIT_CODE = 1
+const SUCCESS_EXIT_CODE = 0
+
 /**
  * Get worker info for worker.
  * @param worker - worker to get info for
@@ -33,16 +43,12 @@ function getWorkerInfo(worker: Worker): WorkerInfo {
 
 /**
  * Process actions from worker.
- * @param queue - queue of files needing to be transpiled
- * @param workers - info for each worker
- * @param isWatching - whether or not watcher is enabled
+ * @param state - current state
  * @param workerInfo - info for worker action is from
  * @param data - action from worker
  */
 function processActionFromWorker(
-  queue: string[],
-  workers: WorkerInfo[],
-  isWatching: boolean,
+  state: State,
   workerInfo: WorkerInfo,
   data: IdleAction,
 ) {
@@ -60,8 +66,12 @@ function processActionFromWorker(
 
   switch (data.type) {
     case IDLE:
+      if (data.erred) {
+        state.erred = true
+      }
+
       workerInfo.idle = true
-      processNextAction(queue, workers, isWatching)
+      processNextAction(state)
       break
 
     default:
@@ -73,19 +83,13 @@ function processActionFromWorker(
 
 /**
  * Process files from glob call.
- * @param queue - queue of files needing to be transpiled
- * @param workers - info for each worker
- * @param isWatching - whether or not watcher is enabled
+ * @param state - current state
  * @param err - error (only present when something went wrong)
  * @param files - full file paths to process
  */
-function processFiles(
-  queue: string[],
-  workers: WorkerInfo[],
-  isWatching: boolean,
-  err: ?Error,
-  files: string[],
-) {
+function processFiles(state: State, err: ?Error, files: string[]) {
+  const {queue} = state
+
   if (err) {
     throw err
   }
@@ -103,27 +107,23 @@ function processFiles(
 
   queue.push(...actions)
 
-  while (queue.length && processNextAction(queue, workers, isWatching)) {}
+  while (queue.length && processNextAction(state)) {}
 }
 
 /**
  * Process next action in queue.
- * @param queue - queue of files needing to be transpiled
- * @param workers - info for each worker
- * @param isWatching - whether or not watcher is enabled
+ * @param state - current state
  * @returns whether or not there are more idle workers
  */
-function processNextAction(
-  queue: string[],
-  workers: WorkerInfo[],
-  isWatching: boolean,
-): boolean {
+function processNextAction(state: State): boolean {
+  const {erred, isWatching, queue, workers} = state
+
   if (
     !isWatching &&
     queue.length === 0 &&
     workers.every((w: WorkerInfo) => w.idle)
   ) {
-    process.exit()
+    process.exit(erred ? FAILURE_EXIT_CODE : SUCCESS_EXIT_CODE)
   }
 
   let processing = false
@@ -154,19 +154,13 @@ function processNextAction(
 
 /**
  * Process files from glob call.
- * @param queue - queue of files needing to be transpiled
- * @param workers - info for each worker
- * @param isWatching - whether or not watcher is enabled
+ * @param state - current state
  * @param type - watch event type
  * @param filePath - full path of file event is for
  */
-function processWatchEvent(
-  queue: string[],
-  workers: WorkerInfo[],
-  isWatching: boolean,
-  type: string,
-  filePath: string,
-) {
+function processWatchEvent(state: State, type: string, filePath: string) {
+  const {queue} = state
+
   switch (type) {
     case 'remove':
       queue.push({
@@ -186,20 +180,16 @@ function processWatchEvent(
   // This is needed to process the above action in the scenario all workers are
   // idle. Otherwise the workers should pick up the next task anyways once they
   // become idle.
-  processNextAction(queue, workers, isWatching)
+  processNextAction(state)
 }
 
 /**
  * Listen for dead workers and spawn new workers in their place.
- * @param queue - queue of files needing to be transpiled
- * @param workers - info for each worker
- * @param isWatching - whether or not watcher is enabled
+ * @param state - current state
  */
-function replaceDeadWorkers(
-  queue: string[],
-  workers: WorkerInfo[],
-  isWatching: boolean,
-) {
+function replaceDeadWorkers(state: State) {
+  const {isWatching, queue, workers} = state
+
   cluster.on('exit', (deadWorker: Worker) => {
     console.info(
       `Worker ${deadWorker.id} died, spawning a new worker in it's place`,
@@ -218,38 +208,23 @@ function replaceDeadWorkers(
 
 /**
  * Spawn a single worker process and add it to list of workers.
- * @param queue - queue of files needing to be transpiled
- * @param info for each worker
- * @param isWatching - whether or not watcher is enabled
+ * @param state - current state
  */
-function spawnWorker(
-  queue: string[],
-  workers: WorkerInfo[],
-  isWatching: boolean,
-) {
+function spawnWorker(state: State) {
+  const {workers} = state
   const worker = cluster.fork()
   const workerInfo = getWorkerInfo(worker)
 
-  worker.on(
-    'message',
-    processActionFromWorker.bind(null, queue, workers, isWatching, workerInfo),
-  )
-
+  worker.on('message', processActionFromWorker.bind(null, state, workerInfo))
   workers.push(workerInfo)
 }
 
 /**
  * Spawn worker processes
- * @param queue - queue of files needing to be transpiled
+ * @param state - current state
  * @param workerCount - number of workers to spawn
- * @param isWatching - whether or not watcher is enabled
- * @returns info for each worker
  */
-function spawnWorkers(
-  queue: string[],
-  workerCount: number,
-  isWatching: boolean,
-): WorkerInfo[] {
+function spawnWorkers(state: State, workerCount: number): WorkerInfo[] {
   if (isNaN(workerCount)) {
     throw new Error(
       `workerCount is expected to be a number not ${typeof workerCount}`,
@@ -260,15 +235,11 @@ function spawnWorkers(
     workerCount = cpus().length - 1
   }
 
-  const workers = []
-
   for (let i = workerCount; i > 0; i--) {
-    spawnWorker(queue, workers, isWatching)
+    spawnWorker(state)
   }
 
   console.info(`Spawned ${workerCount} workers`)
-
-  return workers
 }
 
 /**
@@ -277,10 +248,16 @@ function spawnWorkers(
  */
 export default function(argv: Argv) {
   let {source, watch: isWatching, workerCount} = argv
-  const queue = []
-  const workers = spawnWorkers(queue, workerCount, isWatching)
 
-  replaceDeadWorkers(queue, workers, isWatching)
+  const state = {
+    erred: false,
+    isWatching,
+    queue: [],
+    workers: [],
+  }
+
+  spawnWorkers(state, workerCount)
+  replaceDeadWorkers(state)
 
   // Make sure source does not have a trailing separator
   if (source[source.length - 1] === sep) {
@@ -289,16 +266,9 @@ export default function(argv: Argv) {
 
   // If we are in watch mode make sure to watch source directory for changes
   if (isWatching) {
-    watch(
-      source,
-      {recursive: true},
-      processWatchEvent.bind(null, queue, workers, isWatching),
-    )
+    watch(source, {recursive: true}, processWatchEvent.bind(null, state))
   }
 
   // Make sure we process all source files
-  glob(
-    `${source}${sep}**${sep}*`,
-    processFiles.bind(null, queue, workers, isWatching),
-  )
+  glob(`${source}${sep}**${sep}*`, processFiles.bind(null, state))
 }

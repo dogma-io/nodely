@@ -8,6 +8,8 @@ function missingArgumentsTest(message) {
                                                              [string] [required]
   --source, -s       Directory containing source code to transform.
                                                              [string] [required]
+  --verbose, -v      Whether or not to have verbose logging.
+                                                      [boolean] [default: false]
   --watch, -w        Whether or not to watch for changes and continue
                      transpiling.                     [boolean] [default: false]
   --workerCount, -n  Number of worker process to spawn.    [number] [default: 0]

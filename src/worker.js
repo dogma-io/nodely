@@ -133,7 +133,7 @@ function processActionFromMater(
 
   switch (data.type) {
     case REMOVE_FILE:
-      removeOutputFile(source, output, data.filePath)
+      removeOutputFile(source, output, data.filePath, verbose)
       break
 
     case TRANSFORM_FILE:
@@ -152,8 +152,14 @@ function processActionFromMater(
  * @param source - source directory
  * @param output - output directory
  * @param filePath - full path of file to transform
+ * @param verbose - whether or not to have verbose logging
  */
-function removeOutputFile(source: string, output: string, filePath: string) {
+function removeOutputFile(
+  source: string,
+  output: string,
+  filePath: string,
+  verbose: boolean,
+) {
   const relativeFilePath = path.relative(source, filePath)
   const relativeDirectoryPath = path.dirname(relativeFilePath)
   const outputDirectoryPath = path.join(output, relativeDirectoryPath)
@@ -162,10 +168,15 @@ function removeOutputFile(source: string, output: string, filePath: string) {
 
   removeFile(outputFilePath, (err: ?Error) => {
     if (err) {
-      throw err
+      console.error(`Failed to remove file ${outputFilePath}`)
+
+      if (verbose) {
+        console.error(err)
+      }
     }
 
     process.send({
+      erred: !!err,
       type: IDLE,
     })
   })
@@ -199,15 +210,19 @@ function transformFile(
           return copyFile(filePath, outputFilePath)
       }
     })
+    .then(() => false)
     .catch((err: Error) => {
       console.error(`Failed to process file ${filePath}`)
 
       if (verbose) {
         console.error(err)
       }
+
+      return true
     })
-    .then(() => {
+    .then((erred: boolean) => {
       process.send({
+        erred,
         type: IDLE,
       })
     })
