@@ -26,6 +26,14 @@ nodely -s ./path/to/source -o ./path/to/output
 
 ### Options
 
+**Verbose**
+
+By default nodely will inform you when files fail to transform but won't provide much detail. If you want entire stack-traces when the failures occur you can use the `-v` flag like so:
+
+```bash
+nodely -s ./path/to/source -o ./path/to/output -v
+```
+
 **Watcher**
 
 If you want to leave the nodely server running and have it transform modified files on the fly then you simply need to add the `-w` flag like so:
