@@ -88,6 +88,19 @@ function createDirectoryForFile(
 }
 
 /**
+ * Log error and inform master worker is now idle again.
+ * @param message - error message
+ */
+function error(message: string) {
+  console.error(message)
+
+  process.send({
+    erred: true,
+    type: IDLE,
+  })
+}
+
+/**
  * Get contents of a file.
  * @param filePath - full path of file to get contents of
  * @returns resolves with file contents or rejects with error
@@ -120,30 +133,26 @@ function processActionFromMater(
   data: RemoveFileAction | TransformFileAction,
 ) {
   if (typeof data !== 'object') {
-    throw new Error(
+    return error(
       `Expected message from master to be an object but instead received type ${typeof data}`,
     )
   }
 
   if (data === null) {
-    throw new Error(
+    return error(
       'Expected message from master to be present but instead received null',
     )
   }
 
   switch (data.type) {
     case REMOVE_FILE:
-      removeOutputFile(source, output, data.filePath, verbose)
-      break
+      return removeOutputFile(source, output, data.filePath, verbose)
 
     case TRANSFORM_FILE:
-      transformFile(source, output, data.filePath, verbose)
-      break
+      return transformFile(source, output, data.filePath, verbose)
 
     default:
-      throw new Error(
-        `Master sent message with unknown action type ${data.type}`,
-      )
+      return error(`Master sent message with unknown action type ${data.type}`)
   }
 }
 
