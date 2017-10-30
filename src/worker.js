@@ -19,8 +19,7 @@ import {
 import type {Argv} from './types'
 
 const TRANSFORM_OPTIONS = Object.freeze({
-  plugins: ['transform-flow-strip-types'],
-  presets: ['es2015'],
+  presets: ['es2015', 'react'],
 })
 
 /**
