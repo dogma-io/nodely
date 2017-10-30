@@ -1,6 +1,6 @@
 {
   "name": "nodely",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Write Node code using whatever syntax you want.",
   "main": "lib/index.js",
   "bin": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "./lib/index.js -s ./src -o ./lib",
-    "test": "eslint . && jest"
+    "test": "eslint . && flow && jest"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,7 @@
     "babel-core": "6.26.0",
     "babel-preset-es2015": "6.24.1",
     "babel-preset-react": "6.24.1",
+    "flow-bin": "0.57.3",
     "glob": "7.1.2",
     "mkdirp": "0.5.1",
     "node-watch": "0.5.5",

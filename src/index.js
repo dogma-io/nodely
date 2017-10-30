@@ -30,6 +30,12 @@ const argv = yargs
     default: 0,
     description: 'Number of worker process to spawn.',
     type: 'number',
+  })
+  .option('verbose', {
+    alias: 'v',
+    default: false,
+    description: 'Whether or not to have verbose logging.',
+    type: 'boolean',
   }).argv
 
 // TODO: verify source directory exists

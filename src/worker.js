@@ -110,11 +110,13 @@ function getFileContents(filePath: string): Promise<string, Error> {
  * Process actions from master.
  * @param source - source directory
  * @param output - output directory
+ * @param verbose - whether or not to have verbose logging
  * @param data - action from master
  */
 function processActionFromMater(
   source: string,
   output: string,
+  verbose: boolean,
   data: RemoveFileAction | TransformFileAction,
 ) {
   if (typeof data !== 'object') {
@@ -135,7 +137,7 @@ function processActionFromMater(
       break
 
     case TRANSFORM_FILE:
-      transformFile(source, output, data.filePath)
+      transformFile(source, output, data.filePath, verbose)
       break
 
     default:
@@ -174,8 +176,14 @@ function removeOutputFile(source: string, output: string, filePath: string) {
  * @param source - source directory
  * @param output - output directory
  * @param filePath - full path of file to transform
+ * @param verbose - whether or not to have verbose logging
  */
-function transformFile(source: string, output: string, filePath: string) {
+function transformFile(
+  source: string,
+  output: string,
+  filePath: string,
+  verbose: boolean,
+) {
   createDirectoryForFile(source, output, filePath)
     .then((outputFilePath: string) => {
       const extension = path.extname(filePath)
@@ -191,13 +199,17 @@ function transformFile(source: string, output: string, filePath: string) {
           return copyFile(filePath, outputFilePath)
       }
     })
+    .catch((err: Error) => {
+      console.error(`Failed to process file ${filePath}`)
+
+      if (verbose) {
+        console.error(err)
+      }
+    })
     .then(() => {
       process.send({
         type: IDLE,
       })
-    })
-    .catch((err: Error) => {
-      throw err
     })
 }
 
@@ -240,7 +252,7 @@ function writeDataToFile(filePath: string, data: string): Promise<void, Error> {
  * @param argv - command line arguments
  */
 export default function(argv: Argv) {
-  let {output, source} = argv
+  let {output, source, verbose} = argv
 
   // Make sure source does not have a trailing separator
   if (source[source.length - 1] === path.sep) {
@@ -252,5 +264,8 @@ export default function(argv: Argv) {
     output = output.substr(0, output.length - 1)
   }
 
-  process.on('message', processActionFromMater.bind(null, source, output))
+  process.on(
+    'message',
+    processActionFromMater.bind(null, source, output, verbose),
+  )
 }
