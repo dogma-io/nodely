@@ -1,6 +1,6 @@
 {
   "name": "nodely",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Write Node code using whatever syntax you want.",
   "main": "lib/index.js",
   "bin": {
@@ -15,9 +15,16 @@
     "url": "git+ssh://git@github.com/dogma-io/nodely.git"
   },
   "keywords": [
-    "html",
-    "parser",
-    "compiler"
+    "node",
+    "transpile",
+    "compile",
+    "es6",
+    "es2015",
+    "flow",
+    "flowjs",
+    "babel",
+    "cluster",
+    "clustering"
   ],
   "author": "Matthew Dahl <https://github.com/dogma-io>",
   "license": "MIT",

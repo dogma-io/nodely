@@ -1,3 +1,7 @@
+## 0.0.6
+
+*   Updated keywords in `package.json` as they didn't align with project's functionality.
+
 ## 0.0.5
 
 ### Bug Fixes
