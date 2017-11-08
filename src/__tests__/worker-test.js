@@ -1,3 +1,4 @@
+import {IDLE} from '../actions'
 import worker from '../worker'
 
 function tests(ctx, description, argv) {
@@ -13,33 +14,44 @@ function tests(ctx, description, argv) {
 
     it('functions as expected when master sends non-object message', () => {
       expect(ctx.listeners.message).toHaveLength(1)
-      expect(() => {
-        ctx.listeners.message[0]('test')
-      }).toThrow(
-        new Error(
-          'Expected message from master to be an object but instead received type string',
-        ),
+      ctx.listeners.message[0]('test')
+      expect(console.error).toHaveBeenCalledTimes(1)
+      expect(console.error).toHaveBeenCalledWith(
+        'Expected message from master to be an object but instead received type string',
       )
+      expect(process.send).toHaveBeenCalledTimes(1)
+      expect(process.send).toHaveBeenCalledWith({
+        erred: true,
+        type: IDLE,
+      })
     })
 
     it('functions as expected when master sends null message', () => {
       expect(ctx.listeners.message).toHaveLength(1)
-      expect(() => {
-        ctx.listeners.message[0](null)
-      }).toThrow(
-        new Error(
-          'Expected message from master to be present but instead received null',
-        ),
+      ctx.listeners.message[0](null)
+      expect(console.error).toHaveBeenCalledTimes(1)
+      expect(console.error).toHaveBeenCalledWith(
+        'Expected message from master to be present but instead received null',
       )
+      expect(process.send).toHaveBeenCalledTimes(1)
+      expect(process.send).toHaveBeenCalledWith({
+        erred: true,
+        type: IDLE,
+      })
     })
 
     it('functions as expected when master sends message with unknown action type', () => {
       expect(ctx.listeners.message).toHaveLength(1)
-      expect(() => {
-        ctx.listeners.message[0]({type: 'FOO_BAR'})
-      }).toThrow(
-        new Error('Master sent message with unknown action type FOO_BAR'),
+      ctx.listeners.message[0]({type: 'FOO_BAR'})
+      expect(console.error).toHaveBeenCalledTimes(1)
+      expect(console.error).toHaveBeenCalledWith(
+        'Master sent message with unknown action type FOO_BAR',
       )
+      expect(process.send).toHaveBeenCalledTimes(1)
+      expect(process.send).toHaveBeenCalledWith({
+        erred: true,
+        type: IDLE,
+      })
     })
 
     // TODO: REMOVE_FILE action tests
@@ -51,6 +63,9 @@ describe('worker', () => {
   const ctx = {}
 
   beforeEach(() => {
+    process.send = jest.fn()
+    jest.spyOn(console, 'error').mockImplementation(() => {})
+
     Object.assign(ctx, {
       listeners: [],
     })
@@ -66,6 +81,7 @@ describe('worker', () => {
 
   afterEach(() => {
     process.on.mockReset()
+    console.error.mockRestore()
   })
 
   tests(ctx, 'when output and source has trailing separator', {

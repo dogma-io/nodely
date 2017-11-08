@@ -1,3 +1,8 @@
+## 0.0.7
+
+*   Fixed broken tests.
+*   Switched to using [lintly](https://github.com/dogma-io/lintly) for linting to reduce boilerplate in this repo.
+
 ## 0.0.6
 
 *   Updated keywords in `package.json` as they didn't align with project's functionality.

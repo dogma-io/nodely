@@ -1,6 +1,6 @@
 {
   "name": "nodely",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Write Node code using whatever syntax you want.",
   "main": "lib/index.js",
   "bin": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "./lib/index.js -s ./src -o ./lib",
-    "test": "eslint . && flow && jest"
+    "test": "lintly src && flow && jest"
   },
   "repository": {
     "type": "git",
@@ -33,17 +33,8 @@
   },
   "homepage": "https://github.com/dogma-io/nodely#readme",
   "devDependencies": {
-    "babel-eslint": "8.0.1",
-    "eslint": "4.9.0",
-    "eslint-config-standard": "10.2.1",
-    "eslint-plugin-flowtype": "2.39.1",
-    "eslint-plugin-import": "2.8.0",
-    "eslint-plugin-node": "5.2.1",
-    "eslint-plugin-prettier": "2.3.1",
-    "eslint-plugin-promise": "3.6.0",
-    "eslint-plugin-standard": "3.0.1",
     "jest-cli": "21.2.1",
-    "prettier": "1.7.4"
+    "lintly": "0.0.1"
   },
   "dependencies": {
     "babel-core": "6.26.0",
