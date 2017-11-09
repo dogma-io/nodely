@@ -1,6 +1,6 @@
 {
   "name": "nodely",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Write Node code using whatever syntax you want.",
   "main": "lib/index.js",
   "bin": {
@@ -38,12 +38,23 @@
   },
   "dependencies": {
     "babel-core": "6.26.0",
-    "babel-preset-es2015": "6.24.1",
+    "babel-preset-env": "1.6.1",
     "babel-preset-react": "6.24.1",
-    "flow-bin": "0.57.3",
+    "flow-bin": "0.59.0",
     "glob": "7.1.2",
     "mkdirp": "0.5.1",
     "node-watch": "0.5.5",
     "yargs": "10.0.3"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "coverageReporters": [
+      "json-summary",
+      "lcov"
+    ],
+    "testRegex": "/__tests__/.*-test\\.js$"
   }
 }

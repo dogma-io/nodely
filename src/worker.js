@@ -19,7 +19,17 @@ import {
 import type {Argv} from './types'
 
 const TRANSFORM_OPTIONS = Object.freeze({
-  presets: ['es2015', 'react'],
+  presets: [
+    [
+      'env',
+      {
+        targets: {
+          node: '4', // In maintenance LTS
+        },
+      },
+    ],
+    'react',
+  ],
 })
 
 /**

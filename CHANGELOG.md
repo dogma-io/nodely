@@ -1,3 +1,10 @@
+## 0.0.8
+
+*   Added code coverage.
+*   Added tests for worker file removal code.
+*   Switched from *babel-preset-es2015* to *babel-preset-env* to fix warning and explicitly target Node 4, which is in maintenance LTS, with output.
+*   Upgraded *flow-bin* to latest version, 0.59.0.
+
 ## 0.0.7
 
 *   Fixed broken tests.
