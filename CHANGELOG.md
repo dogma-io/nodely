@@ -1,3 +1,8 @@
+## 0.0.9
+
+*   Added full test coverage for `worker.js`.
+*   Upgraded *lintly* to version **0.0.2** to support using `beforeAll` and `afterAll` in tests.
+
 ## 0.0.8
 
 *   Added code coverage.

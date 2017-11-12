@@ -1,6 +1,6 @@
 {
   "name": "nodely",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Write Node code using whatever syntax you want.",
   "main": "lib/index.js",
   "bin": {
@@ -34,7 +34,7 @@
   "homepage": "https://github.com/dogma-io/nodely#readme",
   "devDependencies": {
     "jest-cli": "21.2.1",
-    "lintly": "0.0.1"
+    "lintly": "0.0.2"
   },
   "dependencies": {
     "babel-core": "6.26.0",

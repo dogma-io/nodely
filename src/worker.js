@@ -54,7 +54,7 @@ function copyFile(
       .on('error', (err: Error) => {
         reject(err)
       })
-      .on('close', () => {
+      .on('finish', () => {
         resolve()
       })
 
@@ -85,7 +85,7 @@ function createDirectoryForFile(
     ) => {
       mkdirp(outputDirectoryPath, (err: ?Error) => {
         if (err) {
-          reject(new Error(`Failed to create directory ${outputDirectoryPath}`))
+          throw new Error(`Failed to create directory ${outputDirectoryPath}`)
         }
 
         const fileName = path.basename(filePath)
