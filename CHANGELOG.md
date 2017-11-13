@@ -1,3 +1,9 @@
+## 0.0.10
+
+### Bug Fixes
+
+*   Fixed output files to maintain same permissions as input files.
+
 ## 0.0.9
 
 *   Added full test coverage for `worker.js`.

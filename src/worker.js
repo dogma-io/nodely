@@ -4,6 +4,7 @@ import {
   createWriteStream,
   readFile,
   removeFile,
+  stat,
   writeFile,
 } from 'fs'
 import mkdirp from 'mkdirp'
@@ -43,22 +44,30 @@ function copyFile(
   outputFilePath: string,
 ): Promise<void, Error> {
   return new Promise((resolve: () => void, reject: (err: Error) => void) => {
-    const readStream = createReadStream(filePath)
-    const writeStream = createWriteStream(outputFilePath)
+    stat(filePath, (err: Error, stats) => {
+      const writeStreamOptions = {}
 
-    readStream.on('error', (err: Error) => {
-      reject(err)
-    })
+      if (!err) {
+        writeStreamOptions.mode = stats.mode
+      }
 
-    writeStream
-      .on('error', (err: Error) => {
+      const readStream = createReadStream(filePath)
+      const writeStream = createWriteStream(outputFilePath, writeStreamOptions)
+
+      readStream.on('error', (err: Error) => {
         reject(err)
       })
-      .on('finish', () => {
-        resolve()
-      })
 
-    readStream.pipe(writeStream)
+      writeStream
+        .on('error', (err: Error) => {
+          reject(err)
+        })
+        .on('finish', () => {
+          resolve()
+        })
+
+      readStream.pipe(writeStream)
+    })
   })
 }
 
@@ -258,8 +267,20 @@ function transformJavascriptFile(
   outputFilePath: string,
 ): Promise<void, Error> {
   return getFileContents(filePath).then((contents: string) => {
-    const result = transform(contents, TRANSFORM_OPTIONS)
-    return writeDataToFile(outputFilePath, result.code)
+    return new Promise((resolve, reject) => {
+      stat(filePath, (err1, stats) => {
+        const mode = err1 ? null : stats.mode
+        const result = transform(contents, TRANSFORM_OPTIONS)
+
+        writeDataToFile(outputFilePath, result.code, mode)
+          .then(() => {
+            resolve()
+          })
+          .catch((err2: Error) => {
+            reject(err2)
+          })
+      })
+    })
   })
 }
 
@@ -267,11 +288,24 @@ function transformJavascriptFile(
  * Write data to file.
  * @param data - data to write
  * @param filePath - path of file to write to
+ * @param mode - permission and sticky bits
  * @returns resolves once file is written or rejects with an error
  */
-function writeDataToFile(filePath: string, data: string): Promise<void, Error> {
+function writeDataToFile(
+  filePath: string,
+  data: string,
+  mode: number,
+): Promise<void, Error> {
+  const options = {
+    encoding: 'utf8',
+  }
+
+  if (mode !== null) {
+    options.mode = mode
+  }
+
   return new Promise((resolve: () => void, reject: (err: Error) => void) => {
-    writeFile(filePath, data, 'utf8', (err: ?Error) => {
+    writeFile(filePath, data, options, (err: ?Error) => {
       if (err) {
         reject(new Error(`Failed to write file ${filePath}`))
       }

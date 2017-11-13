@@ -6,6 +6,7 @@ jest.mock('fs', () => {
     createWriteStream: jest.fn(),
     readFile: jest.fn(),
     removeFile: jest.fn(),
+    stat: jest.fn(),
     writeFile: jest.fn(),
   }
 })
@@ -18,6 +19,7 @@ import {
   createWriteStream,
   readFile,
   removeFile,
+  stat,
   writeFile,
 } from 'fs'
 import mkdirp from 'mkdirp'
@@ -275,69 +277,20 @@ function tests(ctx, description, argv) {
               })
             })
 
-            it('functions as expected when it fails to transform file contents', () => {
-              const error = new Error('foo bar')
-
-              transform.mockImplementation(() => {
-                throw error
-              })
-
-              expect(ctx.listeners.message).toHaveLength(1)
-
-              ctx.listeners.message[0]({
-                filePath: '/foo/alpha/bravo.js',
-                type: TRANSFORM_FILE,
-              })
-
-              setTimeout(() => {
-                expect(mkdirp).toHaveBeenCalledTimes(1)
-                expect(mkdirp).toHaveBeenCalledWith(
-                  '/bar/alpha',
-                  expect.any(Function),
-                )
-                expect(readFile).toHaveBeenCalledTimes(1)
-                expect(readFile).toHaveBeenCalledWith(
-                  '/foo/alpha/bravo.js',
-                  'utf8',
-                  expect.any(Function),
-                )
-                expect(transform).toHaveBeenCalledTimes(1)
-                expect(transform).toHaveBeenCalledWith(
-                  contents,
-                  TRANSFORM_OPTIONS,
-                )
-                expect(console.error).toHaveBeenCalledTimes(
-                  argv.verbose ? 2 : 1,
-                )
-                expect(console.error).toHaveBeenCalledWith(
-                  'Failed to process file /foo/alpha/bravo.js',
-                )
-
-                if (argv.verbose) {
-                  expect(console.error).toHaveBeenCalledWith(error)
-                }
-
-                expect(process.send).toHaveBeenCalledTimes(1)
-                expect(process.send).toHaveBeenCalledWith({
-                  erred: true,
-                  type: IDLE,
-                })
-              }, 1)
-            })
-
-            describe('when it succssfully transforms file contents', () => {
+            describe('when it fails to get stats for file', () => {
               beforeEach(() => {
-                transform.mockImplementation(code => {
-                  return {code}
+                stat.mockImplementation((...args) => {
+                  const callback = args[args.length - 1]
+                  const error = new Error('foo bar')
+                  callback(error)
                 })
               })
 
-              it('functions as expected when it fails to write transformed contents to file', () => {
+              it('functions as expected when it fails to transform file contents', () => {
                 const error = new Error('foo bar')
 
-                writeFile.mockImplementation((...args) => {
-                  const callback = args[args.length - 1]
-                  callback(error)
+                transform.mockImplementation(() => {
+                  throw error
                 })
 
                 expect(ctx.listeners.message).toHaveLength(1)
@@ -372,11 +325,10 @@ function tests(ctx, description, argv) {
                   )
 
                   if (argv.verbose) {
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to write file /foo/alpha/bravo.js',
-                    )
+                    expect(console.error).toHaveBeenCalledWith(error)
                   }
 
+                  expect(writeFile).toHaveBeenCalledTimes(0)
                   expect(process.send).toHaveBeenCalledTimes(1)
                   expect(process.send).toHaveBeenCalledWith({
                     erred: true,
@@ -385,10 +337,132 @@ function tests(ctx, description, argv) {
                 }, 1)
               })
 
-              it('functions as expected when it successfully writes transformed contents to file', () => {
-                writeFile.mockImplementation((...args) => {
+              describe('when it succssfully transforms file contents', () => {
+                beforeEach(() => {
+                  transform.mockImplementation(code => {
+                    return {code}
+                  })
+                })
+
+                it('functions as expected when it fails to write transformed contents to file', () => {
+                  const error = new Error('foo bar')
+
+                  writeFile.mockImplementation((...args) => {
+                    const callback = args[args.length - 1]
+                    callback(error)
+                  })
+
+                  expect(ctx.listeners.message).toHaveLength(1)
+
+                  ctx.listeners.message[0]({
+                    filePath: '/foo/alpha/bravo.js',
+                    type: TRANSFORM_FILE,
+                  })
+
+                  setTimeout(() => {
+                    expect(mkdirp).toHaveBeenCalledTimes(1)
+                    expect(mkdirp).toHaveBeenCalledWith(
+                      '/bar/alpha',
+                      expect.any(Function),
+                    )
+                    expect(readFile).toHaveBeenCalledTimes(1)
+                    expect(readFile).toHaveBeenCalledWith(
+                      '/foo/alpha/bravo.js',
+                      'utf8',
+                      expect.any(Function),
+                    )
+                    expect(transform).toHaveBeenCalledTimes(1)
+                    expect(transform).toHaveBeenCalledWith(
+                      contents,
+                      TRANSFORM_OPTIONS,
+                    )
+                    expect(console.error).toHaveBeenCalledTimes(
+                      argv.verbose ? 2 : 1,
+                    )
+                    expect(console.error).toHaveBeenCalledWith(
+                      'Failed to process file /foo/alpha/bravo.js',
+                    )
+
+                    if (argv.verbose) {
+                      expect(console.error).toHaveBeenCalledWith(
+                        'Failed to write file /foo/alpha/bravo.js',
+                      )
+                    }
+
+                    expect(writeFile).toHaveBeenCalledTimes(1)
+                    expect(writeFile).toHaveBeenCalledWith(
+                      '/bar/alpha/bravo.js',
+                      {encoding: 'utf8'},
+                      expect.any(Function),
+                    )
+                    expect(process.send).toHaveBeenCalledTimes(1)
+                    expect(process.send).toHaveBeenCalledWith({
+                      erred: true,
+                      type: IDLE,
+                    })
+                  }, 1)
+                })
+
+                it('functions as expected when it successfully writes transformed contents to file', () => {
+                  writeFile.mockImplementation((...args) => {
+                    const callback = args[args.length - 1]
+                    callback(null)
+                  })
+
+                  expect(ctx.listeners.message).toHaveLength(1)
+
+                  ctx.listeners.message[0]({
+                    filePath: '/foo/alpha/bravo.js',
+                    type: TRANSFORM_FILE,
+                  })
+
+                  setTimeout(() => {
+                    expect(mkdirp).toHaveBeenCalledTimes(1)
+                    expect(mkdirp).toHaveBeenCalledWith(
+                      '/bar/alpha',
+                      expect.any(Function),
+                    )
+                    expect(readFile).toHaveBeenCalledTimes(1)
+                    expect(readFile).toHaveBeenCalledWith(
+                      '/foo/alpha/bravo.js',
+                      'utf8',
+                      expect.any(Function),
+                    )
+                    expect(transform).toHaveBeenCalledTimes(1)
+                    expect(transform).toHaveBeenCalledWith(
+                      contents,
+                      TRANSFORM_OPTIONS,
+                    )
+                    expect(console.error).toHaveBeenCalledTimes(0)
+                    expect(writeFile).toHaveBeenCalledTimes(1)
+                    expect(writeFile).toHaveBeenCalledWith(
+                      '/bar/alpha/bravo.js',
+                      {encoding: 'utf8'},
+                      expect.any(Function),
+                    )
+                    expect(process.send).toHaveBeenCalledTimes(1)
+                    expect(process.send).toHaveBeenCalledWith({
+                      erred: false,
+                      type: IDLE,
+                    })
+                  }, 1)
+                })
+              })
+            })
+
+            describe('when it successfully gets stats for file', () => {
+              beforeEach(() => {
+                stat.mockImplementation((...args) => {
                   const callback = args[args.length - 1]
-                  callback(null)
+                  callback(null, {mode: 0o666})
+                })
+              })
+
+              it('functions as expected when it fails to transform file contents', () => {
+                const error = new Error('foo bar')
+
+                transform.mockImplementation(() => {
+                  throw error
                 })
 
                 expect(ctx.listeners.message).toHaveLength(1)
@@ -415,122 +489,227 @@ function tests(ctx, description, argv) {
                     contents,
                     TRANSFORM_OPTIONS,
                   )
-                  expect(console.error).toHaveBeenCalledTimes(0)
+                  expect(console.error).toHaveBeenCalledTimes(
+                    argv.verbose ? 2 : 1,
+                  )
+                  expect(console.error).toHaveBeenCalledWith(
+                    'Failed to process file /foo/alpha/bravo.js',
+                  )
+
+                  if (argv.verbose) {
+                    expect(console.error).toHaveBeenCalledWith(error)
+                  }
+
+                  expect(writeFile).toHaveBeenCalledTimes(0)
                   expect(process.send).toHaveBeenCalledTimes(1)
                   expect(process.send).toHaveBeenCalledWith({
-                    erred: false,
+                    erred: true,
                     type: IDLE,
                   })
                 }, 1)
+              })
+
+              describe('when it succssfully transforms file contents', () => {
+                beforeEach(() => {
+                  transform.mockImplementation(code => {
+                    return {code}
+                  })
+                })
+
+                it('functions as expected when it fails to write transformed contents to file', () => {
+                  const error = new Error('foo bar')
+
+                  writeFile.mockImplementation((...args) => {
+                    const callback = args[args.length - 1]
+                    callback(error)
+                  })
+
+                  expect(ctx.listeners.message).toHaveLength(1)
+
+                  ctx.listeners.message[0]({
+                    filePath: '/foo/alpha/bravo.js',
+                    type: TRANSFORM_FILE,
+                  })
+
+                  setTimeout(() => {
+                    expect(mkdirp).toHaveBeenCalledTimes(1)
+                    expect(mkdirp).toHaveBeenCalledWith(
+                      '/bar/alpha',
+                      expect.any(Function),
+                    )
+                    expect(readFile).toHaveBeenCalledTimes(1)
+                    expect(readFile).toHaveBeenCalledWith(
+                      '/foo/alpha/bravo.js',
+                      'utf8',
+                      expect.any(Function),
+                    )
+                    expect(transform).toHaveBeenCalledTimes(1)
+                    expect(transform).toHaveBeenCalledWith(
+                      contents,
+                      TRANSFORM_OPTIONS,
+                    )
+                    expect(console.error).toHaveBeenCalledTimes(
+                      argv.verbose ? 2 : 1,
+                    )
+                    expect(console.error).toHaveBeenCalledWith(
+                      'Failed to process file /foo/alpha/bravo.js',
+                    )
+
+                    if (argv.verbose) {
+                      expect(console.error).toHaveBeenCalledWith(
+                        'Failed to write file /foo/alpha/bravo.js',
+                      )
+                    }
+
+                    expect(writeFile).toHaveBeenCalledTimes(1)
+                    expect(writeFile).toHaveBeenCalledWith(
+                      '/bar/alpha/bravo.js',
+                      {encoding: 'utf8', mode: 0o666},
+                      expect.any(Function),
+                    )
+                    expect(process.send).toHaveBeenCalledTimes(1)
+                    expect(process.send).toHaveBeenCalledWith({
+                      erred: true,
+                      type: IDLE,
+                    })
+                  }, 1)
+                })
+
+                it('functions as expected when it successfully writes transformed contents to file', () => {
+                  writeFile.mockImplementation((...args) => {
+                    const callback = args[args.length - 1]
+                    callback(null)
+                  })
+
+                  expect(ctx.listeners.message).toHaveLength(1)
+
+                  ctx.listeners.message[0]({
+                    filePath: '/foo/alpha/bravo.js',
+                    type: TRANSFORM_FILE,
+                  })
+
+                  setTimeout(() => {
+                    expect(mkdirp).toHaveBeenCalledTimes(1)
+                    expect(mkdirp).toHaveBeenCalledWith(
+                      '/bar/alpha',
+                      expect.any(Function),
+                    )
+                    expect(readFile).toHaveBeenCalledTimes(1)
+                    expect(readFile).toHaveBeenCalledWith(
+                      '/foo/alpha/bravo.js',
+                      'utf8',
+                      expect.any(Function),
+                    )
+                    expect(transform).toHaveBeenCalledTimes(1)
+                    expect(transform).toHaveBeenCalledWith(
+                      contents,
+                      TRANSFORM_OPTIONS,
+                    )
+                    expect(console.error).toHaveBeenCalledTimes(0)
+                    expect(writeFile).toHaveBeenCalledTimes(1)
+                    expect(writeFile).toHaveBeenCalledWith(
+                      '/bar/alpha/bravo.js',
+                      {encoding: 'utf8', mode: 0o666},
+                      expect.any(Function),
+                    )
+                    expect(process.send).toHaveBeenCalledTimes(1)
+                    expect(process.send).toHaveBeenCalledWith({
+                      erred: false,
+                      type: IDLE,
+                    })
+                  }, 1)
+                })
               })
             })
           })
         })
 
         describe('when file is not a Javascript file', () => {
-          it('functions as expected when it fails to create read stream', done => {
-            const error = new Error('foo bar')
-
-            createReadStream.mockImplementation(() => {
-              throw error
+          describe('when it fails to get stats for file', () => {
+            beforeEach(() => {
+              stat.mockImplementation((...args) => {
+                const callback = args[args.length - 1]
+                const error = new Error('foo bar')
+                callback(error)
+              })
             })
 
-            expect(ctx.listeners.message).toHaveLength(1)
+            it('functions as expected when it fails to create read stream', done => {
+              const error = new Error('foo bar')
 
-            ctx.listeners.message[0]({
-              filePath: '/foo/alpha/bravo.json',
-              type: TRANSFORM_FILE,
-            })
-
-            process.nextTick(() => {
-              expect(mkdirp).toHaveBeenCalledTimes(1)
-              expect(mkdirp).toHaveBeenCalledWith(
-                '/bar/alpha',
-                expect.any(Function),
-              )
-              expect(console.error).toHaveBeenCalledTimes(argv.verbose ? 2 : 1)
-              expect(console.error).toHaveBeenCalledWith(
-                'Failed to process file /foo/alpha/bravo.json',
-              )
-
-              if (argv.verbose) {
-                expect(console.error).toHaveBeenCalledWith(error)
-              }
-
-              expect(process.send).toHaveBeenCalledTimes(1)
-              expect(process.send).toHaveBeenCalledWith({
-                erred: true,
-                type: IDLE,
+              createReadStream.mockImplementation(() => {
+                throw error
               })
 
-              done()
-            })
-          })
+              expect(ctx.listeners.message).toHaveLength(1)
 
-          it('functions as expected when it fails to create write stream', done => {
-            const error = new Error('foo bar')
-            const readStream = new Readable({read: jest.fn()})
-
-            createReadStream.mockReturnValue(readStream)
-            createWriteStream.mockImplementation(() => {
-              throw error
-            })
-
-            expect(ctx.listeners.message).toHaveLength(1)
-
-            ctx.listeners.message[0]({
-              filePath: '/foo/alpha/bravo.json',
-              type: TRANSFORM_FILE,
-            })
-
-            process.nextTick(() => {
-              expect(mkdirp).toHaveBeenCalledTimes(1)
-              expect(mkdirp).toHaveBeenCalledWith(
-                '/bar/alpha',
-                expect.any(Function),
-              )
-              expect(console.error).toHaveBeenCalledTimes(argv.verbose ? 2 : 1)
-              expect(console.error).toHaveBeenCalledWith(
-                'Failed to process file /foo/alpha/bravo.json',
-              )
-
-              if (argv.verbose) {
-                expect(console.error).toHaveBeenCalledWith(error)
-              }
-
-              expect(process.send).toHaveBeenCalledTimes(1)
-              expect(process.send).toHaveBeenCalledWith({
-                erred: true,
-                type: IDLE,
+              ctx.listeners.message[0]({
+                filePath: '/foo/alpha/bravo.json',
+                type: TRANSFORM_FILE,
               })
 
-              done()
-            })
-          })
-
-          it('functions as expected when read stream receives an error', done => {
-            const error = new Error('foo bar')
-            const readStream = new Readable({read: jest.fn()})
-            const writeStream = new Writable({write: jest.fn()})
-
-            createReadStream.mockReturnValue(readStream)
-            createWriteStream.mockReturnValue(writeStream)
-
-            expect(ctx.listeners.message).toHaveLength(1)
-
-            ctx.listeners.message[0]({
-              filePath: '/foo/alpha/bravo.json',
-              type: TRANSFORM_FILE,
-            })
-
-            readStream.destroy(error)
-
-            process.nextTick(() => {
               process.nextTick(() => {
                 expect(mkdirp).toHaveBeenCalledTimes(1)
                 expect(mkdirp).toHaveBeenCalledWith(
                   '/bar/alpha',
                   expect.any(Function),
+                )
+                expect(createReadStream).toHaveBeenCalledTimes(1)
+                expect(createReadStream).toHaveBeenCalledWith(
+                  '/foo/alpha/bravo.json',
+                )
+                expect(createWriteStream).toHaveBeenCalledTimes(0)
+                expect(console.error).toHaveBeenCalledTimes(
+                  argv.verbose ? 2 : 1,
+                )
+                expect(console.error).toHaveBeenCalledWith(
+                  'Failed to process file /foo/alpha/bravo.json',
+                )
+
+                if (argv.verbose) {
+                  expect(console.error).toHaveBeenCalledWith(error)
+                }
+
+                expect(process.send).toHaveBeenCalledTimes(1)
+                expect(process.send).toHaveBeenCalledWith({
+                  erred: true,
+                  type: IDLE,
+                })
+
+                done()
+              })
+            })
+
+            it('functions as expected when it fails to create write stream', done => {
+              const error = new Error('foo bar')
+              const readStream = new Readable({read: jest.fn()})
+
+              createReadStream.mockReturnValue(readStream)
+              createWriteStream.mockImplementation(() => {
+                throw error
+              })
+
+              expect(ctx.listeners.message).toHaveLength(1)
+
+              ctx.listeners.message[0]({
+                filePath: '/foo/alpha/bravo.json',
+                type: TRANSFORM_FILE,
+              })
+
+              process.nextTick(() => {
+                expect(mkdirp).toHaveBeenCalledTimes(1)
+                expect(mkdirp).toHaveBeenCalledWith(
+                  '/bar/alpha',
+                  expect.any(Function),
+                )
+                expect(createReadStream).toHaveBeenCalledTimes(1)
+                expect(createReadStream).toHaveBeenCalledWith(
+                  '/foo/alpha/bravo.json',
+                )
+                expect(createWriteStream).toHaveBeenCalledTimes(1)
+                expect(createWriteStream).toHaveBeenCalledWith(
+                  '/bar/alpha/bravo.json',
+                  {},
                 )
                 expect(console.error).toHaveBeenCalledTimes(
                   argv.verbose ? 2 : 1,
@@ -552,31 +731,244 @@ function tests(ctx, description, argv) {
                 done()
               })
             })
-          })
 
-          it('functions as expected when write stream receives an error', done => {
-            const error = new Error('foo bar')
-            const readStream = new Readable({read: jest.fn()})
-            const writeStream = new Writable({write: jest.fn()})
+            it('functions as expected when read stream receives an error', done => {
+              const error = new Error('foo bar')
+              const readStream = new Readable({read: jest.fn()})
+              const writeStream = new Writable({write: jest.fn()})
 
-            createReadStream.mockReturnValue(readStream)
-            createWriteStream.mockReturnValue(writeStream)
+              createReadStream.mockReturnValue(readStream)
+              createWriteStream.mockReturnValue(writeStream)
 
-            expect(ctx.listeners.message).toHaveLength(1)
+              expect(ctx.listeners.message).toHaveLength(1)
 
-            ctx.listeners.message[0]({
-              filePath: '/foo/alpha/bravo.json',
-              type: TRANSFORM_FILE,
+              ctx.listeners.message[0]({
+                filePath: '/foo/alpha/bravo.json',
+                type: TRANSFORM_FILE,
+              })
+
+              readStream.destroy(error)
+
+              process.nextTick(() => {
+                process.nextTick(() => {
+                  expect(mkdirp).toHaveBeenCalledTimes(1)
+                  expect(mkdirp).toHaveBeenCalledWith(
+                    '/bar/alpha',
+                    expect.any(Function),
+                  )
+                  expect(createReadStream).toHaveBeenCalledTimes(1)
+                  expect(createReadStream).toHaveBeenCalledWith(
+                    '/foo/alpha/bravo.json',
+                  )
+                  expect(createWriteStream).toHaveBeenCalledTimes(1)
+                  expect(createWriteStream).toHaveBeenCalledWith(
+                    '/bar/alpha/bravo.json',
+                    {},
+                  )
+                  expect(console.error).toHaveBeenCalledTimes(
+                    argv.verbose ? 2 : 1,
+                  )
+                  expect(console.error).toHaveBeenCalledWith(
+                    'Failed to process file /foo/alpha/bravo.json',
+                  )
+
+                  if (argv.verbose) {
+                    expect(console.error).toHaveBeenCalledWith(error)
+                  }
+
+                  expect(process.send).toHaveBeenCalledTimes(1)
+                  expect(process.send).toHaveBeenCalledWith({
+                    erred: true,
+                    type: IDLE,
+                  })
+
+                  done()
+                })
+              })
             })
 
-            writeStream.destroy(error)
+            it('functions as expected when write stream receives an error', done => {
+              const error = new Error('foo bar')
+              const readStream = new Readable({read: jest.fn()})
+              const writeStream = new Writable({write: jest.fn()})
 
-            process.nextTick(() => {
+              createReadStream.mockReturnValue(readStream)
+              createWriteStream.mockReturnValue(writeStream)
+
+              expect(ctx.listeners.message).toHaveLength(1)
+
+              ctx.listeners.message[0]({
+                filePath: '/foo/alpha/bravo.json',
+                type: TRANSFORM_FILE,
+              })
+
+              writeStream.destroy(error)
+
+              process.nextTick(() => {
+                process.nextTick(() => {
+                  expect(mkdirp).toHaveBeenCalledTimes(1)
+                  expect(mkdirp).toHaveBeenCalledWith(
+                    '/bar/alpha',
+                    expect.any(Function),
+                  )
+                  expect(createReadStream).toHaveBeenCalledTimes(1)
+                  expect(createReadStream).toHaveBeenCalledWith(
+                    '/foo/alpha/bravo.json',
+                  )
+                  expect(createWriteStream).toHaveBeenCalledTimes(1)
+                  expect(createWriteStream).toHaveBeenCalledWith(
+                    '/bar/alpha/bravo.json',
+                    {},
+                  )
+                  expect(console.error).toHaveBeenCalledTimes(
+                    argv.verbose ? 2 : 1,
+                  )
+                  expect(console.error).toHaveBeenCalledWith(
+                    'Failed to process file /foo/alpha/bravo.json',
+                  )
+
+                  if (argv.verbose) {
+                    expect(console.error).toHaveBeenCalledWith(error)
+                  }
+
+                  expect(process.send).toHaveBeenCalledTimes(1)
+                  expect(process.send).toHaveBeenCalledWith({
+                    erred: true,
+                    type: IDLE,
+                  })
+
+                  done()
+                })
+              })
+            })
+
+            it('functions as expected when file is successfully copied', done => {
+              const readStream = new Readable({read: jest.fn()})
+              const writeStream = new Writable({write: jest.fn()})
+
+              createReadStream.mockReturnValue(readStream)
+              createWriteStream.mockReturnValue(writeStream)
+
+              expect(ctx.listeners.message).toHaveLength(1)
+
+              ctx.listeners.message[0]({
+                filePath: '/foo/alpha/bravo.json',
+                type: TRANSFORM_FILE,
+              })
+
+              readStream.destroy()
+
+              setTimeout(() => {
+                expect(mkdirp).toHaveBeenCalledTimes(1)
+                expect(mkdirp).toHaveBeenCalledWith(
+                  '/bar/alpha',
+                  expect.any(Function),
+                )
+                expect(createReadStream).toHaveBeenCalledTimes(1)
+                expect(createReadStream).toHaveBeenCalledWith(
+                  '/foo/alpha/bravo.json',
+                )
+                expect(createWriteStream).toHaveBeenCalledTimes(1)
+                expect(createWriteStream).toHaveBeenCalledWith(
+                  '/bar/alpha/bravo.json',
+                  {},
+                )
+                expect(console.error).toHaveBeenCalledTimes(0)
+                expect(process.send).toHaveBeenCalledTimes(1)
+                expect(process.send).toHaveBeenCalledWith({
+                  erred: false,
+                  type: IDLE,
+                })
+
+                done()
+              }, 1)
+            })
+          })
+
+          describe('when it successfully gets stats for file', () => {
+            beforeEach(() => {
+              stat.mockImplementation((...args) => {
+                const callback = args[args.length - 1]
+                callback(null, {mode: 0o666})
+              })
+            })
+
+            it('functions as expected when it fails to create read stream', done => {
+              const error = new Error('foo bar')
+
+              createReadStream.mockImplementation(() => {
+                throw error
+              })
+
+              expect(ctx.listeners.message).toHaveLength(1)
+
+              ctx.listeners.message[0]({
+                filePath: '/foo/alpha/bravo.json',
+                type: TRANSFORM_FILE,
+              })
+
               process.nextTick(() => {
                 expect(mkdirp).toHaveBeenCalledTimes(1)
                 expect(mkdirp).toHaveBeenCalledWith(
                   '/bar/alpha',
                   expect.any(Function),
+                )
+                expect(createReadStream).toHaveBeenCalledTimes(1)
+                expect(createReadStream).toHaveBeenCalledWith(
+                  '/foo/alpha/bravo.json',
+                )
+                expect(createWriteStream).toHaveBeenCalledTimes(0)
+                expect(console.error).toHaveBeenCalledTimes(
+                  argv.verbose ? 2 : 1,
+                )
+                expect(console.error).toHaveBeenCalledWith(
+                  'Failed to process file /foo/alpha/bravo.json',
+                )
+
+                if (argv.verbose) {
+                  expect(console.error).toHaveBeenCalledWith(error)
+                }
+
+                expect(process.send).toHaveBeenCalledTimes(1)
+                expect(process.send).toHaveBeenCalledWith({
+                  erred: true,
+                  type: IDLE,
+                })
+
+                done()
+              })
+            })
+
+            it('functions as expected when it fails to create write stream', done => {
+              const error = new Error('foo bar')
+              const readStream = new Readable({read: jest.fn()})
+
+              createReadStream.mockReturnValue(readStream)
+              createWriteStream.mockImplementation(() => {
+                throw error
+              })
+
+              expect(ctx.listeners.message).toHaveLength(1)
+
+              ctx.listeners.message[0]({
+                filePath: '/foo/alpha/bravo.json',
+                type: TRANSFORM_FILE,
+              })
+
+              process.nextTick(() => {
+                expect(mkdirp).toHaveBeenCalledTimes(1)
+                expect(mkdirp).toHaveBeenCalledWith(
+                  '/bar/alpha',
+                  expect.any(Function),
+                )
+                expect(createReadStream).toHaveBeenCalledTimes(1)
+                expect(createReadStream).toHaveBeenCalledWith(
+                  '/foo/alpha/bravo.json',
+                )
+                expect(createWriteStream).toHaveBeenCalledTimes(1)
+                expect(createWriteStream).toHaveBeenCalledWith(
+                  '/bar/alpha/bravo.json',
+                  {mode: 0o666},
                 )
                 expect(console.error).toHaveBeenCalledTimes(
                   argv.verbose ? 2 : 1,
@@ -598,39 +990,158 @@ function tests(ctx, description, argv) {
                 done()
               })
             })
-          })
 
-          it('functions as expected when file is successfully copied', done => {
-            const readStream = new Readable({read: jest.fn()})
-            const writeStream = new Writable({write: jest.fn()})
+            it('functions as expected when read stream receives an error', done => {
+              const error = new Error('foo bar')
+              const readStream = new Readable({read: jest.fn()})
+              const writeStream = new Writable({write: jest.fn()})
 
-            createReadStream.mockReturnValue(readStream)
-            createWriteStream.mockReturnValue(writeStream)
+              createReadStream.mockReturnValue(readStream)
+              createWriteStream.mockReturnValue(writeStream)
 
-            expect(ctx.listeners.message).toHaveLength(1)
+              expect(ctx.listeners.message).toHaveLength(1)
 
-            ctx.listeners.message[0]({
-              filePath: '/foo/alpha/bravo.json',
-              type: TRANSFORM_FILE,
-            })
-
-            readStream.destroy()
-
-            setTimeout(() => {
-              expect(mkdirp).toHaveBeenCalledTimes(1)
-              expect(mkdirp).toHaveBeenCalledWith(
-                '/bar/alpha',
-                expect.any(Function),
-              )
-              expect(console.error).toHaveBeenCalledTimes(0)
-              expect(process.send).toHaveBeenCalledTimes(1)
-              expect(process.send).toHaveBeenCalledWith({
-                erred: false,
-                type: IDLE,
+              ctx.listeners.message[0]({
+                filePath: '/foo/alpha/bravo.json',
+                type: TRANSFORM_FILE,
               })
 
-              done()
-            }, 1)
+              readStream.destroy(error)
+
+              process.nextTick(() => {
+                process.nextTick(() => {
+                  expect(mkdirp).toHaveBeenCalledTimes(1)
+                  expect(mkdirp).toHaveBeenCalledWith(
+                    '/bar/alpha',
+                    expect.any(Function),
+                  )
+                  expect(createReadStream).toHaveBeenCalledTimes(1)
+                  expect(createReadStream).toHaveBeenCalledWith(
+                    '/foo/alpha/bravo.json',
+                  )
+                  expect(createWriteStream).toHaveBeenCalledTimes(1)
+                  expect(createWriteStream).toHaveBeenCalledWith(
+                    '/bar/alpha/bravo.json',
+                    {mode: 0o666},
+                  )
+                  expect(console.error).toHaveBeenCalledTimes(
+                    argv.verbose ? 2 : 1,
+                  )
+                  expect(console.error).toHaveBeenCalledWith(
+                    'Failed to process file /foo/alpha/bravo.json',
+                  )
+
+                  if (argv.verbose) {
+                    expect(console.error).toHaveBeenCalledWith(error)
+                  }
+
+                  expect(process.send).toHaveBeenCalledTimes(1)
+                  expect(process.send).toHaveBeenCalledWith({
+                    erred: true,
+                    type: IDLE,
+                  })
+
+                  done()
+                })
+              })
+            })
+
+            it('functions as expected when write stream receives an error', done => {
+              const error = new Error('foo bar')
+              const readStream = new Readable({read: jest.fn()})
+              const writeStream = new Writable({write: jest.fn()})
+
+              createReadStream.mockReturnValue(readStream)
+              createWriteStream.mockReturnValue(writeStream)
+
+              expect(ctx.listeners.message).toHaveLength(1)
+
+              ctx.listeners.message[0]({
+                filePath: '/foo/alpha/bravo.json',
+                type: TRANSFORM_FILE,
+              })
+
+              writeStream.destroy(error)
+
+              process.nextTick(() => {
+                process.nextTick(() => {
+                  expect(mkdirp).toHaveBeenCalledTimes(1)
+                  expect(mkdirp).toHaveBeenCalledWith(
+                    '/bar/alpha',
+                    expect.any(Function),
+                  )
+                  expect(createReadStream).toHaveBeenCalledTimes(1)
+                  expect(createReadStream).toHaveBeenCalledWith(
+                    '/foo/alpha/bravo.json',
+                  )
+                  expect(createWriteStream).toHaveBeenCalledTimes(1)
+                  expect(createWriteStream).toHaveBeenCalledWith(
+                    '/bar/alpha/bravo.json',
+                    {mode: 0o666},
+                  )
+                  expect(console.error).toHaveBeenCalledTimes(
+                    argv.verbose ? 2 : 1,
+                  )
+                  expect(console.error).toHaveBeenCalledWith(
+                    'Failed to process file /foo/alpha/bravo.json',
+                  )
+
+                  if (argv.verbose) {
+                    expect(console.error).toHaveBeenCalledWith(error)
+                  }
+
+                  expect(process.send).toHaveBeenCalledTimes(1)
+                  expect(process.send).toHaveBeenCalledWith({
+                    erred: true,
+                    type: IDLE,
+                  })
+
+                  done()
+                })
+              })
+            })
+
+            it('functions as expected when file is successfully copied', done => {
+              const readStream = new Readable({read: jest.fn()})
+              const writeStream = new Writable({write: jest.fn()})
+
+              createReadStream.mockReturnValue(readStream)
+              createWriteStream.mockReturnValue(writeStream)
+
+              expect(ctx.listeners.message).toHaveLength(1)
+
+              ctx.listeners.message[0]({
+                filePath: '/foo/alpha/bravo.json',
+                type: TRANSFORM_FILE,
+              })
+
+              readStream.destroy()
+
+              setTimeout(() => {
+                expect(mkdirp).toHaveBeenCalledTimes(1)
+                expect(mkdirp).toHaveBeenCalledWith(
+                  '/bar/alpha',
+                  expect.any(Function),
+                )
+                expect(createReadStream).toHaveBeenCalledTimes(1)
+                expect(createReadStream).toHaveBeenCalledWith(
+                  '/foo/alpha/bravo.json',
+                )
+                expect(createWriteStream).toHaveBeenCalledTimes(1)
+                expect(createWriteStream).toHaveBeenCalledWith(
+                  '/bar/alpha/bravo.json',
+                  {mode: 0o666},
+                )
+                expect(console.error).toHaveBeenCalledTimes(0)
+                expect(process.send).toHaveBeenCalledTimes(1)
+                expect(process.send).toHaveBeenCalledWith({
+                  erred: false,
+                  type: IDLE,
+                })
+
+                done()
+              }, 1)
+            })
           })
         })
       })
@@ -652,6 +1163,8 @@ describe('worker', () => {
 
   beforeEach(() => {
     console.error.mockReset()
+    createReadStream.mockReset()
+    createWriteStream.mockReset()
     mkdirp.mockReset()
     process.send.mockReset()
 
