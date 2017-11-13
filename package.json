@@ -1,11 +1,12 @@
 {
   "name": "nodely",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Write Node code using whatever syntax you want.",
   "main": "lib/index.js",
   "bin": {
     "nodely": "./lib/index.js"
   },
+  "files": ["lib"],
   "scripts": {
     "build": "./lib/index.js -s ./src -o ./lib",
     "test": "lintly src && flow && jest"

@@ -1,3 +1,7 @@
+## 0.0.11
+
+*   Update `package.json` to limit what files are included in npm package.
+
 ## 0.0.10
 
 ### Bug Fixes
