@@ -16,16 +16,19 @@
     "url": "git+ssh://git@github.com/dogma-io/nodely.git"
   },
   "keywords": [
-    "node",
-    "transpile",
-    "compile",
-    "es6",
-    "es2015",
-    "flow",
-    "flowjs",
     "babel",
     "cluster",
-    "clustering"
+    "clustering",
+    "compile",
+    "compiler",
+    "es2015",
+    "es6",
+    "flow",
+    "flowjs",
+    "modules",
+    "node",
+    "transpile",
+    "transpiler"
   ],
   "author": "Matthew Dahl <https://github.com/dogma-io>",
   "license": "MIT",

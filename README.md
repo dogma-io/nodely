@@ -1,4 +1,4 @@
-# nodely [![NPM][npm-img]][npm-url]
+# nodely [![NPM][npm-img]][npm-url] [![Coverage][cov-img]][cov-url]
 
 Write Node code using whatever syntax you want.
 
@@ -50,6 +50,8 @@ By default the server will spawn a worker process for all but one CPU, reserving
 nodely -s ./path/to/source -o ./path/to/output -n 3 # This will spawn 3 workers
 ```
 
+[cov-img]: https://img.shields.io/codecov/c/github/dogma-io/nodely.svg "Code Coverage"
+[cov-url]: https://codecov.io/gh/dogma-io/nodely
 
 [npm-img]: https://img.shields.io/npm/v/nodely.svg "NPM Version"
 [npm-url]: https://www.npmjs.com/package/nodely
