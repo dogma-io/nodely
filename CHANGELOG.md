@@ -1,3 +1,9 @@
+## 0.0.15
+
+*   Added [codecov](https://www.npmjs.com/package/codecov) package to handle publishing code coverage.
+*   Added partial test coverage of [master](src/master.js).
+*   Upgraded to latest version of *lintly*.
+
 ## 0.0.14
 
 *   Added coverage badge to [README.md](README.md).

@@ -231,7 +231,7 @@ function spawnWorkers(state: State, workerCount: number): WorkerInfo[] {
     )
   }
 
-  if (workerCount <= 1) {
+  if (workerCount < 1) {
     workerCount = cpus().length - 1
   }
 
@@ -271,4 +271,6 @@ export default function(argv: Argv) {
 
   // Make sure we process all source files
   glob(`${source}${sep}**${sep}*`, processFiles.bind(null, state))
+
+  return state // used by tests
 }

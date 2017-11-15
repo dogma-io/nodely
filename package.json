@@ -1,14 +1,18 @@
 {
   "name": "nodely",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Write Node code using whatever syntax you want.",
   "main": "lib/index.js",
   "bin": {
     "nodely": "./lib/index.js"
   },
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "./lib/index.js -s ./src -o ./lib",
+    "postpublish": "codecov",
+    "prepublishOnly": "npm run build",
     "test": "lintly src && flow && jest"
   },
   "repository": {
@@ -37,8 +41,9 @@
   },
   "homepage": "https://github.com/dogma-io/nodely#readme",
   "devDependencies": {
+    "codecov": "3.0.0",
     "jest-cli": "21.2.1",
-    "lintly": "0.0.2"
+    "lintly": "0.0.7"
   },
   "dependencies": {
     "babel-core": "6.26.0",
