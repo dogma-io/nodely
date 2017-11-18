@@ -1,3 +1,8 @@
+## 0.0.16
+
+*   Added more tests to reach 100% code coverage.
+*   Improved master to log errors rather than throw so it doesn't die under edge cases.
+
 ## 0.0.15
 
 *   Added [codecov](https://www.npmjs.com/package/codecov) package to handle publishing code coverage.

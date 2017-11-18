@@ -53,15 +53,17 @@ function processActionFromWorker(
   data: IdleAction,
 ) {
   if (typeof data !== 'object') {
-    throw new Error(
+    console.error(
       `Expected message from worker to be an object but instead received type ${typeof data}`,
     )
+    return
   }
 
   if (data === null) {
-    throw new Error(
+    console.error(
       'Expected message from worker to be present but instead received null',
     )
+    return
   }
 
   switch (data.type) {
@@ -72,12 +74,10 @@ function processActionFromWorker(
 
       workerInfo.idle = true
       processNextAction(state)
-      break
+      return
 
     default:
-      throw new Error(
-        `Worker sent message with unknown action type ${data.type}`,
-      )
+      console.error(`Worker sent message with unknown action type ${data.type}`)
   }
 }
 
@@ -108,6 +108,8 @@ function processFiles(state: State, err: ?Error, files: string[]) {
   queue.push(...actions)
 
   while (queue.length && processNextAction(state)) {}
+
+  processNextAction(state) // Will trigger exit if queue is empty
 }
 
 /**
@@ -188,7 +190,7 @@ function processWatchEvent(state: State, type: string, filePath: string) {
  * @param state - current state
  */
 function replaceDeadWorkers(state: State) {
-  const {isWatching, queue, workers} = state
+  const {workers} = state
 
   cluster.on('exit', (deadWorker: Worker) => {
     console.info(
@@ -197,12 +199,12 @@ function replaceDeadWorkers(state: State) {
 
     // Remove dead worker from worker info list
     const deadWorkerIndex = workers.findIndex((w: WorkerInfo) => {
-      return w.worker === deadWorker
+      return w.worker.id === deadWorker.id
     })
     workers.splice(deadWorkerIndex, 1)
 
     // Add a new worker in it's place
-    spawnWorker(queue, workers, isWatching)
+    spawnWorker(state)
   })
 }
 
