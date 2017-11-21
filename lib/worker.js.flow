@@ -6,4 +6,14 @@ import path from "path";
 import mkdirp from "mkdirp";
 import {createReadStream, createWriteStream, readFile, stat, unlink, writeFile} from "fs";
 import {transform} from "babel-core";
-declare export default function(argv: $Exact<{output: string, source: string, target: string, verbose: boolean, watch: boolean, workerCount: number}>): void;
+
+declare export default (
+  argv: $Exact<{
+    output: string,
+    source: string,
+    target: string,
+    verbose: boolean,
+    watch: boolean,
+    workerCount: number
+  }>
+) => void;

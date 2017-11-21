@@ -7,8 +7,8 @@ import {cpus} from "os";
 import watch from "node-watch";
 import glob from "glob";
 import cluster from "cluster";
-declare class Class0 extends events$EventEmitter {
 
+declare class Class0 extends events$EventEmitter {
   id: number;
   process: child_process$ChildProcess;
   suicide: boolean;
@@ -18,4 +18,29 @@ declare class Class0 extends events$EventEmitter {
   kill(signal?: string): void;
   send(message: Object, sendHandleOrCallback?: any | Function, callback?: Function): boolean;
 }
-declare export default function(argv: $Exact<{output: string, source: string, target: string, verbose: boolean, watch: boolean, workerCount: number}>): {erred: boolean, isWatching: boolean, queue: Array<$Exact<{filePath: string, type: any | any}>>, workers: Array<$Exact<{idle: boolean, worker: Class0}>>};
+
+declare export default (
+  argv: $Exact<{
+    output: string,
+    source: string,
+    target: string,
+    verbose: boolean,
+    watch: boolean,
+    workerCount: number
+  }>
+) => {
+  erred: boolean,
+  isWatching: boolean,
+  queue: Array<
+    $Exact<{
+      filePath: string,
+      type: any | any
+    }>
+  >,
+  workers: Array<
+    $Exact<{
+      idle: boolean,
+      worker: Class0
+    }>
+  >
+};

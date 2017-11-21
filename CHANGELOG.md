@@ -1,3 +1,7 @@
+** 0.0.20
+
+*   Fixed generated flow types.
+
 ** 0.0.19
 
 *   Flow typed all source code and generated Flow types in output directory.
