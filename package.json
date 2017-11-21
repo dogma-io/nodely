@@ -1,6 +1,6 @@
 {
   "name": "nodely",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Write Node code using whatever syntax you want.",
   "main": "lib/index.js",
   "bin": {
@@ -64,6 +64,14 @@
       "json-summary",
       "lcov"
     ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
     "testRegex": "/__tests__/.*-test\\.js$"
   }
 }

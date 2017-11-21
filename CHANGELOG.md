@@ -1,3 +1,7 @@
+## 0.0.18
+
+*   Added Jest configuration to fail if coverage drops below 100%.
+
 ## 0.0.17
 
 *   Added `target` CLI option to change target Node version.
