@@ -18,6 +18,12 @@ const argv = yargs
     description: 'Directory containing source code to transform.',
     type: 'string',
   })
+  .option('target', {
+    alias: 't',
+    default: '4',
+    description: 'Target Node version.',
+    type: 'string',
+  })
   .option('verbose', {
     alias: 'v',
     default: false,

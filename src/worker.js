@@ -19,20 +19,6 @@ import {
 } from './actions'
 import type {Argv} from './types'
 
-const TRANSFORM_OPTIONS = Object.freeze({
-  presets: [
-    [
-      'env',
-      {
-        targets: {
-          node: '4', // In maintenance LTS
-        },
-      },
-    ],
-    'react',
-  ],
-})
-
 /**
  * Copy file.
  * @param filePath - full path of file to copy
@@ -143,12 +129,14 @@ function getFileContents(filePath: string): Promise<string, Error> {
  * @param source - source directory
  * @param output - output directory
  * @param verbose - whether or not to have verbose logging
+ * @param target - Node target
  * @param data - action from master
  */
 function processActionFromMater(
   source: string,
   output: string,
   verbose: boolean,
+  target: string,
   data: RemoveFileAction | TransformFileAction,
 ) {
   if (typeof data !== 'object') {
@@ -168,7 +156,7 @@ function processActionFromMater(
       return removeOutputFile(source, output, data.filePath, verbose)
 
     case TRANSFORM_FILE:
-      return transformFile(source, output, data.filePath, verbose)
+      return transformFile(source, output, data.filePath, verbose, target)
 
     default:
       return error(`Master sent message with unknown action type ${data.type}`)
@@ -216,12 +204,14 @@ function removeOutputFile(
  * @param output - output directory
  * @param filePath - full path of file to transform
  * @param verbose - whether or not to have verbose logging
+ * @param target - Node target
  */
 function transformFile(
   source: string,
   output: string,
   filePath: string,
   verbose: boolean,
+  target: string,
 ) {
   createDirectoryForFile(source, output, filePath)
     .then((outputFilePath: string) => {
@@ -232,7 +222,7 @@ function transformFile(
           return null
 
         case '.js':
-          return transformJavascriptFile(filePath, outputFilePath)
+          return transformJavascriptFile(filePath, outputFilePath, target)
 
         default:
           return copyFile(filePath, outputFilePath)
@@ -260,17 +250,31 @@ function transformFile(
  * Transform file.
  * @param filePath - full path of file to transform
  * @param outputFilePath - path to write transformed file to
+ * @param target - Node target
  * @returns resolves once file has been written or rejects with error
  */
 function transformJavascriptFile(
   filePath: string,
   outputFilePath: string,
+  target: string,
 ): Promise<void, Error> {
   return getFileContents(filePath).then((contents: string) => {
     return new Promise((resolve, reject) => {
       stat(filePath, (err1, stats) => {
         const mode = err1 ? null : stats.mode
-        const result = transform(contents, TRANSFORM_OPTIONS)
+        const result = transform(contents, {
+          presets: [
+            [
+              'env',
+              {
+                targets: {
+                  node: target,
+                },
+              },
+            ],
+            'react',
+          ],
+        })
 
         writeDataToFile(outputFilePath, result.code, mode)
           .then(() => {
@@ -320,7 +324,7 @@ function writeDataToFile(
  * @param argv - command line arguments
  */
 export default function(argv: Argv) {
-  let {output, source, verbose} = argv
+  let {output, source, target, verbose} = argv
 
   // Make sure source does not have a trailing separator
   if (source[source.length - 1] === path.sep) {
@@ -334,6 +338,6 @@ export default function(argv: Argv) {
 
   process.on(
     'message',
-    processActionFromMater.bind(null, source, output, verbose),
+    processActionFromMater.bind(null, source, output, verbose, target),
   )
 }

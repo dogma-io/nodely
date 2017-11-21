@@ -1,3 +1,7 @@
+## 0.0.17
+
+*   Added `target` CLI option to change target Node version.
+
 ## 0.0.16
 
 *   Added more tests to reach 100% code coverage.

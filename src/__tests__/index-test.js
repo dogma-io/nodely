@@ -8,6 +8,7 @@ function missingArgumentsTest(message) {
                                                              [string] [required]
   --source, -s       Directory containing source code to transform.
                                                              [string] [required]
+  --target, -t       Target Node version.                [string] [default: "4"]
   --verbose, -v      Whether or not to have verbose logging.
                                                       [boolean] [default: false]
   --watch, -w        Whether or not to watch for changes and continue

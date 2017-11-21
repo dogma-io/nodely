@@ -26,6 +26,14 @@ nodely -s ./path/to/source -o ./path/to/output
 
 ### Options
 
+**Target**
+
+Nodely outputs code that should work with Node 4 and up, as that is the current Node version in maintenance LTS. If you'd like to target a different minimum Node version you can set the target like so:
+
+```bash
+nodely -s ./path/to/source -o ./path/to/output -t 8
+```
+
 **Verbose**
 
 By default nodely will inform you when files fail to transform but won't provide much detail. If you want entire stack-traces when the failures occur you can use the `-v` flag like so:
