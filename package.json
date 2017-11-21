@@ -10,7 +10,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "./lib/index.js -s ./src -o ./lib && npm run gen-types",
+    "build": "rm -rf ./lib/*.flow && ./lib/index.js -s ./src -o ./lib && npm run gen-types",
     "gen-types": "flow gen-flow-files src --out-dir lib",
     "postpublish": "codecov",
     "prepublishOnly": "npm run build",
