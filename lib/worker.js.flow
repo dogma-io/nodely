@@ -1,0 +1,9 @@
+// @flow
+
+import type {Argv} from "./types";
+import {IDLE, REMOVE_FILE, RemoveFileAction, TRANSFORM_FILE, TransformFileAction} from "./actions";
+import path from "path";
+import mkdirp from "mkdirp";
+import {createReadStream, createWriteStream, readFile, stat, unlink, writeFile} from "fs";
+import {transform} from "babel-core";
+declare export default function(argv: $Exact<{output: string, source: string, target: string, verbose: boolean, watch: boolean, workerCount: number}>): void;

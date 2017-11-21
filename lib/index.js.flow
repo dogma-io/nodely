@@ -1,0 +1,9 @@
+// @flow
+
+import worker from "./worker";
+import type {Argv} from "./types";
+import master from "./master";
+import yargs from "yargs";
+import cluster from "cluster";
+
+declare module.exports: {};

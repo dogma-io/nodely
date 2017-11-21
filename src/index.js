@@ -1,11 +1,16 @@
 #! /usr/bin/env node
 
+/**
+ * @flow
+ */
+
 import cluster from 'cluster'
 import yargs from 'yargs'
 import master from './master'
+import type {Argv} from './types'
 import worker from './worker'
 
-const argv = yargs
+const argv: Argv = (yargs
   .option('output', {
     alias: 'o',
     demandOption: true,
@@ -42,7 +47,7 @@ const argv = yargs
     default: 0,
     description: 'Number of worker process to spawn.',
     type: 'number',
-  }).argv
+  }).argv: any)
 
 // TODO: verify source directory exists
 

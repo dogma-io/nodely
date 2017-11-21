@@ -1,10 +1,16 @@
+/**
+ * @flow
+ */
+
+/* global ErrnoError */
+
 import {transform} from 'babel-core'
 import {
   createReadStream,
   createWriteStream,
   readFile,
-  removeFile,
   stat,
+  unlink,
   writeFile,
 } from 'fs'
 import mkdirp from 'mkdirp'
@@ -19,18 +25,29 @@ import {
 } from './actions'
 import type {Argv} from './types'
 
+type WriteOptions = {|
+  encoding?: ?string,
+  flag?: string,
+  mode?: number,
+|}
+
+function send(...args) {
+  if (process.send) {
+    process.send(...args)
+  } else {
+    throw new Error('process.send is not defined')
+  }
+}
+
 /**
  * Copy file.
  * @param filePath - full path of file to copy
  * @param outputFilePath - path to copy file to
  * @returns resolves once file has been copied or rejects with error
  */
-function copyFile(
-  filePath: string,
-  outputFilePath: string,
-): Promise<void, Error> {
+function copyFile(filePath: string, outputFilePath: string): Promise<void> {
   return new Promise((resolve: () => void, reject: (err: Error) => void) => {
-    stat(filePath, (err: Error, stats) => {
+    stat(filePath, (err: ?ErrnoError, stats) => {
       const writeStreamOptions = {}
 
       if (!err) {
@@ -68,7 +85,7 @@ function createDirectoryForFile(
   source: string,
   output: string,
   filePath: string,
-): Promise<string, Error> {
+): Promise<string> {
   const relativeFilePath = path.relative(source, filePath)
   const relativeDirectoryPath = path.dirname(relativeFilePath)
   const outputDirectoryPath = path.join(output, relativeDirectoryPath)
@@ -99,7 +116,7 @@ function createDirectoryForFile(
 function error(message: string) {
   console.error(message)
 
-  process.send({
+  send({
     erred: true,
     type: IDLE,
   })
@@ -110,7 +127,7 @@ function error(message: string) {
  * @param filePath - full path of file to get contents of
  * @returns resolves with file contents or rejects with error
  */
-function getFileContents(filePath: string): Promise<string, Error> {
+function getFileContents(filePath: string): Promise<string> {
   return new Promise(
     (resolve: (data: string) => void, reject: (err: Error) => void) => {
       readFile(filePath, 'utf8', (err: ?Error, data: string) => {
@@ -182,7 +199,7 @@ function removeOutputFile(
   const fileName = path.basename(filePath)
   const outputFilePath = path.join(outputDirectoryPath, fileName)
 
-  removeFile(outputFilePath, (err: ?Error) => {
+  unlink(outputFilePath, (err: ?Error) => {
     if (err) {
       console.error(`Failed to remove file ${outputFilePath}`)
 
@@ -191,7 +208,7 @@ function removeOutputFile(
       }
     }
 
-    process.send({
+    send({
       erred: !!err,
       type: IDLE,
     })
@@ -239,7 +256,7 @@ function transformFile(
       return true
     })
     .then((erred: boolean) => {
-      process.send({
+      send({
         erred,
         type: IDLE,
       })
@@ -257,7 +274,7 @@ function transformJavascriptFile(
   filePath: string,
   outputFilePath: string,
   target: string,
-): Promise<void, Error> {
+): Promise<void> {
   return getFileContents(filePath).then((contents: string) => {
     return new Promise((resolve, reject) => {
       stat(filePath, (err1, stats) => {
@@ -298,9 +315,9 @@ function transformJavascriptFile(
 function writeDataToFile(
   filePath: string,
   data: string,
-  mode: number,
-): Promise<void, Error> {
-  const options = {
+  mode: ?number,
+): Promise<void> {
+  const options: WriteOptions = {
     encoding: 'utf8',
   }
 

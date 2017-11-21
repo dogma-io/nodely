@@ -1,3 +1,9 @@
+/**
+ * @flow
+ */
+
+/* global cluster$Worker */
+
 import cluster from 'cluster'
 import glob from 'glob'
 import watch from 'node-watch'
@@ -7,22 +13,20 @@ import {sep} from 'path'
 import {IDLE, type IdleAction, REMOVE_FILE, TRANSFORM_FILE} from './actions'
 import type {Argv} from './types'
 
-/**
- * @see https://nodejs.org/api/cluster.html#cluster_class_worker
- */
-type Worker = {|
-  id: number,
+type Action = {|
+  filePath: string,
+  type: REMOVE_FILE | TRANSFORM_FILE,
 |}
 
 type WorkerInfo = {|
   idle: boolean, // whether or not process is idle and waiting for a task
-  worker: Worker, // worker instance
+  worker: cluster$Worker, // worker instance
 |}
 
 type State = {|
   erred: boolean,
   isWatching: boolean,
-  queue: string[],
+  queue: Action[],
   workers: WorkerInfo[],
 |}
 
@@ -34,7 +38,7 @@ const SUCCESS_EXIT_CODE = 0
  * @param worker - worker to get info for
  * @returns worker info
  */
-function getWorkerInfo(worker: Worker): WorkerInfo {
+function getWorkerInfo(worker: cluster$Worker): WorkerInfo {
   return {
     idle: true,
     worker,
@@ -192,7 +196,7 @@ function processWatchEvent(state: State, type: string, filePath: string) {
 function replaceDeadWorkers(state: State) {
   const {workers} = state
 
-  cluster.on('exit', (deadWorker: Worker) => {
+  cluster.on('exit', (deadWorker: cluster$Worker) => {
     console.info(
       `Worker ${deadWorker.id} died, spawning a new worker in it's place`,
     )
@@ -226,7 +230,7 @@ function spawnWorker(state: State) {
  * @param state - current state
  * @param workerCount - number of workers to spawn
  */
-function spawnWorkers(state: State, workerCount: number): WorkerInfo[] {
+function spawnWorkers(state: State, workerCount: number): void {
   if (isNaN(workerCount)) {
     throw new Error(
       `workerCount is expected to be a number not ${typeof workerCount}`,

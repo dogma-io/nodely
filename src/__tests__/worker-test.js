@@ -5,8 +5,8 @@ jest.mock('fs', () => {
     createReadStream: jest.fn(),
     createWriteStream: jest.fn(),
     readFile: jest.fn(),
-    removeFile: jest.fn(),
     stat: jest.fn(),
+    unlink: jest.fn(),
     writeFile: jest.fn(),
   }
 })
@@ -18,8 +18,8 @@ import {
   createReadStream,
   createWriteStream,
   readFile,
-  removeFile,
   stat,
+  unlink,
   writeFile,
 } from 'fs'
 import mkdirp from 'mkdirp'
@@ -50,6 +50,15 @@ function tests(ctx, description, argv) {
     it('functions as expected', () => {
       expect(process.on).toHaveBeenCalledTimes(1)
       expect(process.on).toHaveBeenCalledWith('message', expect.any(Function))
+    })
+
+    it('functions as expected when process.send is not defined', () => {
+      process.send = undefined
+      expect(ctx.listeners.message).toHaveLength(1)
+
+      expect(() => {
+        ctx.listeners.message[0]('test')
+      }).toThrowError('process.send is not defined')
     })
 
     it('functions as expected when master sends non-object message', () => {
@@ -98,7 +107,7 @@ function tests(ctx, description, argv) {
       it('functions as expected when fails to remove file', () => {
         const error = new Error('foo bar')
 
-        removeFile.mockImplementation((...args) => {
+        unlink.mockImplementation((...args) => {
           const callback = args[args.length - 1]
           callback(error)
         })
@@ -127,7 +136,7 @@ function tests(ctx, description, argv) {
       })
 
       it('functions as expected when successfully removes file', () => {
-        removeFile.mockImplementation((...args) => {
+        unlink.mockImplementation((...args) => {
           const callback = args[args.length - 1]
           callback(null)
         })
@@ -1154,7 +1163,6 @@ describe('worker', () => {
 
   beforeAll(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {})
-    process.send = jest.fn()
   })
 
   afterAll(() => {
@@ -1166,7 +1174,7 @@ describe('worker', () => {
     createReadStream.mockReset()
     createWriteStream.mockReset()
     mkdirp.mockReset()
-    process.send.mockReset()
+    process.send = jest.fn()
 
     Object.assign(ctx, {
       listeners: [],

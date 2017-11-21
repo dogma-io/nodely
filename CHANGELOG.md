@@ -1,3 +1,7 @@
+** 0.0.19
+
+*   Flow typed all source code and generated Flow types in output directory.
+
 ## 0.0.18
 
 *   Added Jest configuration to fail if coverage drops below 100%.

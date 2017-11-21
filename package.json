@@ -1,6 +1,6 @@
 {
   "name": "nodely",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Write Node code using whatever syntax you want.",
   "main": "lib/index.js",
   "bin": {
@@ -10,7 +10,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "./lib/index.js -s ./src -o ./lib",
+    "build": "./lib/index.js -s ./src -o ./lib && npm run gen-types",
+    "gen-types": "flow gen-flow-files src --out-dir lib",
     "postpublish": "codecov",
     "prepublishOnly": "npm run build",
     "test": "lintly src && flow && jest"

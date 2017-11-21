@@ -1,0 +1,5 @@
+// @flow
+
+export type Argv = $Exact<{output: string, source: string, target: string, verbose: boolean, watch: boolean, workerCount: number}>;
+
+declare module.exports: {};
