@@ -1,4 +1,8 @@
-** 0.0.20
+## 0.0.21
+
+*   Updated dependencies.
+
+## 0.0.20
 
 *   Fixed generated flow types.
 
