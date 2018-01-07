@@ -1,3 +1,7 @@
+## 0.0.22
+
+*   Upgrade to Babel 7 beta.
+
 ## 0.0.21
 
 *   Updated dependencies.

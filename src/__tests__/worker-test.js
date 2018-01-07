@@ -30,14 +30,15 @@ import worker from '../worker'
 const TRANSFORM_OPTIONS = Object.freeze({
   presets: [
     [
-      'env',
+      '@babel/env',
       {
         targets: {
           node: '4', // In maintenance LTS
         },
       },
     ],
-    'react',
+    '@babel/flow',
+    '@babel/react',
   ],
 })
 

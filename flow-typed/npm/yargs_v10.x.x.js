@@ -1,5 +1,5 @@
-// flow-typed signature: 175fef170e759d230038bd17e1327ce4
-// flow-typed version: 2c1200fd98/yargs_v10.x.x/flow_>=v0.54.x
+// flow-typed signature: d6f0db2a3d04a409b27a3514e5f1ab23
+// flow-typed version: da30fe6876/yargs_v10.x.x/flow_>=v0.54.x
 
 declare module "yargs" {
   declare type Argv = {
@@ -164,26 +164,25 @@ declare module "yargs" {
     implies(keys: { [key: string]: string | Array<string> }): this;
 
     locale(
-      locale:
-        | "de"
-        | "en"
-        | "es"
-        | "fr"
-        | "hi"
-        | "hu"
-        | "id"
-        | "it"
-        | "ja"
-        | "ko"
-        | "nb"
-        | "pirate"
-        | "pl"
-        | "pt"
-        | "pt_BR"
-        | "ru"
-        | "th"
-        | "tr"
-        | "zh_CN"
+      locale: | "de"
+      | "en"
+      | "es"
+      | "fr"
+      | "hi"
+      | "hu"
+      | "id"
+      | "it"
+      | "ja"
+      | "ko"
+      | "nb"
+      | "pirate"
+      | "pl"
+      | "pt"
+      | "pt_BR"
+      | "ru"
+      | "th"
+      | "tr"
+      | "zh_CN"
     ): this;
     locale(): string;
 
@@ -252,5 +251,5 @@ declare module "yargs" {
     wrap(columns: number | null): this;
   }
 
-  declare var exports: Yargs;
+  declare module.exports: Yargs;
 }

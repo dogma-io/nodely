@@ -282,14 +282,15 @@ function transformJavascriptFile(
         const result = transform(contents, {
           presets: [
             [
-              'env',
+              '@babel/env',
               {
                 targets: {
                   node: target,
                 },
               },
             ],
-            'react',
+            '@babel/flow',
+            '@babel/react',
           ],
         })
 
