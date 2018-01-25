@@ -24,6 +24,8 @@ The most basic usage is achieved with the following command, replacing the sourc
 nodely -s ./path/to/source -o ./path/to/output
 ```
 
+> NOTE: If you have a `.babelrc.js` or `.babelrc.json` configuration file for Babel, *nodely* will use that instead of it's own built-in configuration. It's built-in configuration supports ES6, Flow types, and React.
+
 ### Options
 
 **Target**
@@ -33,6 +35,8 @@ Nodely outputs code that should work with Node 4 and up, as that is the current 
 ```bash
 nodely -s ./path/to/source -o ./path/to/output -t 8
 ```
+
+> Note: This option will have no effect if you have your own Babel configuration defined, this only applies when you are relying on *nodely*'s built-in configuration.
 
 **Verbose**
 
