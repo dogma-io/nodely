@@ -1,3 +1,7 @@
+## 0.0.23
+
+*   When consumer defines a Babel configuration file, use theirs instead of default.
+
 ## 0.0.22
 
 *   Upgrade to Babel 7 beta.

@@ -101,8 +101,10 @@ function processFiles(state: State, err: ?Error, files: string[]) {
   console.info(`Queuing up ${files.length} files to be processed`)
 
   const actions = files
-    .filter((filePath: string) => !/(__mocks__|__tests__)/.test(filePath))
-    .map((filePath: string) => {
+    .filter((filePath: string): boolean => {
+      return !/(__mocks__|__tests__)/.test(filePath)
+    })
+    .map((filePath: string): Action => {
       return {
         filePath,
         type: TRANSFORM_FILE,
@@ -127,7 +129,9 @@ function processNextAction(state: State): boolean {
   if (
     !isWatching &&
     queue.length === 0 &&
-    workers.every((w: WorkerInfo) => w.idle)
+    workers.every((w: WorkerInfo): boolean => {
+      return w.idle
+    })
   ) {
     process.exit(erred ? FAILURE_EXIT_CODE : SUCCESS_EXIT_CODE)
   }
@@ -202,7 +206,7 @@ function replaceDeadWorkers(state: State) {
     )
 
     // Remove dead worker from worker info list
-    const deadWorkerIndex = workers.findIndex((w: WorkerInfo) => {
+    const deadWorkerIndex = workers.findIndex((w: WorkerInfo): boolean => {
       return w.worker.id === deadWorker.id
     })
     workers.splice(deadWorkerIndex, 1)
@@ -230,7 +234,7 @@ function spawnWorker(state: State) {
  * @param state - current state
  * @param workerCount - number of workers to spawn
  */
-function spawnWorkers(state: State, workerCount: number): void {
+function spawnWorkers(state: State, workerCount: number) {
   if (isNaN(workerCount)) {
     throw new Error(
       `workerCount is expected to be a number not ${typeof workerCount}`,
@@ -252,7 +256,7 @@ function spawnWorkers(state: State, workerCount: number): void {
  * Spin up master process.
  * @param argv - command line arguments
  */
-export default function(argv: Argv) {
+export default function(argv: Argv): State {
   let {source, watch: isWatching, workerCount} = argv
 
   const state = {

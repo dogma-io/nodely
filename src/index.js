@@ -47,7 +47,7 @@ const argv: Argv = (yargs
     default: 0,
     description: 'Number of worker process to spawn.',
     type: 'number',
-  }).argv: any)
+  }).argv: any) // eslint-disable-line
 
 // TODO: verify source directory exists
 

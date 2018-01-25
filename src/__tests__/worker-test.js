@@ -4,6 +4,7 @@ jest.mock('fs', () => {
   return {
     createReadStream: jest.fn(),
     createWriteStream: jest.fn(),
+    readdir: jest.fn(),
     readFile: jest.fn(),
     stat: jest.fn(),
     unlink: jest.fn(),
@@ -17,6 +18,7 @@ import {transform} from 'babel-core'
 import {
   createReadStream,
   createWriteStream,
+  readdir,
   readFile,
   stat,
   unlink,
@@ -42,9 +44,10 @@ const TRANSFORM_OPTIONS = Object.freeze({
   ],
 })
 
-function tests(ctx, description, argv) {
+function configTests(ctx, description, argv, init) {
   describe(description, () => {
     beforeEach(() => {
+      init()
       worker(argv)
     })
 
@@ -1159,6 +1162,42 @@ function tests(ctx, description, argv) {
   })
 }
 
+function tests(ctx, description, argv) {
+  describe(description, () => {
+    configTests(
+      ctx,
+      'when fails to read files to look for Babel config',
+      argv,
+      () => {
+        readdir.mockImplementation((...args) => {
+          args[args.length - 1](new Error('foo bar'))
+        })
+      },
+    )
+
+    configTests(ctx, 'when no Babel config', argv, () => {
+      readdir.mockImplementation((...args) => {
+        args[args.length - 1](null, [])
+      })
+    })
+
+    configTests(ctx, 'when Javascript Babel config', argv, () => {
+      readdir.mockImplementation((...args) => {
+        args[args.length - 1](null, ['.babelrc.js'])
+      })
+    })
+
+    configTests(ctx, 'when JSON Babel config', argv, () => {
+      readdir.mockImplementation((...args) => {
+        args[args.length - 1](null, ['.babelrc.json'])
+      })
+      readFile.mockImplementationOnce((...args) => {
+        args[args.length - 1](null, JSON.stringify(TRANSFORM_OPTIONS))
+      })
+    })
+  })
+}
+
 describe('worker', () => {
   const ctx = {}
 
@@ -1176,6 +1215,7 @@ describe('worker', () => {
     createWriteStream.mockReset()
     mkdirp.mockReset()
     process.send = jest.fn()
+    readdir.mockReset()
 
     Object.assign(ctx, {
       listeners: [],

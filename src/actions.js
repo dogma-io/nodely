@@ -1,6 +1,6 @@
-export const IDLE = 'IDLE'
-export const REMOVE_FILE = 'REMOVE_FILE'
-export const TRANSFORM_FILE = 'TRANSFORM_FILE'
+export const IDLE: 'IDLE' = 'IDLE'
+export const REMOVE_FILE: 'REMOVE_FILE' = 'REMOVE_FILE'
+export const TRANSFORM_FILE: 'TRANSFORM_FILE' = 'TRANSFORM_FILE'
 
 export type IdleAction = {|
   erred: boolean,

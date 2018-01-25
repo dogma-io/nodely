@@ -8,8 +8,10 @@ import {transform} from 'babel-core'
 import {
   createReadStream,
   createWriteStream,
+  readdir,
   readFile,
   stat,
+  type Stats,
   unlink,
   writeFile,
 } from 'fs'
@@ -25,15 +27,20 @@ import {
 } from './actions'
 import type {Argv} from './types'
 
+type Action = {|
+  erred: boolean,
+  type: typeof IDLE,
+|}
+
 type WriteOptions = {|
   encoding?: ?string,
   flag?: string,
   mode?: number,
 |}
 
-function send(...args) {
+function send(action: Action) {
   if (process.send) {
-    process.send(...args)
+    process.send(action)
   } else {
     throw new Error('process.send is not defined')
   }
@@ -47,7 +54,7 @@ function send(...args) {
  */
 function copyFile(filePath: string, outputFilePath: string): Promise<void> {
   return new Promise((resolve: () => void, reject: (err: Error) => void) => {
-    stat(filePath, (err: ?ErrnoError, stats) => {
+    stat(filePath, (err: ?ErrnoError, stats: Stats) => {
       const writeStreamOptions = {}
 
       if (!err) {
@@ -123,6 +130,59 @@ function error(message: string) {
 }
 
 /**
+ * Get Babel configuration for transforming Javascript files
+ * @param target - Node target
+ * @returns Babel configuration
+ */
+function getBabelConfig(
+  target: string,
+  callback: (babelConfig: Object) => void, // eslint-disable-line flowtype/no-weak-types
+) {
+  const cwd = process.cwd()
+
+  readdir(cwd, (err: ?ErrnoError, files: Array<string>) => {
+    if (!err) {
+      const configFile = files.find((fileName: string): boolean => {
+        return /^\.babelrc(\.[a-zA-Z]+)?$/.test(fileName)
+      })
+
+      if (configFile) {
+        const filePath = path.join(cwd, configFile)
+
+        switch (path.extname(configFile)) {
+          case '.js':
+            // $FlowFixMe - Flow doesn't like dynamic require statements
+            callback(require(filePath))
+            return
+
+          case '.json':
+            readFile(filePath, 'utf8', (err2: ?ErrnoError, data: string) => {
+              callback(JSON.parse(data))
+            })
+            return
+        }
+      }
+    }
+
+    // eslint-disable-next-line standard/no-callback-literal
+    callback({
+      presets: [
+        [
+          '@babel/env',
+          {
+            targets: {
+              node: target,
+            },
+          },
+        ],
+        '@babel/flow',
+        '@babel/react',
+      ],
+    })
+  })
+}
+
+/**
  * Get contents of a file.
  * @param filePath - full path of file to get contents of
  * @returns resolves with file contents or rejects with error
@@ -146,16 +206,16 @@ function getFileContents(filePath: string): Promise<string> {
  * @param source - source directory
  * @param output - output directory
  * @param verbose - whether or not to have verbose logging
- * @param target - Node target
+ * @param babelConfig - Babel config
  * @param data - action from master
  */
 function processActionFromMater(
   source: string,
   output: string,
   verbose: boolean,
-  target: string,
+  babelConfig: Object, // eslint-disable-line flowtype/no-weak-types
   data: RemoveFileAction | TransformFileAction,
-) {
+): void {
   if (typeof data !== 'object') {
     return error(
       `Expected message from master to be an object but instead received type ${typeof data}`,
@@ -173,7 +233,7 @@ function processActionFromMater(
       return removeOutputFile(source, output, data.filePath, verbose)
 
     case TRANSFORM_FILE:
-      return transformFile(source, output, data.filePath, verbose, target)
+      return transformFile(source, output, data.filePath, verbose, babelConfig)
 
     default:
       return error(`Master sent message with unknown action type ${data.type}`)
@@ -221,17 +281,17 @@ function removeOutputFile(
  * @param output - output directory
  * @param filePath - full path of file to transform
  * @param verbose - whether or not to have verbose logging
- * @param target - Node target
+ * @param babelConfig - Babel configuration
  */
 function transformFile(
   source: string,
   output: string,
   filePath: string,
   verbose: boolean,
-  target: string,
+  babelConfig: Object, // eslint-disable-line flowtype/no-weak-types
 ) {
   createDirectoryForFile(source, output, filePath)
-    .then((outputFilePath: string) => {
+    .then((outputFilePath: string): ?Promise<void> => {
       const extension = path.extname(filePath)
 
       switch (extension) {
@@ -239,14 +299,16 @@ function transformFile(
           return null
 
         case '.js':
-          return transformJavascriptFile(filePath, outputFilePath, target)
+          return transformJavascriptFile(filePath, outputFilePath, babelConfig)
 
         default:
           return copyFile(filePath, outputFilePath)
       }
     })
-    .then(() => false)
-    .catch((err: Error) => {
+    .then((): boolean => {
+      return false
+    })
+    .catch((err: Error): boolean => {
       console.error(`Failed to process file ${filePath}`)
 
       if (verbose) {
@@ -267,32 +329,19 @@ function transformFile(
  * Transform file.
  * @param filePath - full path of file to transform
  * @param outputFilePath - path to write transformed file to
- * @param target - Node target
+ * @param babelConfig - Babel configuration
  * @returns resolves once file has been written or rejects with error
  */
 function transformJavascriptFile(
   filePath: string,
   outputFilePath: string,
-  target: string,
+  babelConfig: Object, // eslint-disable-line flowtype/no-weak-types
 ): Promise<void> {
-  return getFileContents(filePath).then((contents: string) => {
-    return new Promise((resolve, reject) => {
-      stat(filePath, (err1, stats) => {
+  return getFileContents(filePath).then((contents: string): Promise<void> => {
+    return new Promise((resolve: () => void, reject: (err: Error) => void) => {
+      stat(filePath, (err1: ?ErrnoError, stats: Stats) => {
         const mode = err1 ? null : stats.mode
-        const result = transform(contents, {
-          presets: [
-            [
-              '@babel/env',
-              {
-                targets: {
-                  node: target,
-                },
-              },
-            ],
-            '@babel/flow',
-            '@babel/react',
-          ],
-        })
+        const result = transform(contents, babelConfig)
 
         writeDataToFile(outputFilePath, result.code, mode)
           .then(() => {
@@ -354,8 +403,11 @@ export default function(argv: Argv) {
     output = output.substr(0, output.length - 1)
   }
 
-  process.on(
-    'message',
-    processActionFromMater.bind(null, source, output, verbose, target),
-  )
+  // eslint-disable-next-line flowtype/no-weak-types
+  getBabelConfig(target, (babelConfig: Object) => {
+    process.on(
+      'message',
+      processActionFromMater.bind(null, source, output, verbose, babelConfig),
+    )
+  })
 }
