@@ -341,7 +341,10 @@ function transformJavascriptFile(
     return new Promise((resolve: () => void, reject: (err: Error) => void) => {
       stat(filePath, (err1: ?ErrnoError, stats: Stats) => {
         const mode = err1 ? null : stats.mode
-        const result = transform(contents, babelConfig)
+        const result = transform(
+          contents,
+          Object.assign({filename: filePath}, babelConfig),
+        )
 
         writeDataToFile(outputFilePath, result.code, mode)
           .then(() => {

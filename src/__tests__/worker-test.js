@@ -328,7 +328,10 @@ function configTests(ctx, description, argv, init) {
                   expect(transform).toHaveBeenCalledTimes(1)
                   expect(transform).toHaveBeenCalledWith(
                     contents,
-                    TRANSFORM_OPTIONS,
+                    Object.assign(
+                      {filename: '/foo/alpha/bravo.js'},
+                      TRANSFORM_OPTIONS,
+                    ),
                   )
                   expect(console.error).toHaveBeenCalledTimes(
                     argv.verbose ? 2 : 1,
@@ -387,7 +390,10 @@ function configTests(ctx, description, argv, init) {
                     expect(transform).toHaveBeenCalledTimes(1)
                     expect(transform).toHaveBeenCalledWith(
                       contents,
-                      TRANSFORM_OPTIONS,
+                      Object.assign(
+                        {filename: '/foo/alpha/bravo.js'},
+                        TRANSFORM_OPTIONS,
+                      ),
                     )
                     expect(console.error).toHaveBeenCalledTimes(
                       argv.verbose ? 2 : 1,
@@ -444,7 +450,10 @@ function configTests(ctx, description, argv, init) {
                     expect(transform).toHaveBeenCalledTimes(1)
                     expect(transform).toHaveBeenCalledWith(
                       contents,
-                      TRANSFORM_OPTIONS,
+                      Object.assign(
+                        {filename: '/foo/alpha/bravo.js'},
+                        TRANSFORM_OPTIONS,
+                      ),
                     )
                     expect(console.error).toHaveBeenCalledTimes(0)
                     expect(writeFile).toHaveBeenCalledTimes(1)
@@ -500,7 +509,10 @@ function configTests(ctx, description, argv, init) {
                   expect(transform).toHaveBeenCalledTimes(1)
                   expect(transform).toHaveBeenCalledWith(
                     contents,
-                    TRANSFORM_OPTIONS,
+                    Object.assign(
+                      {filename: '/foo/alpha/bravo.js'},
+                      TRANSFORM_OPTIONS,
+                    ),
                   )
                   expect(console.error).toHaveBeenCalledTimes(
                     argv.verbose ? 2 : 1,
@@ -559,7 +571,10 @@ function configTests(ctx, description, argv, init) {
                     expect(transform).toHaveBeenCalledTimes(1)
                     expect(transform).toHaveBeenCalledWith(
                       contents,
-                      TRANSFORM_OPTIONS,
+                      Object.assign(
+                        {filename: '/foo/alpha/bravo.js'},
+                        TRANSFORM_OPTIONS,
+                      ),
                     )
                     expect(console.error).toHaveBeenCalledTimes(
                       argv.verbose ? 2 : 1,
@@ -616,7 +631,10 @@ function configTests(ctx, description, argv, init) {
                     expect(transform).toHaveBeenCalledTimes(1)
                     expect(transform).toHaveBeenCalledWith(
                       contents,
-                      TRANSFORM_OPTIONS,
+                      Object.assign(
+                        {filename: '/foo/alpha/bravo.js'},
+                        TRANSFORM_OPTIONS,
+                      ),
                     )
                     expect(console.error).toHaveBeenCalledTimes(0)
                     expect(writeFile).toHaveBeenCalledTimes(1)

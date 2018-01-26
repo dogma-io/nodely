@@ -1,3 +1,7 @@
+## 0.0.24
+
+*   Include filename in babel transform config so plugins get filenames.
+
 ## 0.0.23
 
 *   When consumer defines a Babel configuration file, use theirs instead of default.
