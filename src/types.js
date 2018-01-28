@@ -3,6 +3,7 @@
  */
 
 export type Argv = {|
+  include: ?string,
   output: string,
   source: string,
   target: string,

@@ -1,3 +1,7 @@
+## 0.0.25
+
+*   Added `include` CLI argument to limit which files are transformed/copied.
+
 ## 0.0.24
 
 *   Include filename in babel transform config so plugins get filenames.

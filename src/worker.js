@@ -203,6 +203,7 @@ function getFileContents(filePath: string): Promise<string> {
 
 /**
  * Process actions from master.
+ * @param includeRegex - included files regex
  * @param source - source directory
  * @param output - output directory
  * @param verbose - whether or not to have verbose logging
@@ -210,6 +211,7 @@ function getFileContents(filePath: string): Promise<string> {
  * @param data - action from master
  */
 function processActionFromMater(
+  includeRegex: ?RegExp,
   source: string,
   output: string,
   verbose: boolean,
@@ -233,7 +235,14 @@ function processActionFromMater(
       return removeOutputFile(source, output, data.filePath, verbose)
 
     case TRANSFORM_FILE:
-      return transformFile(source, output, data.filePath, verbose, babelConfig)
+      return transformFile(
+        includeRegex,
+        source,
+        output,
+        data.filePath,
+        verbose,
+        babelConfig,
+      )
 
     default:
       return error(`Master sent message with unknown action type ${data.type}`)
@@ -277,6 +286,7 @@ function removeOutputFile(
 
 /**
  * Transform file.
+ * @param include - included files regex
  * @param source - source directory
  * @param output - output directory
  * @param filePath - full path of file to transform
@@ -284,19 +294,28 @@ function removeOutputFile(
  * @param babelConfig - Babel configuration
  */
 function transformFile(
+  includeRegex: ?RegExp,
   source: string,
   output: string,
   filePath: string,
   verbose: boolean,
   babelConfig: Object, // eslint-disable-line flowtype/no-weak-types
 ) {
+  const extension = path.extname(filePath)
+
+  if (includeRegex && !includeRegex.test(filePath)) {
+    send({
+      erred: false,
+      type: IDLE,
+    })
+    return
+  }
+
   createDirectoryForFile(source, output, filePath)
     .then((outputFilePath: string): ?Promise<void> => {
-      const extension = path.extname(filePath)
-
       switch (extension) {
         case '': // Ignoring empty directories
-          return null
+          return
 
         case '.js':
           return transformJavascriptFile(filePath, outputFilePath, babelConfig)
@@ -394,7 +413,17 @@ function writeDataToFile(
  * @param argv - command line arguments
  */
 export default function(argv: Argv) {
-  let {output, source, target, verbose} = argv
+  let {include, output, source, target, verbose} = argv
+
+  let includeRegex
+
+  if (include) {
+    try {
+      includeRegex = new RegExp(include)
+    } catch (err) {
+      throw new Error('Include option is an invalid regex.')
+    }
+  }
 
   // Make sure source does not have a trailing separator
   if (source[source.length - 1] === path.sep) {
@@ -410,7 +439,14 @@ export default function(argv: Argv) {
   getBabelConfig(target, (babelConfig: Object) => {
     process.on(
       'message',
-      processActionFromMater.bind(null, source, output, verbose, babelConfig),
+      processActionFromMater.bind(
+        null,
+        includeRegex,
+        source,
+        output,
+        verbose,
+        babelConfig,
+      ),
     )
   })
 }

@@ -4,6 +4,7 @@ function missingArgumentsTest(message) {
   expect(console.error).toHaveBeenCalledWith(`Options:
   --help             Show help                                         [boolean]
   --version          Show version number                               [boolean]
+  --include, -i      Only include files matching this regex.            [string]
   --output, -o       Directory where transformed code should be output.
                                                              [string] [required]
   --source, -s       Directory containing source code to transform.

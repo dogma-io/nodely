@@ -11,6 +11,11 @@ import type {Argv} from './types'
 import worker from './worker'
 
 const argv: Argv = (yargs
+  .option('include', {
+    alias: 'i',
+    description: 'Only include files matching this regex.',
+    type: 'string',
+  })
   .option('output', {
     alias: 'o',
     demandOption: true,
