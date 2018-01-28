@@ -28,6 +28,16 @@ nodely -s ./path/to/source -o ./path/to/output
 
 ### Options
 
+**Include**
+
+By default Nodely will copy/transform all files from the source directory into the output directory. However if you want to limit which files are copied/transformed you can provide a regular expression to match included files against.
+
+```bash
+nodely -s ./path/to/source -o ./path/to/output -i "\.js$"
+```
+
+> Note: In the above example only Javascript files will be transformed into the output directory.
+
 **Target**
 
 Nodely outputs code that should work with Node 4 and up, as that is the current Node version in maintenance LTS. If you'd like to target a different minimum Node version you can set the target like so:
