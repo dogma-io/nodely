@@ -1,3 +1,7 @@
+## 0.0.26
+
+*   Upgrade dependencies to latest versions.
+
 ## 0.0.25
 
 *   Added `include` CLI argument to limit which files are transformed/copied.
