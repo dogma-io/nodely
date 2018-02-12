@@ -1,3 +1,8 @@
+## 0.0.27
+
+*   Upgrade dependencies to latest versions.
+*   Fix issues with tests (were silently failing on previous version of Jest).
+
 ## 0.0.26
 
 *   Upgrade dependencies to latest versions.

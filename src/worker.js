@@ -286,7 +286,7 @@ function removeOutputFile(
 
 /**
  * Transform file.
- * @param include - included files regex
+ * @param includeRegex - included files regex
  * @param source - source directory
  * @param output - output directory
  * @param filePath - full path of file to transform

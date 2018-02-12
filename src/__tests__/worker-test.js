@@ -1,17 +1,5 @@
 jest.mock('babel-core')
-
-jest.mock('fs', () => {
-  return {
-    createReadStream: jest.fn(),
-    createWriteStream: jest.fn(),
-    readdir: jest.fn(),
-    readFile: jest.fn(),
-    stat: jest.fn(),
-    unlink: jest.fn(),
-    writeFile: jest.fn(),
-  }
-})
-
+jest.mock('fs')
 jest.mock('mkdirp')
 
 import {transform} from 'babel-core'
@@ -232,7 +220,7 @@ function configTests(ctx, description, argv, init) {
           })
 
           describe('when file is a Javascript file', () => {
-            it('functions as expected when it fails to read source file', () => {
+            it('functions as expected when it fails to read source file', done => {
               const error = new Error('foo bar')
 
               readFile.mockImplementation((...args) => {
@@ -253,7 +241,6 @@ function configTests(ctx, description, argv, init) {
                   '/bar/alpha',
                   expect.any(Function),
                 )
-                expect(readFile).toHaveBeenCalledTimes(1)
                 expect(readFile).toHaveBeenCalledWith(
                   '/foo/alpha/bravo.js',
                   'utf8',
@@ -269,7 +256,9 @@ function configTests(ctx, description, argv, init) {
 
                 if (argv.verbose) {
                   expect(console.error).toHaveBeenCalledWith(
-                    'Failed to get contents of file /foo/alpha/bravo.js',
+                    new Error(
+                      'Failed to get contents of file /foo/alpha/bravo.js',
+                    ),
                   )
                 }
 
@@ -278,6 +267,8 @@ function configTests(ctx, description, argv, init) {
                   erred: true,
                   type: IDLE,
                 })
+
+                done()
               }, 1)
             })
 
@@ -285,7 +276,7 @@ function configTests(ctx, description, argv, init) {
               let contents
 
               beforeEach(() => {
-                const contents = 'blah blah blah'
+                contents = 'blah blah blah'
 
                 readFile.mockImplementation((...args) => {
                   const callback = args[args.length - 1]
@@ -302,7 +293,7 @@ function configTests(ctx, description, argv, init) {
                   })
                 })
 
-                it('functions as expected when it fails to transform file contents', () => {
+                it('functions as expected when it fails to transform file contents', done => {
                   const error = new Error('foo bar')
 
                   transform.mockImplementation(() => {
@@ -322,7 +313,6 @@ function configTests(ctx, description, argv, init) {
                       '/bar/alpha',
                       expect.any(Function),
                     )
-                    expect(readFile).toHaveBeenCalledTimes(1)
                     expect(readFile).toHaveBeenCalledWith(
                       '/foo/alpha/bravo.js',
                       'utf8',
@@ -353,6 +343,8 @@ function configTests(ctx, description, argv, init) {
                       erred: true,
                       type: IDLE,
                     })
+
+                    done()
                   }, 1)
                 })
 
@@ -363,7 +355,7 @@ function configTests(ctx, description, argv, init) {
                     })
                   })
 
-                  it('functions as expected when it fails to write transformed contents to file', () => {
+                  it('functions as expected when it fails to write transformed contents to file', done => {
                     const error = new Error('foo bar')
 
                     writeFile.mockImplementation((...args) => {
@@ -384,7 +376,6 @@ function configTests(ctx, description, argv, init) {
                         '/bar/alpha',
                         expect.any(Function),
                       )
-                      expect(readFile).toHaveBeenCalledTimes(1)
                       expect(readFile).toHaveBeenCalledWith(
                         '/foo/alpha/bravo.js',
                         'utf8',
@@ -407,13 +398,14 @@ function configTests(ctx, description, argv, init) {
 
                       if (argv.verbose) {
                         expect(console.error).toHaveBeenCalledWith(
-                          'Failed to write file /foo/alpha/bravo.js',
+                          new Error('Failed to write file /bar/alpha/bravo.js'),
                         )
                       }
 
                       expect(writeFile).toHaveBeenCalledTimes(1)
                       expect(writeFile).toHaveBeenCalledWith(
                         '/bar/alpha/bravo.js',
+                        contents,
                         {encoding: 'utf8'},
                         expect.any(Function),
                       )
@@ -422,10 +414,12 @@ function configTests(ctx, description, argv, init) {
                         erred: true,
                         type: IDLE,
                       })
+
+                      done()
                     }, 1)
                   })
 
-                  it('functions as expected when it successfully writes transformed contents to file', () => {
+                  it('functions as expected when it successfully writes transformed contents to file', done => {
                     writeFile.mockImplementation((...args) => {
                       const callback = args[args.length - 1]
                       callback(null)
@@ -444,7 +438,6 @@ function configTests(ctx, description, argv, init) {
                         '/bar/alpha',
                         expect.any(Function),
                       )
-                      expect(readFile).toHaveBeenCalledTimes(1)
                       expect(readFile).toHaveBeenCalledWith(
                         '/foo/alpha/bravo.js',
                         'utf8',
@@ -462,6 +455,7 @@ function configTests(ctx, description, argv, init) {
                       expect(writeFile).toHaveBeenCalledTimes(1)
                       expect(writeFile).toHaveBeenCalledWith(
                         '/bar/alpha/bravo.js',
+                        contents,
                         {encoding: 'utf8'},
                         expect.any(Function),
                       )
@@ -470,6 +464,8 @@ function configTests(ctx, description, argv, init) {
                         erred: false,
                         type: IDLE,
                       })
+
+                      done()
                     }, 1)
                   })
                 })
@@ -483,7 +479,7 @@ function configTests(ctx, description, argv, init) {
                   })
                 })
 
-                it('functions as expected when it fails to transform file contents', () => {
+                it('functions as expected when it fails to transform file contents', done => {
                   const error = new Error('foo bar')
 
                   transform.mockImplementation(() => {
@@ -503,7 +499,6 @@ function configTests(ctx, description, argv, init) {
                       '/bar/alpha',
                       expect.any(Function),
                     )
-                    expect(readFile).toHaveBeenCalledTimes(1)
                     expect(readFile).toHaveBeenCalledWith(
                       '/foo/alpha/bravo.js',
                       'utf8',
@@ -534,6 +529,8 @@ function configTests(ctx, description, argv, init) {
                       erred: true,
                       type: IDLE,
                     })
+
+                    done()
                   }, 1)
                 })
 
@@ -544,7 +541,7 @@ function configTests(ctx, description, argv, init) {
                     })
                   })
 
-                  it('functions as expected when it fails to write transformed contents to file', () => {
+                  it('functions as expected when it fails to write transformed contents to file', done => {
                     const error = new Error('foo bar')
 
                     writeFile.mockImplementation((...args) => {
@@ -565,7 +562,6 @@ function configTests(ctx, description, argv, init) {
                         '/bar/alpha',
                         expect.any(Function),
                       )
-                      expect(readFile).toHaveBeenCalledTimes(1)
                       expect(readFile).toHaveBeenCalledWith(
                         '/foo/alpha/bravo.js',
                         'utf8',
@@ -588,13 +584,14 @@ function configTests(ctx, description, argv, init) {
 
                       if (argv.verbose) {
                         expect(console.error).toHaveBeenCalledWith(
-                          'Failed to write file /foo/alpha/bravo.js',
+                          new Error('Failed to write file /bar/alpha/bravo.js'),
                         )
                       }
 
                       expect(writeFile).toHaveBeenCalledTimes(1)
                       expect(writeFile).toHaveBeenCalledWith(
                         '/bar/alpha/bravo.js',
+                        contents,
                         {encoding: 'utf8', mode: 0o666},
                         expect.any(Function),
                       )
@@ -603,10 +600,12 @@ function configTests(ctx, description, argv, init) {
                         erred: true,
                         type: IDLE,
                       })
+
+                      done()
                     }, 1)
                   })
 
-                  it('functions as expected when it successfully writes transformed contents to file', () => {
+                  it('functions as expected when it successfully writes transformed contents to file', done => {
                     writeFile.mockImplementation((...args) => {
                       const callback = args[args.length - 1]
                       callback(null)
@@ -625,7 +624,6 @@ function configTests(ctx, description, argv, init) {
                         '/bar/alpha',
                         expect.any(Function),
                       )
-                      expect(readFile).toHaveBeenCalledTimes(1)
                       expect(readFile).toHaveBeenCalledWith(
                         '/foo/alpha/bravo.js',
                         'utf8',
@@ -643,6 +641,7 @@ function configTests(ctx, description, argv, init) {
                       expect(writeFile).toHaveBeenCalledTimes(1)
                       expect(writeFile).toHaveBeenCalledWith(
                         '/bar/alpha/bravo.js',
+                        contents,
                         {encoding: 'utf8', mode: 0o666},
                         expect.any(Function),
                       )
@@ -651,6 +650,8 @@ function configTests(ctx, description, argv, init) {
                         erred: false,
                         type: IDLE,
                       })
+
+                      done()
                     }, 1)
                   })
                 })
@@ -1229,7 +1230,7 @@ function configTests(ctx, description, argv, init) {
           })
 
           describe('when file is a Javascript file', () => {
-            it('functions as expected when it fails to read source file', () => {
+            it('functions as expected when it fails to read source file', done => {
               const error = new Error('foo bar')
 
               readFile.mockImplementation((...args) => {
@@ -1250,7 +1251,6 @@ function configTests(ctx, description, argv, init) {
                   '/bar/alpha',
                   expect.any(Function),
                 )
-                expect(readFile).toHaveBeenCalledTimes(1)
                 expect(readFile).toHaveBeenCalledWith(
                   '/foo/alpha/bravo.js',
                   'utf8',
@@ -1266,7 +1266,9 @@ function configTests(ctx, description, argv, init) {
 
                 if (argv.verbose) {
                   expect(console.error).toHaveBeenCalledWith(
-                    'Failed to get contents of file /foo/alpha/bravo.js',
+                    new Error(
+                      'Failed to get contents of file /foo/alpha/bravo.js',
+                    ),
                   )
                 }
 
@@ -1275,6 +1277,8 @@ function configTests(ctx, description, argv, init) {
                   erred: true,
                   type: IDLE,
                 })
+
+                done()
               }, 1)
             })
 
@@ -1282,7 +1286,7 @@ function configTests(ctx, description, argv, init) {
               let contents
 
               beforeEach(() => {
-                const contents = 'blah blah blah'
+                contents = 'blah blah blah'
 
                 readFile.mockImplementation((...args) => {
                   const callback = args[args.length - 1]
@@ -1299,7 +1303,7 @@ function configTests(ctx, description, argv, init) {
                   })
                 })
 
-                it('functions as expected when it fails to transform file contents', () => {
+                it('functions as expected when it fails to transform file contents', done => {
                   const error = new Error('foo bar')
 
                   transform.mockImplementation(() => {
@@ -1319,7 +1323,6 @@ function configTests(ctx, description, argv, init) {
                       '/bar/alpha',
                       expect.any(Function),
                     )
-                    expect(readFile).toHaveBeenCalledTimes(1)
                     expect(readFile).toHaveBeenCalledWith(
                       '/foo/alpha/bravo.js',
                       'utf8',
@@ -1350,6 +1353,8 @@ function configTests(ctx, description, argv, init) {
                       erred: true,
                       type: IDLE,
                     })
+
+                    done()
                   }, 1)
                 })
 
@@ -1360,7 +1365,7 @@ function configTests(ctx, description, argv, init) {
                     })
                   })
 
-                  it('functions as expected when it fails to write transformed contents to file', () => {
+                  it('functions as expected when it fails to write transformed contents to file', done => {
                     const error = new Error('foo bar')
 
                     writeFile.mockImplementation((...args) => {
@@ -1381,7 +1386,6 @@ function configTests(ctx, description, argv, init) {
                         '/bar/alpha',
                         expect.any(Function),
                       )
-                      expect(readFile).toHaveBeenCalledTimes(1)
                       expect(readFile).toHaveBeenCalledWith(
                         '/foo/alpha/bravo.js',
                         'utf8',
@@ -1404,13 +1408,14 @@ function configTests(ctx, description, argv, init) {
 
                       if (argv.verbose) {
                         expect(console.error).toHaveBeenCalledWith(
-                          'Failed to write file /foo/alpha/bravo.js',
+                          new Error('Failed to write file /bar/alpha/bravo.js'),
                         )
                       }
 
                       expect(writeFile).toHaveBeenCalledTimes(1)
                       expect(writeFile).toHaveBeenCalledWith(
                         '/bar/alpha/bravo.js',
+                        contents,
                         {encoding: 'utf8'},
                         expect.any(Function),
                       )
@@ -1419,10 +1424,12 @@ function configTests(ctx, description, argv, init) {
                         erred: true,
                         type: IDLE,
                       })
+
+                      done()
                     }, 1)
                   })
 
-                  it('functions as expected when it successfully writes transformed contents to file', () => {
+                  it('functions as expected when it successfully writes transformed contents to file', done => {
                     writeFile.mockImplementation((...args) => {
                       const callback = args[args.length - 1]
                       callback(null)
@@ -1441,7 +1448,6 @@ function configTests(ctx, description, argv, init) {
                         '/bar/alpha',
                         expect.any(Function),
                       )
-                      expect(readFile).toHaveBeenCalledTimes(1)
                       expect(readFile).toHaveBeenCalledWith(
                         '/foo/alpha/bravo.js',
                         'utf8',
@@ -1459,6 +1465,7 @@ function configTests(ctx, description, argv, init) {
                       expect(writeFile).toHaveBeenCalledTimes(1)
                       expect(writeFile).toHaveBeenCalledWith(
                         '/bar/alpha/bravo.js',
+                        contents,
                         {encoding: 'utf8'},
                         expect.any(Function),
                       )
@@ -1467,6 +1474,8 @@ function configTests(ctx, description, argv, init) {
                         erred: false,
                         type: IDLE,
                       })
+
+                      done()
                     }, 1)
                   })
                 })
@@ -1480,7 +1489,7 @@ function configTests(ctx, description, argv, init) {
                   })
                 })
 
-                it('functions as expected when it fails to transform file contents', () => {
+                it('functions as expected when it fails to transform file contents', done => {
                   const error = new Error('foo bar')
 
                   transform.mockImplementation(() => {
@@ -1500,7 +1509,6 @@ function configTests(ctx, description, argv, init) {
                       '/bar/alpha',
                       expect.any(Function),
                     )
-                    expect(readFile).toHaveBeenCalledTimes(1)
                     expect(readFile).toHaveBeenCalledWith(
                       '/foo/alpha/bravo.js',
                       'utf8',
@@ -1531,6 +1539,8 @@ function configTests(ctx, description, argv, init) {
                       erred: true,
                       type: IDLE,
                     })
+
+                    done()
                   }, 1)
                 })
 
@@ -1541,7 +1551,7 @@ function configTests(ctx, description, argv, init) {
                     })
                   })
 
-                  it('functions as expected when it fails to write transformed contents to file', () => {
+                  it('functions as expected when it fails to write transformed contents to file', done => {
                     const error = new Error('foo bar')
 
                     writeFile.mockImplementation((...args) => {
@@ -1562,7 +1572,6 @@ function configTests(ctx, description, argv, init) {
                         '/bar/alpha',
                         expect.any(Function),
                       )
-                      expect(readFile).toHaveBeenCalledTimes(1)
                       expect(readFile).toHaveBeenCalledWith(
                         '/foo/alpha/bravo.js',
                         'utf8',
@@ -1585,13 +1594,14 @@ function configTests(ctx, description, argv, init) {
 
                       if (argv.verbose) {
                         expect(console.error).toHaveBeenCalledWith(
-                          'Failed to write file /foo/alpha/bravo.js',
+                          new Error('Failed to write file /bar/alpha/bravo.js'),
                         )
                       }
 
                       expect(writeFile).toHaveBeenCalledTimes(1)
                       expect(writeFile).toHaveBeenCalledWith(
                         '/bar/alpha/bravo.js',
+                        contents,
                         {encoding: 'utf8', mode: 0o666},
                         expect.any(Function),
                       )
@@ -1600,10 +1610,12 @@ function configTests(ctx, description, argv, init) {
                         erred: true,
                         type: IDLE,
                       })
+
+                      done()
                     }, 1)
                   })
 
-                  it('functions as expected when it successfully writes transformed contents to file', () => {
+                  it('functions as expected when it successfully writes transformed contents to file', done => {
                     writeFile.mockImplementation((...args) => {
                       const callback = args[args.length - 1]
                       callback(null)
@@ -1622,7 +1634,6 @@ function configTests(ctx, description, argv, init) {
                         '/bar/alpha',
                         expect.any(Function),
                       )
-                      expect(readFile).toHaveBeenCalledTimes(1)
                       expect(readFile).toHaveBeenCalledWith(
                         '/foo/alpha/bravo.js',
                         'utf8',
@@ -1640,6 +1651,7 @@ function configTests(ctx, description, argv, init) {
                       expect(writeFile).toHaveBeenCalledTimes(1)
                       expect(writeFile).toHaveBeenCalledWith(
                         '/bar/alpha/bravo.js',
+                        contents,
                         {encoding: 'utf8', mode: 0o666},
                         expect.any(Function),
                       )
@@ -1648,6 +1660,8 @@ function configTests(ctx, description, argv, init) {
                         erred: false,
                         type: IDLE,
                       })
+
+                      done()
                     }, 1)
                   })
                 })
@@ -2233,8 +2247,14 @@ describe('worker', () => {
     createReadStream.mockReset()
     createWriteStream.mockReset()
     mkdirp.mockReset()
-    process.send = jest.fn()
     readdir.mockReset()
+    readFile.mockReset()
+    stat.mockReset()
+    transform.mockReset()
+    unlink.mockReset()
+    writeFile.mockReset()
+
+    process.send = jest.fn()
 
     Object.assign(ctx, {
       listeners: [],
@@ -2257,24 +2277,28 @@ describe('worker', () => {
     tests(ctx, 'when output and source has trailing separator', {
       source: '/foo/',
       output: '/bar/',
+      target: '4',
       verbose: true,
     })
 
     tests(ctx, 'when output has trailing separator', {
       source: '/foo',
       output: '/bar/',
+      target: '4',
       verbose: true,
     })
 
     tests(ctx, 'when source has trailing separator', {
       source: '/foo/',
       output: '/bar',
+      target: '4',
       verbose: true,
     })
 
     tests(ctx, 'when neither output nor source has trailing separator', {
       source: '/foo',
       output: '/bar',
+      target: '4',
       verbose: true,
     })
   })
@@ -2283,24 +2307,28 @@ describe('worker', () => {
     tests(ctx, 'when output and source has trailing separator', {
       source: '/foo/',
       output: '/bar/',
+      target: '4',
       verbose: false,
     })
 
     tests(ctx, 'when output has trailing separator', {
       source: '/foo',
       output: '/bar/',
+      target: '4',
       verbose: false,
     })
 
     tests(ctx, 'when source has trailing separator', {
       source: '/foo/',
       output: '/bar',
+      target: '4',
       verbose: false,
     })
 
     tests(ctx, 'when neither output nor source has trailing separator', {
       source: '/foo',
       output: '/bar',
+      target: '4',
       verbose: false,
     })
   })
