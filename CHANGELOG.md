@@ -1,3 +1,7 @@
+## 0.0.28
+
+*   Upgrade to latest Babel 7 alpha dependencies.
+
 ## 0.0.27
 
 *   Upgrade dependencies to latest versions.

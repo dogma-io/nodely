@@ -15,7 +15,7 @@ import type {Argv} from './types'
 
 type Action = {|
   filePath: string,
-  type: REMOVE_FILE | TRANSFORM_FILE,
+  type: typeof REMOVE_FILE | typeof TRANSFORM_FILE,
 |}
 
 type WorkerInfo = {|
