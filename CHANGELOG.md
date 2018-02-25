@@ -1,3 +1,7 @@
+## 0.0.29
+
+*   Upgrade to latest version of `flow-bin`.
+
 ## 0.0.28
 
 *   Upgrade to latest Babel 7 alpha dependencies.
