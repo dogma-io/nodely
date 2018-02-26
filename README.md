@@ -2,6 +2,13 @@
 
 Write Node code using whatever syntax you want.
 
+## Table of Contents
+
+*   [Installation](#installation)
+*   [Documentation](#documentation)
+*   [Contributing](#contributing)
+*   [License](#license)
+
 ## Installation
 
 **npm**
@@ -16,7 +23,7 @@ npm install nodely
 yarn add nodely
 ```
 
-## Usage
+## Documentation
 
 The most basic usage is achieved with the following command, replacing the source path with the path to your source code to transform and the output path with the path to where you want the transformed code to be written.
 
@@ -71,6 +78,14 @@ By default the server will spawn a worker process for all but one CPU, reserving
 ```bash
 nodely -s ./path/to/source -o ./path/to/output -n 3 # This will spawn 3 workers
 ```
+
+## Contributing
+
+Please see the [contributing guide](CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE.md)
 
 [cov-img]: https://img.shields.io/codecov/c/github/dogma-io/nodely.svg "Code Coverage"
 [cov-url]: https://codecov.io/gh/dogma-io/nodely
