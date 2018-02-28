@@ -1,8 +1,8 @@
-jest.mock('babel-core')
+jest.mock('@babel/core')
 jest.mock('fs')
 jest.mock('mkdirp')
 
-import {transform} from 'babel-core'
+import {transform} from '@babel/core'
 import {
   createReadStream,
   createWriteStream,
@@ -23,7 +23,7 @@ const TRANSFORM_OPTIONS = Object.freeze({
       '@babel/env',
       {
         targets: {
-          node: '4', // In maintenance LTS
+          node: '6', // LTS
         },
       },
     ],
@@ -37,21 +37,12 @@ function configTests(ctx, description, argv, init) {
     describe('when include argument not set', () => {
       beforeEach(() => {
         init()
-        worker(argv)
+        worker(argv, process.on, process.send)
       })
 
       it('functions as expected', () => {
         expect(process.on).toHaveBeenCalledTimes(1)
         expect(process.on).toHaveBeenCalledWith('message', expect.any(Function))
-      })
-
-      it('functions as expected when process.send is not defined', () => {
-        process.send = undefined
-        expect(ctx.listeners.message).toHaveLength(1)
-
-        expect(() => {
-          ctx.listeners.message[0]('test')
-        }).toThrowError('process.send is not defined')
       })
 
       it('functions as expected when master sends non-object message', () => {
@@ -296,8 +287,8 @@ function configTests(ctx, description, argv, init) {
                 it('functions as expected when it fails to transform file contents', done => {
                   const error = new Error('foo bar')
 
-                  transform.mockImplementation(() => {
-                    throw error
+                  transform.mockImplementation((code, options, cb) => {
+                    cb(error)
                   })
 
                   expect(ctx.listeners.message).toHaveLength(1)
@@ -325,6 +316,7 @@ function configTests(ctx, description, argv, init) {
                         {filename: '/foo/alpha/bravo.js'},
                         TRANSFORM_OPTIONS,
                       ),
+                      expect.any(Function),
                     )
                     expect(console.error).toHaveBeenCalledTimes(
                       argv.verbose ? 2 : 1,
@@ -350,8 +342,8 @@ function configTests(ctx, description, argv, init) {
 
                 describe('when it succssfully transforms file contents', () => {
                   beforeEach(() => {
-                    transform.mockImplementation(code => {
-                      return {code}
+                    transform.mockImplementation((code, options, cb) => {
+                      cb(null, {code})
                     })
                   })
 
@@ -388,6 +380,7 @@ function configTests(ctx, description, argv, init) {
                           {filename: '/foo/alpha/bravo.js'},
                           TRANSFORM_OPTIONS,
                         ),
+                        expect.any(Function),
                       )
                       expect(console.error).toHaveBeenCalledTimes(
                         argv.verbose ? 2 : 1,
@@ -450,6 +443,7 @@ function configTests(ctx, description, argv, init) {
                           {filename: '/foo/alpha/bravo.js'},
                           TRANSFORM_OPTIONS,
                         ),
+                        expect.any(Function),
                       )
                       expect(console.error).toHaveBeenCalledTimes(0)
                       expect(writeFile).toHaveBeenCalledTimes(1)
@@ -482,8 +476,8 @@ function configTests(ctx, description, argv, init) {
                 it('functions as expected when it fails to transform file contents', done => {
                   const error = new Error('foo bar')
 
-                  transform.mockImplementation(() => {
-                    throw error
+                  transform.mockImplementation((code, options, cb) => {
+                    cb(error)
                   })
 
                   expect(ctx.listeners.message).toHaveLength(1)
@@ -511,6 +505,7 @@ function configTests(ctx, description, argv, init) {
                         {filename: '/foo/alpha/bravo.js'},
                         TRANSFORM_OPTIONS,
                       ),
+                      expect.any(Function),
                     )
                     expect(console.error).toHaveBeenCalledTimes(
                       argv.verbose ? 2 : 1,
@@ -536,8 +531,8 @@ function configTests(ctx, description, argv, init) {
 
                 describe('when it succssfully transforms file contents', () => {
                   beforeEach(() => {
-                    transform.mockImplementation(code => {
-                      return {code}
+                    transform.mockImplementation((code, options, cb) => {
+                      cb(null, {code})
                     })
                   })
 
@@ -574,6 +569,7 @@ function configTests(ctx, description, argv, init) {
                           {filename: '/foo/alpha/bravo.js'},
                           TRANSFORM_OPTIONS,
                         ),
+                        expect.any(Function),
                       )
                       expect(console.error).toHaveBeenCalledTimes(
                         argv.verbose ? 2 : 1,
@@ -636,6 +632,7 @@ function configTests(ctx, description, argv, init) {
                           {filename: '/foo/alpha/bravo.js'},
                           TRANSFORM_OPTIONS,
                         ),
+                        expect.any(Function),
                       )
                       expect(console.error).toHaveBeenCalledTimes(0)
                       expect(writeFile).toHaveBeenCalledTimes(1)
@@ -1186,7 +1183,7 @@ function configTests(ctx, description, argv, init) {
     it('should function as expected when include argument is invalid regex', () => {
       init()
       expect(() => {
-        worker(Object.assign({include: '('}, argv))
+        worker(Object.assign({include: '('}, argv), process.on, process.send)
       }).toThrow('Include option is an invalid regex.')
     })
 
@@ -1194,7 +1191,7 @@ function configTests(ctx, description, argv, init) {
       beforeEach(() => {
         init()
         // eslint-disable-next-line
-        worker(Object.assign({include: '\.js(on)?$'}, argv))
+        worker(Object.assign({include: '\.js(on)?$'}, argv), process.on, process.send)
       })
 
       describe('when master sends message to transform file', () => {
@@ -1306,8 +1303,8 @@ function configTests(ctx, description, argv, init) {
                 it('functions as expected when it fails to transform file contents', done => {
                   const error = new Error('foo bar')
 
-                  transform.mockImplementation(() => {
-                    throw error
+                  transform.mockImplementation((code, options, cb) => {
+                    cb(error)
                   })
 
                   expect(ctx.listeners.message).toHaveLength(1)
@@ -1335,6 +1332,7 @@ function configTests(ctx, description, argv, init) {
                         {filename: '/foo/alpha/bravo.js'},
                         TRANSFORM_OPTIONS,
                       ),
+                      expect.any(Function),
                     )
                     expect(console.error).toHaveBeenCalledTimes(
                       argv.verbose ? 2 : 1,
@@ -1360,8 +1358,8 @@ function configTests(ctx, description, argv, init) {
 
                 describe('when it succssfully transforms file contents', () => {
                   beforeEach(() => {
-                    transform.mockImplementation(code => {
-                      return {code}
+                    transform.mockImplementation((code, options, cb) => {
+                      cb(null, {code})
                     })
                   })
 
@@ -1398,6 +1396,7 @@ function configTests(ctx, description, argv, init) {
                           {filename: '/foo/alpha/bravo.js'},
                           TRANSFORM_OPTIONS,
                         ),
+                        expect.any(Function),
                       )
                       expect(console.error).toHaveBeenCalledTimes(
                         argv.verbose ? 2 : 1,
@@ -1460,6 +1459,7 @@ function configTests(ctx, description, argv, init) {
                           {filename: '/foo/alpha/bravo.js'},
                           TRANSFORM_OPTIONS,
                         ),
+                        expect.any(Function),
                       )
                       expect(console.error).toHaveBeenCalledTimes(0)
                       expect(writeFile).toHaveBeenCalledTimes(1)
@@ -1492,8 +1492,8 @@ function configTests(ctx, description, argv, init) {
                 it('functions as expected when it fails to transform file contents', done => {
                   const error = new Error('foo bar')
 
-                  transform.mockImplementation(() => {
-                    throw error
+                  transform.mockImplementation((code, options, cb) => {
+                    cb(error)
                   })
 
                   expect(ctx.listeners.message).toHaveLength(1)
@@ -1521,6 +1521,7 @@ function configTests(ctx, description, argv, init) {
                         {filename: '/foo/alpha/bravo.js'},
                         TRANSFORM_OPTIONS,
                       ),
+                      expect.any(Function),
                     )
                     expect(console.error).toHaveBeenCalledTimes(
                       argv.verbose ? 2 : 1,
@@ -1546,8 +1547,8 @@ function configTests(ctx, description, argv, init) {
 
                 describe('when it succssfully transforms file contents', () => {
                   beforeEach(() => {
-                    transform.mockImplementation(code => {
-                      return {code}
+                    transform.mockImplementation((code, options, cb) => {
+                      cb(null, {code})
                     })
                   })
 
@@ -1584,6 +1585,7 @@ function configTests(ctx, description, argv, init) {
                           {filename: '/foo/alpha/bravo.js'},
                           TRANSFORM_OPTIONS,
                         ),
+                        expect.any(Function),
                       )
                       expect(console.error).toHaveBeenCalledTimes(
                         argv.verbose ? 2 : 1,
@@ -1646,6 +1648,7 @@ function configTests(ctx, description, argv, init) {
                           {filename: '/foo/alpha/bravo.js'},
                           TRANSFORM_OPTIONS,
                         ),
+                        expect.any(Function),
                       )
                       expect(console.error).toHaveBeenCalledTimes(0)
                       expect(writeFile).toHaveBeenCalledTimes(1)
@@ -2277,28 +2280,28 @@ describe('worker', () => {
     tests(ctx, 'when output and source has trailing separator', {
       source: '/foo/',
       output: '/bar/',
-      target: '4',
+      target: '6',
       verbose: true,
     })
 
     tests(ctx, 'when output has trailing separator', {
       source: '/foo',
       output: '/bar/',
-      target: '4',
+      target: '6',
       verbose: true,
     })
 
     tests(ctx, 'when source has trailing separator', {
       source: '/foo/',
       output: '/bar',
-      target: '4',
+      target: '6',
       verbose: true,
     })
 
     tests(ctx, 'when neither output nor source has trailing separator', {
       source: '/foo',
       output: '/bar',
-      target: '4',
+      target: '6',
       verbose: true,
     })
   })
@@ -2307,28 +2310,28 @@ describe('worker', () => {
     tests(ctx, 'when output and source has trailing separator', {
       source: '/foo/',
       output: '/bar/',
-      target: '4',
+      target: '6',
       verbose: false,
     })
 
     tests(ctx, 'when output has trailing separator', {
       source: '/foo',
       output: '/bar/',
-      target: '4',
+      target: '6',
       verbose: false,
     })
 
     tests(ctx, 'when source has trailing separator', {
       source: '/foo/',
       output: '/bar',
-      target: '4',
+      target: '6',
       verbose: false,
     })
 
     tests(ctx, 'when neither output nor source has trailing separator', {
       source: '/foo',
       output: '/bar',
-      target: '4',
+      target: '6',
       verbose: false,
     })
   })

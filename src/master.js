@@ -4,7 +4,6 @@
 
 /* global cluster$Worker */
 
-import cluster from 'cluster'
 import glob from 'glob'
 import watch from 'node-watch'
 import {cpus} from 'os'
@@ -195,12 +194,18 @@ function processWatchEvent(state: State, type: string, filePath: string) {
 
 /**
  * Listen for dead workers and spawn new workers in their place.
+ * @param fork - fork method
+ * @param on - event listener
  * @param state - current state
  */
-function replaceDeadWorkers(state: State) {
+function replaceDeadWorkers(
+  fork: () => cluster$Worker,
+  on: (event: string, listener: (worker: cluster$Worker) => void) => mixed,
+  state: State,
+) {
   const {workers} = state
 
-  cluster.on('exit', (deadWorker: cluster$Worker) => {
+  on('exit', (deadWorker: cluster$Worker) => {
     console.info(
       `Worker ${deadWorker.id} died, spawning a new worker in it's place`,
     )
@@ -212,17 +217,18 @@ function replaceDeadWorkers(state: State) {
     workers.splice(deadWorkerIndex, 1)
 
     // Add a new worker in it's place
-    spawnWorker(state)
+    spawnWorker(fork, state)
   })
 }
 
 /**
  * Spawn a single worker process and add it to list of workers.
+ * @param fork - fork method
  * @param state - current state
  */
-function spawnWorker(state: State) {
+function spawnWorker(fork: () => cluster$Worker, state: State) {
   const {workers} = state
-  const worker = cluster.fork()
+  const worker = fork()
   const workerInfo = getWorkerInfo(worker)
 
   worker.on('message', processActionFromWorker.bind(null, state, workerInfo))
@@ -231,10 +237,15 @@ function spawnWorker(state: State) {
 
 /**
  * Spawn worker processes
+ * @param fork - fork method
  * @param state - current state
  * @param workerCount - number of workers to spawn
  */
-function spawnWorkers(state: State, workerCount: number) {
+function spawnWorkers(
+  fork: () => cluster$Worker,
+  state: State,
+  workerCount: number,
+) {
   if (isNaN(workerCount)) {
     throw new Error(
       `workerCount is expected to be a number not ${typeof workerCount}`,
@@ -246,7 +257,7 @@ function spawnWorkers(state: State, workerCount: number) {
   }
 
   for (let i = workerCount; i > 0; i--) {
-    spawnWorker(state)
+    spawnWorker(fork, state)
   }
 
   console.info(`Spawned ${workerCount} workers`)
@@ -255,8 +266,14 @@ function spawnWorkers(state: State, workerCount: number) {
 /**
  * Spin up master process.
  * @param argv - command line arguments
+ * @param fork - fork method
+ * @param on - event listener
  */
-export default function(argv: Argv): State {
+export default function(
+  argv: Argv,
+  fork: () => cluster$Worker,
+  on: (event: string, listener: (worker: cluster$Worker) => void) => mixed,
+): State {
   let {source, watch: isWatching, workerCount} = argv
 
   const state = {
@@ -266,8 +283,8 @@ export default function(argv: Argv): State {
     workers: [],
   }
 
-  spawnWorkers(state, workerCount)
-  replaceDeadWorkers(state)
+  spawnWorkers(fork, state, workerCount)
+  replaceDeadWorkers(fork, on, state)
 
   // Make sure source does not have a trailing separator
   if (source[source.length - 1] === sep) {

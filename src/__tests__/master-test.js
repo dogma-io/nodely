@@ -41,7 +41,7 @@ function tests(description, {argv}) {
 
     it('functions as expected', () => {
       const source = argv.source.replace(/\/$/, '')
-      const state = master(argv)
+      const state = master(argv, cluster.fork, cluster.on)
 
       expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
       expect(cluster.on).toHaveBeenCalledTimes(1)
@@ -78,7 +78,7 @@ function tests(description, {argv}) {
 
     it('replaces dead worker', () => {
       const source = argv.source.replace(/\/$/, '')
-      const state = master(argv)
+      const state = master(argv, cluster.fork, cluster.on)
 
       clusterListeners.exit.forEach(callback => {
         callback(state.workers[0].worker)
@@ -138,7 +138,7 @@ function tests(description, {argv}) {
       })
 
       expect(() => {
-        master(argv)
+        master(argv, cluster.fork, cluster.on)
       }).toThrowError(error)
     })
 
@@ -150,7 +150,7 @@ function tests(description, {argv}) {
           callback(null, [])
         })
 
-        state = master(argv)
+        state = master(argv, cluster.fork, cluster.on)
       })
 
       it('functions as expected', () => {
@@ -217,7 +217,7 @@ function tests(description, {argv}) {
           ])
         })
 
-        state = master(argv)
+        state = master(argv, cluster.fork, cluster.on)
       })
 
       it('functions as expected', () => {
@@ -846,7 +846,7 @@ function tests(description, {argv}) {
 
         workers[workers.length - 1].idle = false
 
-        const state = master(argv)
+        const state = master(argv, cluster.fork, cluster.on)
 
         expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
         expect(cluster.on).toHaveBeenCalledTimes(1)
@@ -906,7 +906,7 @@ function tests(description, {argv}) {
 
         workers[workers.length - 1].idle = false
 
-        const state = master(argv)
+        const state = master(argv, cluster.fork, cluster.on)
 
         expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
         expect(cluster.on).toHaveBeenCalledTimes(1)
@@ -1014,13 +1014,13 @@ describe('master', () => {
 
   it('throws an error when worker count argument is missng', () => {
     expect(() => {
-      master({})
+      master({}, cluster.fork, cluster.on)
     }).toThrowError('workerCount is expected to be a number not undefined')
   })
 
   it('throws an error when worker count argument is not a number', () => {
     expect(() => {
-      master({workerCount: 'foo'})
+      master({workerCount: 'foo'}, cluster.fork, cluster.on)
     }).toThrowError('workerCount is expected to be a number not string')
   })
 

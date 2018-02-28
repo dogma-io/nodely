@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`index when required arguments are present and rest are defaults functions as expected when process is cluster master 1`] = `
+Object {
+  "master": [MockFunction] {
+    "calls": Array [
+      Array [
+        Object {
+          "$0": "index.js",
+          "_": Array [],
+          "help": false,
+          "include": undefined,
+          "n": 0,
+          "o": "/bar",
+          "output": "/bar",
+          "s": "/foo",
+          "source": "/foo",
+          "t": "6",
+          "target": "6",
+          "v": false,
+          "verbose": false,
+          "version": false,
+          "w": false,
+          "watch": false,
+          "workerCount": 0,
+        },
+        [Function],
+        [Function],
+      ],
+    ],
+  },
+  "worker": [MockFunction],
+}
+`;
+
+exports[`index when required arguments are present and rest are defaults when process.send defined functions as expected when process is cluster worker 1`] = `
+Object {
+  "master": [MockFunction],
+  "worker": [MockFunction] {
+    "calls": Array [
+      Array [
+        Object {
+          "$0": "index.js",
+          "_": Array [],
+          "help": false,
+          "include": undefined,
+          "n": 0,
+          "o": "/bar",
+          "output": "/bar",
+          "s": "/foo",
+          "source": "/foo",
+          "t": "6",
+          "target": "6",
+          "v": false,
+          "verbose": false,
+          "version": false,
+          "w": false,
+          "watch": false,
+          "workerCount": 0,
+        },
+        [Function],
+        [Function],
+      ],
+    ],
+  },
+}
+`;
+
+exports[`index when required arguments are present and rest are overriden functions as expected when process is cluster master 1`] = `
+Object {
+  "master": [MockFunction] {
+    "calls": Array [
+      Array [
+        Object {
+          "$0": "index.js",
+          "_": Array [],
+          "help": false,
+          "include": undefined,
+          "n": 3,
+          "o": "/bar",
+          "output": "/bar",
+          "s": "/foo",
+          "source": "/foo",
+          "t": "6",
+          "target": "6",
+          "v": false,
+          "verbose": false,
+          "version": false,
+          "w": true,
+          "watch": true,
+          "workerCount": 3,
+        },
+        [Function],
+        [Function],
+      ],
+    ],
+  },
+  "worker": [MockFunction],
+}
+`;
+
+exports[`index when required arguments are present and rest are overriden functions as expected when process is cluster worker 1`] = `
+Object {
+  "master": [MockFunction],
+  "worker": [MockFunction] {
+    "calls": Array [
+      Array [
+        Object {
+          "$0": "index.js",
+          "_": Array [],
+          "help": false,
+          "include": undefined,
+          "n": 3,
+          "o": "/bar",
+          "output": "/bar",
+          "s": "/foo",
+          "source": "/foo",
+          "t": "6",
+          "target": "6",
+          "v": false,
+          "verbose": false,
+          "version": false,
+          "w": true,
+          "watch": true,
+          "workerCount": 3,
+        },
+        [Function],
+        [Function],
+      ],
+    ],
+  },
+}
+`;

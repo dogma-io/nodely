@@ -9,7 +9,7 @@ function missingArgumentsTest(message) {
                                                              [string] [required]
   --source, -s       Directory containing source code to transform.
                                                              [string] [required]
-  --target, -t       Target Node version.                [string] [default: "4"]
+  --target, -t       Target Node version.                [string] [default: "6"]
   --verbose, -v      Whether or not to have verbose logging.
                                                       [boolean] [default: false]
   --watch, -w        Whether or not to watch for changes and continue
@@ -36,6 +36,8 @@ describe('index', () => {
     cluster = require('cluster')
     master = require('../master').default
     worker = require('../worker').default
+
+    process.send = jest.fn()
   })
 
   afterEach(() => {
@@ -65,31 +67,35 @@ describe('index', () => {
     it('functions as expected when process is cluster master', () => {
       cluster.isMaster = true
       require('../index')
-      expect(master).toHaveBeenCalledTimes(1)
-      expect(master).toHaveBeenCalledWith(
-        expect.objectContaining({
-          output: '/bar',
-          source: '/foo',
-          watch: false,
-          workerCount: 0,
-        }),
-      )
-      expect(worker).toHaveBeenCalledTimes(0)
+      expect({worker, master}).toMatchSnapshot()
     })
 
-    it('functions as expected when process is cluster worker', () => {
-      cluster.isMaster = false
-      require('../index')
-      expect(master).toHaveBeenCalledTimes(0)
-      expect(worker).toHaveBeenCalledTimes(1)
-      expect(worker).toHaveBeenCalledWith(
-        expect.objectContaining({
-          output: '/bar',
-          source: '/foo',
-          watch: false,
-          workerCount: 0,
-        }),
-      )
+    describe('when process.send defined', () => {
+      it('functions as expected when process is cluster worker', () => {
+        cluster.isMaster = false
+        require('../index')
+        expect({worker, master}).toMatchSnapshot()
+      })
+    })
+
+    describe('when process.send not defined', () => {
+      let originalFn
+
+      beforeEach(() => {
+        cluster.isMaster = false
+        originalFn = process.send
+        process.send = undefined
+      })
+
+      afterEach(() => {
+        process.send = originalFn
+      })
+
+      it('should throw error', () => {
+        expect(() => {
+          require('../index')
+        }).toThrow('Expected process.send to be defined')
+      })
     })
   })
 
@@ -111,31 +117,13 @@ describe('index', () => {
     it('functions as expected when process is cluster master', () => {
       cluster.isMaster = true
       require('../index')
-      expect(master).toHaveBeenCalledTimes(1)
-      expect(master).toHaveBeenCalledWith(
-        expect.objectContaining({
-          output: '/bar',
-          source: '/foo',
-          watch: true,
-          workerCount: 3,
-        }),
-      )
-      expect(worker).toHaveBeenCalledTimes(0)
+      expect({worker, master}).toMatchSnapshot()
     })
 
     it('functions as expected when process is cluster worker', () => {
       cluster.isMaster = false
       require('../index')
-      expect(master).toHaveBeenCalledTimes(0)
-      expect(worker).toHaveBeenCalledTimes(1)
-      expect(worker).toHaveBeenCalledWith(
-        expect.objectContaining({
-          output: '/bar',
-          source: '/foo',
-          watch: true,
-          workerCount: 3,
-        }),
-      )
+      expect({worker, master}).toMatchSnapshot()
     })
   })
 })

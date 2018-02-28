@@ -4,7 +4,7 @@
 
 /* global ErrnoError */
 
-import {transform} from 'babel-core'
+import {transform} from '@babel/core'
 import {
   createReadStream,
   createWriteStream,
@@ -25,26 +25,13 @@ import {
   TRANSFORM_FILE,
   type TransformFileAction,
 } from './actions'
-import type {Argv} from './types'
-
-type Action = {|
-  erred: boolean,
-  type: typeof IDLE,
-|}
+import type {Argv, ProcessSend} from './types'
 
 type WriteOptions = {|
   encoding?: ?string,
   flag?: string,
   mode?: number,
 |}
-
-function send(action: Action) {
-  if (process.send) {
-    process.send(action)
-  } else {
-    throw new Error('process.send is not defined')
-  }
-}
 
 /**
  * Copy file.
@@ -119,8 +106,9 @@ function createDirectoryForFile(
 /**
  * Log error and inform master worker is now idle again.
  * @param message - error message
+ * @param send - process send method
  */
-function error(message: string) {
+function error(message: string, send: ProcessSend) {
   console.error(message)
 
   send({
@@ -208,31 +196,35 @@ function getFileContents(filePath: string): Promise<string> {
  * @param output - output directory
  * @param verbose - whether or not to have verbose logging
  * @param babelConfig - Babel config
+ * @param send - process send method
  * @param data - action from master
  */
-function processActionFromMater(
+function processActionFromMaster(
   includeRegex: ?RegExp,
   source: string,
   output: string,
   verbose: boolean,
   babelConfig: Object, // eslint-disable-line flowtype/no-weak-types
+  send: ProcessSend,
   data: RemoveFileAction | TransformFileAction,
 ): void {
   if (typeof data !== 'object') {
     return error(
       `Expected message from master to be an object but instead received type ${typeof data}`,
+      send,
     )
   }
 
   if (data === null) {
     return error(
       'Expected message from master to be present but instead received null',
+      send,
     )
   }
 
   switch (data.type) {
     case REMOVE_FILE:
-      return removeOutputFile(source, output, data.filePath, verbose)
+      return removeOutputFile(source, output, data.filePath, verbose, send)
 
     case TRANSFORM_FILE:
       return transformFile(
@@ -242,10 +234,14 @@ function processActionFromMater(
         data.filePath,
         verbose,
         babelConfig,
+        send,
       )
 
     default:
-      return error(`Master sent message with unknown action type ${data.type}`)
+      return error(
+        `Master sent message with unknown action type ${data.type}`,
+        send,
+      )
   }
 }
 
@@ -255,12 +251,14 @@ function processActionFromMater(
  * @param output - output directory
  * @param filePath - full path of file to transform
  * @param verbose - whether or not to have verbose logging
+ * @param send - process send method
  */
 function removeOutputFile(
   source: string,
   output: string,
   filePath: string,
   verbose: boolean,
+  send: ProcessSend,
 ) {
   const relativeFilePath = path.relative(source, filePath)
   const relativeDirectoryPath = path.dirname(relativeFilePath)
@@ -292,6 +290,7 @@ function removeOutputFile(
  * @param filePath - full path of file to transform
  * @param verbose - whether or not to have verbose logging
  * @param babelConfig - Babel configuration
+ * @param send - process send method
  */
 function transformFile(
   includeRegex: ?RegExp,
@@ -300,6 +299,7 @@ function transformFile(
   filePath: string,
   verbose: boolean,
   babelConfig: Object, // eslint-disable-line flowtype/no-weak-types
+  send: ProcessSend,
 ) {
   const extension = path.extname(filePath)
 
@@ -360,18 +360,24 @@ function transformJavascriptFile(
     return new Promise((resolve: () => void, reject: (err: Error) => void) => {
       stat(filePath, (err1: ?ErrnoError, stats: Stats) => {
         const mode = err1 ? null : stats.mode
-        const result = transform(
+
+        transform(
           contents,
           Object.assign({filename: filePath}, babelConfig),
+          (err2: ?Error, result: {code: string}) => {
+            if (err2) {
+              reject(err2)
+            } else {
+              writeDataToFile(outputFilePath, result.code, mode)
+                .then(() => {
+                  resolve()
+                })
+                .catch((err3: Error) => {
+                  reject(err3)
+                })
+            }
+          },
         )
-
-        writeDataToFile(outputFilePath, result.code, mode)
-          .then(() => {
-            resolve()
-          })
-          .catch((err2: Error) => {
-            reject(err2)
-          })
       })
     })
   })
@@ -408,11 +414,16 @@ function writeDataToFile(
   })
 }
 
+// eslint-disable flowtype/no-weak-types
 /**
  * Spin up worker process.
  * @param argv - command line arguments
  */
-export default function(argv: Argv) {
+export default function(
+  argv: Argv,
+  on: (event: string, listener: Function) => mixed, // eslint-disable-line
+  send: ProcessSend,
+) {
   let {include, output, source, target, verbose} = argv
 
   let includeRegex
@@ -437,15 +448,16 @@ export default function(argv: Argv) {
 
   // eslint-disable-next-line flowtype/no-weak-types
   getBabelConfig(target, (babelConfig: Object) => {
-    process.on(
+    on(
       'message',
-      processActionFromMater.bind(
+      processActionFromMaster.bind(
         null,
         includeRegex,
         source,
         output,
         verbose,
         babelConfig,
+        send,
       ),
     )
   })
