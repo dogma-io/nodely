@@ -17,7 +17,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -55,7 +55,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -113,7 +113,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -170,7 +170,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -234,7 +234,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -298,7 +298,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -362,7 +362,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -422,7 +422,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -479,7 +479,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -545,7 +545,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -611,7 +611,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -677,7 +677,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -728,7 +728,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -784,7 +784,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -862,7 +862,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -945,7 +945,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1034,7 +1034,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1112,7 +1112,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1196,7 +1196,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1264,7 +1264,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1308,7 +1308,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1352,7 +1352,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1396,7 +1396,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1440,7 +1440,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1478,7 +1478,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1529,7 +1529,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1574,7 +1574,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1625,7 +1625,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1681,7 +1681,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1759,7 +1759,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1842,7 +1842,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -1931,7 +1931,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2009,7 +2009,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2093,7 +2093,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2190,7 +2190,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2247,7 +2247,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2311,7 +2311,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2375,7 +2375,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2439,7 +2439,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2499,7 +2499,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2556,7 +2556,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2622,7 +2622,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2688,7 +2688,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -2754,7 +2754,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -5217,7 +5217,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10115,7 +10115,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10153,7 +10153,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10211,7 +10211,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10268,7 +10268,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10332,7 +10332,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10396,7 +10396,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10460,7 +10460,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10520,7 +10520,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10577,7 +10577,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10643,7 +10643,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10709,7 +10709,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10775,7 +10775,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10826,7 +10826,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10882,7 +10882,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -10960,7 +10960,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11043,7 +11043,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11132,7 +11132,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11210,7 +11210,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11294,7 +11294,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11362,7 +11362,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11406,7 +11406,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11450,7 +11450,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11494,7 +11494,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11538,7 +11538,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11576,7 +11576,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11627,7 +11627,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11672,7 +11672,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11723,7 +11723,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11779,7 +11779,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11857,7 +11857,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -11940,7 +11940,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12029,7 +12029,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12107,7 +12107,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12191,7 +12191,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12288,7 +12288,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12345,7 +12345,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12409,7 +12409,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12473,7 +12473,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12537,7 +12537,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12597,7 +12597,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12654,7 +12654,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12720,7 +12720,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12786,7 +12786,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -12852,7 +12852,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -15315,7 +15315,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20213,7 +20213,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20251,7 +20251,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20309,7 +20309,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20366,7 +20366,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20430,7 +20430,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20494,7 +20494,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20558,7 +20558,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20618,7 +20618,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20675,7 +20675,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20741,7 +20741,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20807,7 +20807,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20873,7 +20873,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20924,7 +20924,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -20980,7 +20980,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21058,7 +21058,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21141,7 +21141,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21230,7 +21230,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21308,7 +21308,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21392,7 +21392,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21460,7 +21460,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21504,7 +21504,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21548,7 +21548,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21592,7 +21592,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21636,7 +21636,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21674,7 +21674,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21725,7 +21725,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21770,7 +21770,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21821,7 +21821,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21877,7 +21877,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -21955,7 +21955,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22038,7 +22038,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22127,7 +22127,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22205,7 +22205,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22289,7 +22289,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22386,7 +22386,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22443,7 +22443,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22507,7 +22507,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22571,7 +22571,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22635,7 +22635,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22695,7 +22695,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22752,7 +22752,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22818,7 +22818,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22884,7 +22884,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -22950,7 +22950,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -25413,7 +25413,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30311,7 +30311,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30349,7 +30349,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30407,7 +30407,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30464,7 +30464,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30528,7 +30528,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30592,7 +30592,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30656,7 +30656,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30716,7 +30716,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30773,7 +30773,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30839,7 +30839,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30905,7 +30905,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -30971,7 +30971,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31022,7 +31022,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31078,7 +31078,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31156,7 +31156,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31239,7 +31239,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31328,7 +31328,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31406,7 +31406,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31490,7 +31490,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31558,7 +31558,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31602,7 +31602,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31646,7 +31646,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31690,7 +31690,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31734,7 +31734,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31772,7 +31772,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31823,7 +31823,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31868,7 +31868,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31919,7 +31919,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -31975,7 +31975,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32053,7 +32053,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32136,7 +32136,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32225,7 +32225,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32303,7 +32303,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32387,7 +32387,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32484,7 +32484,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32541,7 +32541,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32605,7 +32605,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32669,7 +32669,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32733,7 +32733,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32793,7 +32793,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32850,7 +32850,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32916,7 +32916,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -32982,7 +32982,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -33048,7 +33048,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -35511,7 +35511,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -40409,7 +40409,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -40447,7 +40447,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -40505,7 +40505,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -40565,7 +40565,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -40632,7 +40632,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -40702,7 +40702,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -40772,7 +40772,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -40832,7 +40832,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -40892,7 +40892,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -40961,7 +40961,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41033,7 +41033,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41105,7 +41105,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41159,7 +41159,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41221,7 +41221,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41302,7 +41302,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41385,7 +41385,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41480,7 +41480,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41561,7 +41561,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41645,7 +41645,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41713,7 +41713,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41757,7 +41757,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41801,7 +41801,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41845,7 +41845,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41892,7 +41892,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41930,7 +41930,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -41984,7 +41984,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42029,7 +42029,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42083,7 +42083,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42145,7 +42145,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42226,7 +42226,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42309,7 +42309,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42404,7 +42404,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42485,7 +42485,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42569,7 +42569,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42666,7 +42666,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42726,7 +42726,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42793,7 +42793,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42863,7 +42863,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42933,7 +42933,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -42993,7 +42993,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -43053,7 +43053,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -43122,7 +43122,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -43194,7 +43194,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -43266,7 +43266,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -45849,7 +45849,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -50987,7 +50987,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51025,7 +51025,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51083,7 +51083,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51143,7 +51143,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51210,7 +51210,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51280,7 +51280,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51350,7 +51350,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51410,7 +51410,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51470,7 +51470,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51539,7 +51539,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51611,7 +51611,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51683,7 +51683,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51737,7 +51737,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51799,7 +51799,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51880,7 +51880,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -51963,7 +51963,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52058,7 +52058,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52139,7 +52139,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52223,7 +52223,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52291,7 +52291,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52335,7 +52335,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52379,7 +52379,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52423,7 +52423,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52470,7 +52470,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52508,7 +52508,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52562,7 +52562,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52607,7 +52607,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52661,7 +52661,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52723,7 +52723,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52804,7 +52804,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52887,7 +52887,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -52982,7 +52982,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53063,7 +53063,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53147,7 +53147,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53244,7 +53244,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53304,7 +53304,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53371,7 +53371,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53441,7 +53441,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53511,7 +53511,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53571,7 +53571,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53631,7 +53631,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53700,7 +53700,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53772,7 +53772,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -53844,7 +53844,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -56427,7 +56427,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -61565,7 +61565,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -61603,7 +61603,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -61661,7 +61661,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -61721,7 +61721,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -61788,7 +61788,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -61858,7 +61858,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -61928,7 +61928,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -61988,7 +61988,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62048,7 +62048,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62117,7 +62117,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62189,7 +62189,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62261,7 +62261,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62315,7 +62315,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62377,7 +62377,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62458,7 +62458,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62541,7 +62541,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62636,7 +62636,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62717,7 +62717,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62801,7 +62801,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62869,7 +62869,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62913,7 +62913,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -62957,7 +62957,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63001,7 +63001,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63048,7 +63048,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63086,7 +63086,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63140,7 +63140,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63185,7 +63185,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63239,7 +63239,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63301,7 +63301,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63382,7 +63382,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63465,7 +63465,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63560,7 +63560,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63641,7 +63641,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63725,7 +63725,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63822,7 +63822,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63882,7 +63882,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -63949,7 +63949,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -64019,7 +64019,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -64089,7 +64089,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -64149,7 +64149,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -64209,7 +64209,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -64278,7 +64278,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -64350,7 +64350,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -64422,7 +64422,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -67005,7 +67005,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72143,7 +72143,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72181,7 +72181,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72239,7 +72239,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72299,7 +72299,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72366,7 +72366,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72436,7 +72436,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72506,7 +72506,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72566,7 +72566,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72626,7 +72626,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72695,7 +72695,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72767,7 +72767,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72839,7 +72839,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72893,7 +72893,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -72955,7 +72955,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73036,7 +73036,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73119,7 +73119,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73214,7 +73214,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73295,7 +73295,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73379,7 +73379,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73447,7 +73447,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73491,7 +73491,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73535,7 +73535,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73579,7 +73579,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73626,7 +73626,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73664,7 +73664,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73718,7 +73718,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73763,7 +73763,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73817,7 +73817,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73879,7 +73879,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -73960,7 +73960,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74043,7 +74043,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74138,7 +74138,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74219,7 +74219,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74303,7 +74303,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74400,7 +74400,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74460,7 +74460,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74527,7 +74527,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74597,7 +74597,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74667,7 +74667,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74727,7 +74727,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74787,7 +74787,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74856,7 +74856,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -74928,7 +74928,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -75000,7 +75000,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],
@@ -77583,7 +77583,7 @@ Object {
   "readFile": [MockFunction] {
     "calls": Array [
       Array [
-        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "<PROJECT_ROOT>/.babelrc.json",
         "utf8",
         [Function],
       ],

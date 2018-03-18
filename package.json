@@ -46,6 +46,7 @@
     "babel-jest": "23.0.0-alpha.0",
     "codecov": "3.0.0",
     "jest": "22.4.2",
+    "jest-serializer-path": "0.1.6",
     "lintly": "0.0.25"
   },
   "dependencies": {
@@ -79,6 +80,9 @@
         "statements": 99.54
       }
     },
+    "snapshotSerializers": [
+      "jest-serializer-path"
+    ],
     "testRegex": "/__tests__/.*-test\\.js$"
   }
 }

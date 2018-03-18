@@ -2826,6 +2826,10 @@ jest-runtime@^22.4.2:
     write-file-atomic "^2.1.0"
     yargs "^10.0.3"
 
+jest-serializer-path@0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/jest-serializer-path/-/jest-serializer-path-0.1.6.tgz#d38028df901744968f31b2dbeeb493d1e37cb17f"
+
 jest-serializer@^22.4.0:
   version "22.4.0"
   resolved "https://registry.yarnpkg.com/jest-serializer/-/jest-serializer-22.4.0.tgz#b5d145b98c4b0d2c20ab686609adbb81fe23b566"
