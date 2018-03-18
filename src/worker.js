@@ -10,10 +10,12 @@ import {
   createWriteStream,
   readdir,
   readFile,
+  type ReadStream,
   stat,
   type Stats,
   unlink,
   writeFile,
+  type WriteStream,
 } from 'fs'
 import mkdirp from 'mkdirp'
 import path from 'path'
@@ -37,9 +39,17 @@ type WriteOptions = {|
  * Copy file.
  * @param filePath - full path of file to copy
  * @param outputFilePath - path to copy file to
+ * @param verbose - whether or not to have verbose logging
  * @returns resolves once file has been copied or rejects with error
  */
-function copyFile(filePath: string, outputFilePath: string): Promise<void> {
+function copyFile(
+  filePath: string,
+  outputFilePath: string,
+  verbose: boolean,
+): Promise<void> {
+  let readStream: ReadStream
+  let writeStream: WriteStream
+
   return new Promise((resolve: () => void, reject: (err: Error) => void) => {
     stat(filePath, (err: ?ErrnoError, stats: Stats) => {
       const writeStreamOptions = {}
@@ -48,16 +58,24 @@ function copyFile(filePath: string, outputFilePath: string): Promise<void> {
         writeStreamOptions.mode = stats.mode
       }
 
-      const readStream = createReadStream(filePath)
-      const writeStream = createWriteStream(outputFilePath, writeStreamOptions)
+      readStream = createReadStream(filePath)
+      writeStream = createWriteStream(outputFilePath, writeStreamOptions)
 
-      readStream.on('error', (err: Error) => {
-        reject(err)
+      readStream.on('error', (err2: Error) => {
+        if (verbose) {
+          console.error(`Failed reading ${filePath}`)
+        }
+
+        reject(err2)
       })
 
       writeStream
-        .on('error', (err: Error) => {
-          reject(err)
+        .on('error', (err2: Error) => {
+          if (verbose) {
+            console.error(`Failed writing ${outputFilePath}`)
+          }
+
+          reject(err2)
         })
         .on('finish', () => {
           resolve()
@@ -65,6 +83,19 @@ function copyFile(filePath: string, outputFilePath: string): Promise<void> {
 
       readStream.pipe(writeStream)
     })
+  }).catch((err: Error) => {
+    // NOTE: destroy was added in Node v8.0.0 and thus we need the if check
+    // until Node 8 becomes the minimum versions supported by this project.
+    // $FlowFixMe - Flow doesn't know about the destroy() method
+    if (readStream && readStream.destroy) {
+      readStream.destroy()
+    }
+
+    if (writeStream) {
+      writeStream.end()
+    }
+
+    throw err
   })
 }
 
@@ -117,58 +148,76 @@ function error(message: string, send: ProcessSend) {
   })
 }
 
+/* eslint-disable flowtype/no-weak-types */
 /**
  * Get Babel configuration for transforming Javascript files
  * @param target - Node target
  * @returns Babel configuration
  */
-function getBabelConfig(
-  target: string,
-  callback: (babelConfig: Object) => void, // eslint-disable-line flowtype/no-weak-types
-) {
+function getBabelConfig(target: string): Promise<Object> {
   const cwd = process.cwd()
 
-  readdir(cwd, (err: ?ErrnoError, files: Array<string>) => {
-    if (!err) {
-      const configFile = files.find((fileName: string): boolean => {
-        return /^\.babelrc(\.[a-zA-Z]+)?$/.test(fileName)
-      })
+  return new Promise(
+    (resolve: (babelConfig: Object) => void, reject: (err: Error) => void) => {
+      readdir(cwd, (err: ?ErrnoError, files: Array<string>) => {
+        if (!err) {
+          const configFile = files.find((fileName: string): boolean => {
+            return /^\.babelrc(\.[a-zA-Z]+)?$/.test(fileName)
+          })
 
-      if (configFile) {
-        const filePath = path.join(cwd, configFile)
+          if (configFile) {
+            const filePath = path.join(cwd, configFile)
 
-        switch (path.extname(configFile)) {
-          case '.js':
-            // $FlowFixMe - Flow doesn't like dynamic require statements
-            callback(require(filePath))
-            return
+            switch (path.extname(configFile)) {
+              case '.js':
+                try {
+                  // $FlowFixMe - Flow doesn't like dynamic require statements
+                  resolve(require(filePath))
+                } catch (err3) {
+                  reject(err3)
+                }
+                return
 
-          case '.json':
-            readFile(filePath, 'utf8', (err2: ?ErrnoError, data: string) => {
-              callback(JSON.parse(data))
-            })
-            return
+              case '.json':
+                readFile(
+                  filePath,
+                  'utf8',
+                  (err2: ?ErrnoError, data: string) => {
+                    if (err2) {
+                      reject(err2)
+                    } else {
+                      try {
+                        resolve(JSON.parse(data))
+                      } catch (err3) {
+                        reject(err3)
+                      }
+                    }
+                  },
+                )
+                return
+            }
+          }
         }
-      }
-    }
 
-    // eslint-disable-next-line standard/no-callback-literal
-    callback({
-      presets: [
-        [
-          '@babel/env',
-          {
-            targets: {
-              node: target,
-            },
-          },
-        ],
-        '@babel/flow',
-        '@babel/react',
-      ],
-    })
-  })
+        resolve({
+          presets: [
+            [
+              '@babel/env',
+              {
+                targets: {
+                  node: target,
+                },
+              },
+            ],
+            '@babel/flow',
+            '@babel/react',
+          ],
+        })
+      })
+    },
+  )
 }
+/* eslint-enable flowtype/no-weak-types */
 
 /**
  * Get contents of a file.
@@ -318,10 +367,15 @@ function transformFile(
           return
 
         case '.js':
-          return transformJavascriptFile(filePath, outputFilePath, babelConfig)
+          return transformJavascriptFile(
+            filePath,
+            outputFilePath,
+            verbose,
+            babelConfig,
+          )
 
         default:
-          return copyFile(filePath, outputFilePath)
+          return copyFile(filePath, outputFilePath, verbose)
       }
     })
     .then((): boolean => {
@@ -348,12 +402,14 @@ function transformFile(
  * Transform file.
  * @param filePath - full path of file to transform
  * @param outputFilePath - path to write transformed file to
+ * @param verbose - whether or not to have verbose logging
  * @param babelConfig - Babel configuration
  * @returns resolves once file has been written or rejects with error
  */
 function transformJavascriptFile(
   filePath: string,
   outputFilePath: string,
+  verbose: boolean,
   babelConfig: Object, // eslint-disable-line flowtype/no-weak-types
 ): Promise<void> {
   return getFileContents(filePath).then((contents: string): Promise<void> => {
@@ -366,15 +422,15 @@ function transformJavascriptFile(
           Object.assign({filename: filePath}, babelConfig),
           (err2: ?Error, result: {code: string}) => {
             if (err2) {
+              if (verbose) {
+                console.error(`Failed to transform ${filePath}`)
+              }
+
               reject(err2)
             } else {
               writeDataToFile(outputFilePath, result.code, mode)
-                .then(() => {
-                  resolve()
-                })
-                .catch((err3: Error) => {
-                  reject(err3)
-                })
+                .then(resolve)
+                .catch(reject)
             }
           },
         )
@@ -446,19 +502,24 @@ export default function(
     output = output.substr(0, output.length - 1)
   }
 
-  // eslint-disable-next-line flowtype/no-weak-types
-  getBabelConfig(target, (babelConfig: Object) => {
-    on(
-      'message',
-      processActionFromMaster.bind(
-        null,
-        includeRegex,
-        source,
-        output,
-        verbose,
-        babelConfig,
-        send,
-      ),
-    )
-  })
+  getBabelConfig(target)
+    // eslint-disable-next-line flowtype/no-weak-types
+    .then((babelConfig: Object) => {
+      on(
+        'message',
+        processActionFromMaster.bind(
+          null,
+          includeRegex,
+          source,
+          output,
+          verbose,
+          babelConfig,
+          send,
+        ),
+      )
+    })
+    .catch((err: Error) => {
+      console.error(err)
+      process.exit(1)
+    })
 }

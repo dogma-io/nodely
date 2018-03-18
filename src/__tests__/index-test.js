@@ -1,4 +1,8 @@
-function missingArgumentsTest(message) {
+/**
+ * @flow
+ */
+
+function missingArgumentsTest(message: string) {
   require('../index')
   expect(console.error).toHaveBeenCalledTimes(2)
   expect(console.error).toHaveBeenCalledWith(`Options:

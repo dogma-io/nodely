@@ -10,7 +10,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "./lib/index.js -s ./src -o ./lib # && npm run gen-types",
+    "build": "./lib/index.js -s ./src -o ./lib -v # && npm run gen-types",
     "gen-types": "flow gen-flow-files src --out-dir lib",
     "postpublish": "codecov",
     "prepublishOnly": "npm run build",
@@ -45,7 +45,7 @@
     "babel-core": "^7.0.0-0",
     "babel-jest": "23.0.0-alpha.0",
     "codecov": "3.0.0",
-    "jest-cli": "23.0.0-alpha.0",
+    "jest": "22.4.2",
     "lintly": "0.0.25"
   },
   "dependencies": {

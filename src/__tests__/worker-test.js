@@ -14,7 +14,7 @@ import {
 } from 'fs'
 import mkdirp from 'mkdirp'
 import {Readable, Writable} from 'stream'
-import {IDLE, REMOVE_FILE, TRANSFORM_FILE} from '../actions'
+import {REMOVE_FILE, TRANSFORM_FILE} from '../actions'
 import worker from '../worker'
 
 const TRANSFORM_OPTIONS = Object.freeze({
@@ -32,6 +32,20 @@ const TRANSFORM_OPTIONS = Object.freeze({
   ],
 })
 
+function expectSnapshot() {
+  expect({
+    consoleError: console.error,
+    createReadStream,
+    createWriteStream,
+    mkdirp,
+    processOn: process.on,
+    processSend: process.send,
+    readFile,
+    transform,
+    writeFile,
+  }).toMatchSnapshot()
+}
+
 function configTests(ctx, description, argv, init) {
   describe(description, () => {
     describe('when include argument not set', () => {
@@ -41,50 +55,25 @@ function configTests(ctx, description, argv, init) {
       })
 
       it('functions as expected', () => {
-        expect(process.on).toHaveBeenCalledTimes(1)
-        expect(process.on).toHaveBeenCalledWith('message', expect.any(Function))
+        expectSnapshot()
       })
 
       it('functions as expected when master sends non-object message', () => {
         expect(ctx.listeners.message).toHaveLength(1)
         ctx.listeners.message[0]('test')
-        expect(console.error).toHaveBeenCalledTimes(1)
-        expect(console.error).toHaveBeenCalledWith(
-          'Expected message from master to be an object but instead received type string',
-        )
-        expect(process.send).toHaveBeenCalledTimes(1)
-        expect(process.send).toHaveBeenCalledWith({
-          erred: true,
-          type: IDLE,
-        })
+        expectSnapshot()
       })
 
       it('functions as expected when master sends null message', () => {
         expect(ctx.listeners.message).toHaveLength(1)
         ctx.listeners.message[0](null)
-        expect(console.error).toHaveBeenCalledTimes(1)
-        expect(console.error).toHaveBeenCalledWith(
-          'Expected message from master to be present but instead received null',
-        )
-        expect(process.send).toHaveBeenCalledTimes(1)
-        expect(process.send).toHaveBeenCalledWith({
-          erred: true,
-          type: IDLE,
-        })
+        expectSnapshot()
       })
 
       it('functions as expected when master sends message with unknown action type', () => {
         expect(ctx.listeners.message).toHaveLength(1)
         ctx.listeners.message[0]({type: 'FOO_BAR'})
-        expect(console.error).toHaveBeenCalledTimes(1)
-        expect(console.error).toHaveBeenCalledWith(
-          'Master sent message with unknown action type FOO_BAR',
-        )
-        expect(process.send).toHaveBeenCalledTimes(1)
-        expect(process.send).toHaveBeenCalledWith({
-          erred: true,
-          type: IDLE,
-        })
+        expectSnapshot()
       })
 
       describe('when master sends message to remove file', () => {
@@ -103,20 +92,7 @@ function configTests(ctx, description, argv, init) {
             type: REMOVE_FILE,
           })
 
-          expect(console.error).toHaveBeenCalledTimes(argv.verbose ? 2 : 1)
-          expect(console.error).toHaveBeenCalledWith(
-            'Failed to remove file /bar/alpha/bravo.js',
-          )
-
-          if (argv.verbose) {
-            expect(console.error).toHaveBeenCalledWith(error)
-          }
-
-          expect(process.send).toHaveBeenCalledTimes(1)
-          expect(process.send).toHaveBeenCalledWith({
-            erred: true,
-            type: IDLE,
-          })
+          expectSnapshot()
         })
 
         it('functions as expected when successfully removes file', () => {
@@ -124,17 +100,15 @@ function configTests(ctx, description, argv, init) {
             const callback = args[args.length - 1]
             callback(null)
           })
+
           expect(ctx.listeners.message).toHaveLength(1)
+
           ctx.listeners.message[0]({
             filePath: '/foo/alpha/bravo.js',
             type: REMOVE_FILE,
           })
-          expect(console.error).toHaveBeenCalledTimes(0)
-          expect(process.send).toHaveBeenCalledTimes(1)
-          expect(process.send).toHaveBeenCalledWith({
-            erred: false,
-            type: IDLE,
-          })
+
+          expectSnapshot()
         })
       })
 
@@ -155,28 +129,7 @@ function configTests(ctx, description, argv, init) {
           })
 
           process.nextTick(() => {
-            expect(mkdirp).toHaveBeenCalledTimes(1)
-            expect(mkdirp).toHaveBeenCalledWith(
-              '/bar/alpha',
-              expect.any(Function),
-            )
-            expect(console.error).toHaveBeenCalledTimes(argv.verbose ? 2 : 1)
-            expect(console.error).toHaveBeenCalledWith(
-              'Failed to process file /foo/alpha/bravo.js',
-            )
-
-            if (argv.verbose) {
-              expect(console.error).toHaveBeenCalledWith(
-                new Error('Failed to create directory /bar/alpha'),
-              )
-            }
-
-            expect(process.send).toHaveBeenCalledTimes(1)
-            expect(process.send).toHaveBeenCalledWith({
-              erred: true,
-              type: IDLE,
-            })
-
+            expectSnapshot()
             done()
           })
         })
@@ -198,14 +151,7 @@ function configTests(ctx, description, argv, init) {
             })
 
             process.nextTick(() => {
-              expect(mkdirp).toHaveBeenCalledTimes(1)
-              expect(mkdirp).toHaveBeenCalledWith('/bar', expect.any(Function))
-              expect(console.error).toHaveBeenCalledTimes(0)
-              expect(process.send).toHaveBeenCalledTimes(1)
-              expect(process.send).toHaveBeenCalledWith({
-                erred: false,
-                type: IDLE,
-              })
+              expectSnapshot()
               done()
             })
           })
@@ -227,38 +173,7 @@ function configTests(ctx, description, argv, init) {
               })
 
               setTimeout(() => {
-                expect(mkdirp).toHaveBeenCalledTimes(1)
-                expect(mkdirp).toHaveBeenCalledWith(
-                  '/bar/alpha',
-                  expect.any(Function),
-                )
-                expect(readFile).toHaveBeenCalledWith(
-                  '/foo/alpha/bravo.js',
-                  'utf8',
-                  expect.any(Function),
-                )
-                expect(transform).toHaveBeenCalledTimes(0)
-                expect(console.error).toHaveBeenCalledTimes(
-                  argv.verbose ? 2 : 1,
-                )
-                expect(console.error).toHaveBeenCalledWith(
-                  'Failed to process file /foo/alpha/bravo.js',
-                )
-
-                if (argv.verbose) {
-                  expect(console.error).toHaveBeenCalledWith(
-                    new Error(
-                      'Failed to get contents of file /foo/alpha/bravo.js',
-                    ),
-                  )
-                }
-
-                expect(process.send).toHaveBeenCalledTimes(1)
-                expect(process.send).toHaveBeenCalledWith({
-                  erred: true,
-                  type: IDLE,
-                })
-
+                expectSnapshot()
                 done()
               }, 1)
             })
@@ -299,43 +214,7 @@ function configTests(ctx, description, argv, init) {
                   })
 
                   setTimeout(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(readFile).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.js',
-                      'utf8',
-                      expect.any(Function),
-                    )
-                    expect(transform).toHaveBeenCalledTimes(1)
-                    expect(transform).toHaveBeenCalledWith(
-                      contents,
-                      Object.assign(
-                        {filename: '/foo/alpha/bravo.js'},
-                        TRANSFORM_OPTIONS,
-                      ),
-                      expect.any(Function),
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.js',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(writeFile).toHaveBeenCalledTimes(0)
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   }, 1)
                 })
@@ -363,51 +242,7 @@ function configTests(ctx, description, argv, init) {
                     })
 
                     setTimeout(() => {
-                      expect(mkdirp).toHaveBeenCalledTimes(1)
-                      expect(mkdirp).toHaveBeenCalledWith(
-                        '/bar/alpha',
-                        expect.any(Function),
-                      )
-                      expect(readFile).toHaveBeenCalledWith(
-                        '/foo/alpha/bravo.js',
-                        'utf8',
-                        expect.any(Function),
-                      )
-                      expect(transform).toHaveBeenCalledTimes(1)
-                      expect(transform).toHaveBeenCalledWith(
-                        contents,
-                        Object.assign(
-                          {filename: '/foo/alpha/bravo.js'},
-                          TRANSFORM_OPTIONS,
-                        ),
-                        expect.any(Function),
-                      )
-                      expect(console.error).toHaveBeenCalledTimes(
-                        argv.verbose ? 2 : 1,
-                      )
-                      expect(console.error).toHaveBeenCalledWith(
-                        'Failed to process file /foo/alpha/bravo.js',
-                      )
-
-                      if (argv.verbose) {
-                        expect(console.error).toHaveBeenCalledWith(
-                          new Error('Failed to write file /bar/alpha/bravo.js'),
-                        )
-                      }
-
-                      expect(writeFile).toHaveBeenCalledTimes(1)
-                      expect(writeFile).toHaveBeenCalledWith(
-                        '/bar/alpha/bravo.js',
-                        contents,
-                        {encoding: 'utf8'},
-                        expect.any(Function),
-                      )
-                      expect(process.send).toHaveBeenCalledTimes(1)
-                      expect(process.send).toHaveBeenCalledWith({
-                        erred: true,
-                        type: IDLE,
-                      })
-
+                      expectSnapshot()
                       done()
                     }, 1)
                   })
@@ -426,39 +261,7 @@ function configTests(ctx, description, argv, init) {
                     })
 
                     setTimeout(() => {
-                      expect(mkdirp).toHaveBeenCalledTimes(1)
-                      expect(mkdirp).toHaveBeenCalledWith(
-                        '/bar/alpha',
-                        expect.any(Function),
-                      )
-                      expect(readFile).toHaveBeenCalledWith(
-                        '/foo/alpha/bravo.js',
-                        'utf8',
-                        expect.any(Function),
-                      )
-                      expect(transform).toHaveBeenCalledTimes(1)
-                      expect(transform).toHaveBeenCalledWith(
-                        contents,
-                        Object.assign(
-                          {filename: '/foo/alpha/bravo.js'},
-                          TRANSFORM_OPTIONS,
-                        ),
-                        expect.any(Function),
-                      )
-                      expect(console.error).toHaveBeenCalledTimes(0)
-                      expect(writeFile).toHaveBeenCalledTimes(1)
-                      expect(writeFile).toHaveBeenCalledWith(
-                        '/bar/alpha/bravo.js',
-                        contents,
-                        {encoding: 'utf8'},
-                        expect.any(Function),
-                      )
-                      expect(process.send).toHaveBeenCalledTimes(1)
-                      expect(process.send).toHaveBeenCalledWith({
-                        erred: false,
-                        type: IDLE,
-                      })
-
+                      expectSnapshot()
                       done()
                     }, 1)
                   })
@@ -488,43 +291,7 @@ function configTests(ctx, description, argv, init) {
                   })
 
                   setTimeout(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(readFile).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.js',
-                      'utf8',
-                      expect.any(Function),
-                    )
-                    expect(transform).toHaveBeenCalledTimes(1)
-                    expect(transform).toHaveBeenCalledWith(
-                      contents,
-                      Object.assign(
-                        {filename: '/foo/alpha/bravo.js'},
-                        TRANSFORM_OPTIONS,
-                      ),
-                      expect.any(Function),
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.js',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(writeFile).toHaveBeenCalledTimes(0)
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   }, 1)
                 })
@@ -552,51 +319,7 @@ function configTests(ctx, description, argv, init) {
                     })
 
                     setTimeout(() => {
-                      expect(mkdirp).toHaveBeenCalledTimes(1)
-                      expect(mkdirp).toHaveBeenCalledWith(
-                        '/bar/alpha',
-                        expect.any(Function),
-                      )
-                      expect(readFile).toHaveBeenCalledWith(
-                        '/foo/alpha/bravo.js',
-                        'utf8',
-                        expect.any(Function),
-                      )
-                      expect(transform).toHaveBeenCalledTimes(1)
-                      expect(transform).toHaveBeenCalledWith(
-                        contents,
-                        Object.assign(
-                          {filename: '/foo/alpha/bravo.js'},
-                          TRANSFORM_OPTIONS,
-                        ),
-                        expect.any(Function),
-                      )
-                      expect(console.error).toHaveBeenCalledTimes(
-                        argv.verbose ? 2 : 1,
-                      )
-                      expect(console.error).toHaveBeenCalledWith(
-                        'Failed to process file /foo/alpha/bravo.js',
-                      )
-
-                      if (argv.verbose) {
-                        expect(console.error).toHaveBeenCalledWith(
-                          new Error('Failed to write file /bar/alpha/bravo.js'),
-                        )
-                      }
-
-                      expect(writeFile).toHaveBeenCalledTimes(1)
-                      expect(writeFile).toHaveBeenCalledWith(
-                        '/bar/alpha/bravo.js',
-                        contents,
-                        {encoding: 'utf8', mode: 0o666},
-                        expect.any(Function),
-                      )
-                      expect(process.send).toHaveBeenCalledTimes(1)
-                      expect(process.send).toHaveBeenCalledWith({
-                        erred: true,
-                        type: IDLE,
-                      })
-
+                      expectSnapshot()
                       done()
                     }, 1)
                   })
@@ -615,39 +338,7 @@ function configTests(ctx, description, argv, init) {
                     })
 
                     setTimeout(() => {
-                      expect(mkdirp).toHaveBeenCalledTimes(1)
-                      expect(mkdirp).toHaveBeenCalledWith(
-                        '/bar/alpha',
-                        expect.any(Function),
-                      )
-                      expect(readFile).toHaveBeenCalledWith(
-                        '/foo/alpha/bravo.js',
-                        'utf8',
-                        expect.any(Function),
-                      )
-                      expect(transform).toHaveBeenCalledTimes(1)
-                      expect(transform).toHaveBeenCalledWith(
-                        contents,
-                        Object.assign(
-                          {filename: '/foo/alpha/bravo.js'},
-                          TRANSFORM_OPTIONS,
-                        ),
-                        expect.any(Function),
-                      )
-                      expect(console.error).toHaveBeenCalledTimes(0)
-                      expect(writeFile).toHaveBeenCalledTimes(1)
-                      expect(writeFile).toHaveBeenCalledWith(
-                        '/bar/alpha/bravo.js',
-                        contents,
-                        {encoding: 'utf8', mode: 0o666},
-                        expect.any(Function),
-                      )
-                      expect(process.send).toHaveBeenCalledTimes(1)
-                      expect(process.send).toHaveBeenCalledWith({
-                        erred: false,
-                        type: IDLE,
-                      })
-
+                      expectSnapshot()
                       done()
                     }, 1)
                   })
@@ -681,33 +372,7 @@ function configTests(ctx, description, argv, init) {
                 })
 
                 process.nextTick(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(0)
-                  expect(console.error).toHaveBeenCalledTimes(
-                    argv.verbose ? 2 : 1,
-                  )
-                  expect(console.error).toHaveBeenCalledWith(
-                    'Failed to process file /foo/alpha/bravo.json',
-                  )
-
-                  if (argv.verbose) {
-                    expect(console.error).toHaveBeenCalledWith(error)
-                  }
-
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: true,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 })
               })
@@ -729,37 +394,7 @@ function configTests(ctx, description, argv, init) {
                 })
 
                 process.nextTick(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).toHaveBeenCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {},
-                  )
-                  expect(console.error).toHaveBeenCalledTimes(
-                    argv.verbose ? 2 : 1,
-                  )
-                  expect(console.error).toHaveBeenCalledWith(
-                    'Failed to process file /foo/alpha/bravo.json',
-                  )
-
-                  if (argv.verbose) {
-                    expect(console.error).toHaveBeenCalledWith(error)
-                  }
-
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: true,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 })
               })
@@ -783,37 +418,7 @@ function configTests(ctx, description, argv, init) {
 
                 process.nextTick(() => {
                   process.nextTick(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(createReadStream).toHaveBeenCalledTimes(1)
-                    expect(createReadStream).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.json',
-                    )
-                    expect(createWriteStream).toHaveBeenCalledTimes(1)
-                    expect(createWriteStream).toHaveBeenCalledWith(
-                      '/bar/alpha/bravo.json',
-                      {},
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.json',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   })
                 })
@@ -838,37 +443,7 @@ function configTests(ctx, description, argv, init) {
 
                 process.nextTick(() => {
                   process.nextTick(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(createReadStream).toHaveBeenCalledTimes(1)
-                    expect(createReadStream).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.json',
-                    )
-                    expect(createWriteStream).toHaveBeenCalledTimes(1)
-                    expect(createWriteStream).toHaveBeenCalledWith(
-                      '/bar/alpha/bravo.json',
-                      {},
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.json',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   })
                 })
@@ -891,27 +466,7 @@ function configTests(ctx, description, argv, init) {
                 readStream.destroy()
 
                 setTimeout(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).toHaveBeenCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {},
-                  )
-                  expect(console.error).toHaveBeenCalledTimes(0)
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: false,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 }, 1)
               })
@@ -940,33 +495,7 @@ function configTests(ctx, description, argv, init) {
                 })
 
                 process.nextTick(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(0)
-                  expect(console.error).toHaveBeenCalledTimes(
-                    argv.verbose ? 2 : 1,
-                  )
-                  expect(console.error).toHaveBeenCalledWith(
-                    'Failed to process file /foo/alpha/bravo.json',
-                  )
-
-                  if (argv.verbose) {
-                    expect(console.error).toHaveBeenCalledWith(error)
-                  }
-
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: true,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 })
               })
@@ -988,37 +517,7 @@ function configTests(ctx, description, argv, init) {
                 })
 
                 process.nextTick(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).toHaveBeenCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
-                  expect(console.error).toHaveBeenCalledTimes(
-                    argv.verbose ? 2 : 1,
-                  )
-                  expect(console.error).toHaveBeenCalledWith(
-                    'Failed to process file /foo/alpha/bravo.json',
-                  )
-
-                  if (argv.verbose) {
-                    expect(console.error).toHaveBeenCalledWith(error)
-                  }
-
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: true,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 })
               })
@@ -1042,37 +541,7 @@ function configTests(ctx, description, argv, init) {
 
                 process.nextTick(() => {
                   process.nextTick(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(createReadStream).toHaveBeenCalledTimes(1)
-                    expect(createReadStream).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.json',
-                    )
-                    expect(createWriteStream).toHaveBeenCalledTimes(1)
-                    expect(createWriteStream).toHaveBeenCalledWith(
-                      '/bar/alpha/bravo.json',
-                      {mode: 0o666},
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.json',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   })
                 })
@@ -1097,37 +566,7 @@ function configTests(ctx, description, argv, init) {
 
                 process.nextTick(() => {
                   process.nextTick(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(createReadStream).toHaveBeenCalledTimes(1)
-                    expect(createReadStream).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.json',
-                    )
-                    expect(createWriteStream).toHaveBeenCalledTimes(1)
-                    expect(createWriteStream).toHaveBeenCalledWith(
-                      '/bar/alpha/bravo.json',
-                      {mode: 0o666},
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.json',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   })
                 })
@@ -1150,27 +589,7 @@ function configTests(ctx, description, argv, init) {
                 readStream.destroy()
 
                 setTimeout(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).toHaveBeenCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
-                  expect(console.error).toHaveBeenCalledTimes(0)
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: false,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 }, 1)
               })
@@ -1204,16 +623,7 @@ function configTests(ctx, description, argv, init) {
           })
 
           setTimeout(() => {
-            expect(mkdirp).toHaveBeenCalledTimes(0)
-            expect(createReadStream).toHaveBeenCalledTimes(0)
-            expect(createWriteStream).toHaveBeenCalledTimes(0)
-            expect(console.error).toHaveBeenCalledTimes(0)
-            expect(process.send).toHaveBeenCalledTimes(1)
-            expect(process.send).toHaveBeenCalledWith({
-              erred: false,
-              type: IDLE,
-            })
-
+            expectSnapshot()
             done()
           }, 1)
         })
@@ -1243,38 +653,7 @@ function configTests(ctx, description, argv, init) {
               })
 
               setTimeout(() => {
-                expect(mkdirp).toHaveBeenCalledTimes(1)
-                expect(mkdirp).toHaveBeenCalledWith(
-                  '/bar/alpha',
-                  expect.any(Function),
-                )
-                expect(readFile).toHaveBeenCalledWith(
-                  '/foo/alpha/bravo.js',
-                  'utf8',
-                  expect.any(Function),
-                )
-                expect(transform).toHaveBeenCalledTimes(0)
-                expect(console.error).toHaveBeenCalledTimes(
-                  argv.verbose ? 2 : 1,
-                )
-                expect(console.error).toHaveBeenCalledWith(
-                  'Failed to process file /foo/alpha/bravo.js',
-                )
-
-                if (argv.verbose) {
-                  expect(console.error).toHaveBeenCalledWith(
-                    new Error(
-                      'Failed to get contents of file /foo/alpha/bravo.js',
-                    ),
-                  )
-                }
-
-                expect(process.send).toHaveBeenCalledTimes(1)
-                expect(process.send).toHaveBeenCalledWith({
-                  erred: true,
-                  type: IDLE,
-                })
-
+                expectSnapshot()
                 done()
               }, 1)
             })
@@ -1315,43 +694,7 @@ function configTests(ctx, description, argv, init) {
                   })
 
                   setTimeout(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(readFile).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.js',
-                      'utf8',
-                      expect.any(Function),
-                    )
-                    expect(transform).toHaveBeenCalledTimes(1)
-                    expect(transform).toHaveBeenCalledWith(
-                      contents,
-                      Object.assign(
-                        {filename: '/foo/alpha/bravo.js'},
-                        TRANSFORM_OPTIONS,
-                      ),
-                      expect.any(Function),
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.js',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(writeFile).toHaveBeenCalledTimes(0)
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   }, 1)
                 })
@@ -1379,51 +722,7 @@ function configTests(ctx, description, argv, init) {
                     })
 
                     setTimeout(() => {
-                      expect(mkdirp).toHaveBeenCalledTimes(1)
-                      expect(mkdirp).toHaveBeenCalledWith(
-                        '/bar/alpha',
-                        expect.any(Function),
-                      )
-                      expect(readFile).toHaveBeenCalledWith(
-                        '/foo/alpha/bravo.js',
-                        'utf8',
-                        expect.any(Function),
-                      )
-                      expect(transform).toHaveBeenCalledTimes(1)
-                      expect(transform).toHaveBeenCalledWith(
-                        contents,
-                        Object.assign(
-                          {filename: '/foo/alpha/bravo.js'},
-                          TRANSFORM_OPTIONS,
-                        ),
-                        expect.any(Function),
-                      )
-                      expect(console.error).toHaveBeenCalledTimes(
-                        argv.verbose ? 2 : 1,
-                      )
-                      expect(console.error).toHaveBeenCalledWith(
-                        'Failed to process file /foo/alpha/bravo.js',
-                      )
-
-                      if (argv.verbose) {
-                        expect(console.error).toHaveBeenCalledWith(
-                          new Error('Failed to write file /bar/alpha/bravo.js'),
-                        )
-                      }
-
-                      expect(writeFile).toHaveBeenCalledTimes(1)
-                      expect(writeFile).toHaveBeenCalledWith(
-                        '/bar/alpha/bravo.js',
-                        contents,
-                        {encoding: 'utf8'},
-                        expect.any(Function),
-                      )
-                      expect(process.send).toHaveBeenCalledTimes(1)
-                      expect(process.send).toHaveBeenCalledWith({
-                        erred: true,
-                        type: IDLE,
-                      })
-
+                      expectSnapshot()
                       done()
                     }, 1)
                   })
@@ -1442,39 +741,7 @@ function configTests(ctx, description, argv, init) {
                     })
 
                     setTimeout(() => {
-                      expect(mkdirp).toHaveBeenCalledTimes(1)
-                      expect(mkdirp).toHaveBeenCalledWith(
-                        '/bar/alpha',
-                        expect.any(Function),
-                      )
-                      expect(readFile).toHaveBeenCalledWith(
-                        '/foo/alpha/bravo.js',
-                        'utf8',
-                        expect.any(Function),
-                      )
-                      expect(transform).toHaveBeenCalledTimes(1)
-                      expect(transform).toHaveBeenCalledWith(
-                        contents,
-                        Object.assign(
-                          {filename: '/foo/alpha/bravo.js'},
-                          TRANSFORM_OPTIONS,
-                        ),
-                        expect.any(Function),
-                      )
-                      expect(console.error).toHaveBeenCalledTimes(0)
-                      expect(writeFile).toHaveBeenCalledTimes(1)
-                      expect(writeFile).toHaveBeenCalledWith(
-                        '/bar/alpha/bravo.js',
-                        contents,
-                        {encoding: 'utf8'},
-                        expect.any(Function),
-                      )
-                      expect(process.send).toHaveBeenCalledTimes(1)
-                      expect(process.send).toHaveBeenCalledWith({
-                        erred: false,
-                        type: IDLE,
-                      })
-
+                      expectSnapshot()
                       done()
                     }, 1)
                   })
@@ -1504,43 +771,7 @@ function configTests(ctx, description, argv, init) {
                   })
 
                   setTimeout(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(readFile).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.js',
-                      'utf8',
-                      expect.any(Function),
-                    )
-                    expect(transform).toHaveBeenCalledTimes(1)
-                    expect(transform).toHaveBeenCalledWith(
-                      contents,
-                      Object.assign(
-                        {filename: '/foo/alpha/bravo.js'},
-                        TRANSFORM_OPTIONS,
-                      ),
-                      expect.any(Function),
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.js',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(writeFile).toHaveBeenCalledTimes(0)
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   }, 1)
                 })
@@ -1568,51 +799,7 @@ function configTests(ctx, description, argv, init) {
                     })
 
                     setTimeout(() => {
-                      expect(mkdirp).toHaveBeenCalledTimes(1)
-                      expect(mkdirp).toHaveBeenCalledWith(
-                        '/bar/alpha',
-                        expect.any(Function),
-                      )
-                      expect(readFile).toHaveBeenCalledWith(
-                        '/foo/alpha/bravo.js',
-                        'utf8',
-                        expect.any(Function),
-                      )
-                      expect(transform).toHaveBeenCalledTimes(1)
-                      expect(transform).toHaveBeenCalledWith(
-                        contents,
-                        Object.assign(
-                          {filename: '/foo/alpha/bravo.js'},
-                          TRANSFORM_OPTIONS,
-                        ),
-                        expect.any(Function),
-                      )
-                      expect(console.error).toHaveBeenCalledTimes(
-                        argv.verbose ? 2 : 1,
-                      )
-                      expect(console.error).toHaveBeenCalledWith(
-                        'Failed to process file /foo/alpha/bravo.js',
-                      )
-
-                      if (argv.verbose) {
-                        expect(console.error).toHaveBeenCalledWith(
-                          new Error('Failed to write file /bar/alpha/bravo.js'),
-                        )
-                      }
-
-                      expect(writeFile).toHaveBeenCalledTimes(1)
-                      expect(writeFile).toHaveBeenCalledWith(
-                        '/bar/alpha/bravo.js',
-                        contents,
-                        {encoding: 'utf8', mode: 0o666},
-                        expect.any(Function),
-                      )
-                      expect(process.send).toHaveBeenCalledTimes(1)
-                      expect(process.send).toHaveBeenCalledWith({
-                        erred: true,
-                        type: IDLE,
-                      })
-
+                      expectSnapshot()
                       done()
                     }, 1)
                   })
@@ -1631,39 +818,7 @@ function configTests(ctx, description, argv, init) {
                     })
 
                     setTimeout(() => {
-                      expect(mkdirp).toHaveBeenCalledTimes(1)
-                      expect(mkdirp).toHaveBeenCalledWith(
-                        '/bar/alpha',
-                        expect.any(Function),
-                      )
-                      expect(readFile).toHaveBeenCalledWith(
-                        '/foo/alpha/bravo.js',
-                        'utf8',
-                        expect.any(Function),
-                      )
-                      expect(transform).toHaveBeenCalledTimes(1)
-                      expect(transform).toHaveBeenCalledWith(
-                        contents,
-                        Object.assign(
-                          {filename: '/foo/alpha/bravo.js'},
-                          TRANSFORM_OPTIONS,
-                        ),
-                        expect.any(Function),
-                      )
-                      expect(console.error).toHaveBeenCalledTimes(0)
-                      expect(writeFile).toHaveBeenCalledTimes(1)
-                      expect(writeFile).toHaveBeenCalledWith(
-                        '/bar/alpha/bravo.js',
-                        contents,
-                        {encoding: 'utf8', mode: 0o666},
-                        expect.any(Function),
-                      )
-                      expect(process.send).toHaveBeenCalledTimes(1)
-                      expect(process.send).toHaveBeenCalledWith({
-                        erred: false,
-                        type: IDLE,
-                      })
-
+                      expectSnapshot()
                       done()
                     }, 1)
                   })
@@ -1697,33 +852,7 @@ function configTests(ctx, description, argv, init) {
                 })
 
                 process.nextTick(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(0)
-                  expect(console.error).toHaveBeenCalledTimes(
-                    argv.verbose ? 2 : 1,
-                  )
-                  expect(console.error).toHaveBeenCalledWith(
-                    'Failed to process file /foo/alpha/bravo.json',
-                  )
-
-                  if (argv.verbose) {
-                    expect(console.error).toHaveBeenCalledWith(error)
-                  }
-
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: true,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 })
               })
@@ -1745,37 +874,7 @@ function configTests(ctx, description, argv, init) {
                 })
 
                 process.nextTick(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).toHaveBeenCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {},
-                  )
-                  expect(console.error).toHaveBeenCalledTimes(
-                    argv.verbose ? 2 : 1,
-                  )
-                  expect(console.error).toHaveBeenCalledWith(
-                    'Failed to process file /foo/alpha/bravo.json',
-                  )
-
-                  if (argv.verbose) {
-                    expect(console.error).toHaveBeenCalledWith(error)
-                  }
-
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: true,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 })
               })
@@ -1799,37 +898,7 @@ function configTests(ctx, description, argv, init) {
 
                 process.nextTick(() => {
                   process.nextTick(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(createReadStream).toHaveBeenCalledTimes(1)
-                    expect(createReadStream).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.json',
-                    )
-                    expect(createWriteStream).toHaveBeenCalledTimes(1)
-                    expect(createWriteStream).toHaveBeenCalledWith(
-                      '/bar/alpha/bravo.json',
-                      {},
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.json',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   })
                 })
@@ -1854,37 +923,7 @@ function configTests(ctx, description, argv, init) {
 
                 process.nextTick(() => {
                   process.nextTick(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(createReadStream).toHaveBeenCalledTimes(1)
-                    expect(createReadStream).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.json',
-                    )
-                    expect(createWriteStream).toHaveBeenCalledTimes(1)
-                    expect(createWriteStream).toHaveBeenCalledWith(
-                      '/bar/alpha/bravo.json',
-                      {},
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.json',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   })
                 })
@@ -1907,27 +946,7 @@ function configTests(ctx, description, argv, init) {
                 readStream.destroy()
 
                 setTimeout(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).toHaveBeenCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {},
-                  )
-                  expect(console.error).toHaveBeenCalledTimes(0)
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: false,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 }, 1)
               })
@@ -1956,33 +975,7 @@ function configTests(ctx, description, argv, init) {
                 })
 
                 process.nextTick(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(0)
-                  expect(console.error).toHaveBeenCalledTimes(
-                    argv.verbose ? 2 : 1,
-                  )
-                  expect(console.error).toHaveBeenCalledWith(
-                    'Failed to process file /foo/alpha/bravo.json',
-                  )
-
-                  if (argv.verbose) {
-                    expect(console.error).toHaveBeenCalledWith(error)
-                  }
-
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: true,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 })
               })
@@ -2004,37 +997,7 @@ function configTests(ctx, description, argv, init) {
                 })
 
                 process.nextTick(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).toHaveBeenCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
-                  expect(console.error).toHaveBeenCalledTimes(
-                    argv.verbose ? 2 : 1,
-                  )
-                  expect(console.error).toHaveBeenCalledWith(
-                    'Failed to process file /foo/alpha/bravo.json',
-                  )
-
-                  if (argv.verbose) {
-                    expect(console.error).toHaveBeenCalledWith(error)
-                  }
-
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: true,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 })
               })
@@ -2058,37 +1021,7 @@ function configTests(ctx, description, argv, init) {
 
                 process.nextTick(() => {
                   process.nextTick(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(createReadStream).toHaveBeenCalledTimes(1)
-                    expect(createReadStream).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.json',
-                    )
-                    expect(createWriteStream).toHaveBeenCalledTimes(1)
-                    expect(createWriteStream).toHaveBeenCalledWith(
-                      '/bar/alpha/bravo.json',
-                      {mode: 0o666},
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.json',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   })
                 })
@@ -2113,37 +1046,7 @@ function configTests(ctx, description, argv, init) {
 
                 process.nextTick(() => {
                   process.nextTick(() => {
-                    expect(mkdirp).toHaveBeenCalledTimes(1)
-                    expect(mkdirp).toHaveBeenCalledWith(
-                      '/bar/alpha',
-                      expect.any(Function),
-                    )
-                    expect(createReadStream).toHaveBeenCalledTimes(1)
-                    expect(createReadStream).toHaveBeenCalledWith(
-                      '/foo/alpha/bravo.json',
-                    )
-                    expect(createWriteStream).toHaveBeenCalledTimes(1)
-                    expect(createWriteStream).toHaveBeenCalledWith(
-                      '/bar/alpha/bravo.json',
-                      {mode: 0o666},
-                    )
-                    expect(console.error).toHaveBeenCalledTimes(
-                      argv.verbose ? 2 : 1,
-                    )
-                    expect(console.error).toHaveBeenCalledWith(
-                      'Failed to process file /foo/alpha/bravo.json',
-                    )
-
-                    if (argv.verbose) {
-                      expect(console.error).toHaveBeenCalledWith(error)
-                    }
-
-                    expect(process.send).toHaveBeenCalledTimes(1)
-                    expect(process.send).toHaveBeenCalledWith({
-                      erred: true,
-                      type: IDLE,
-                    })
-
+                    expectSnapshot()
                     done()
                   })
                 })
@@ -2166,27 +1069,7 @@ function configTests(ctx, description, argv, init) {
                 readStream.destroy()
 
                 setTimeout(() => {
-                  expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).toHaveBeenCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
-                  expect(createReadStream).toHaveBeenCalledTimes(1)
-                  expect(createReadStream).toHaveBeenCalledWith(
-                    '/foo/alpha/bravo.json',
-                  )
-                  expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).toHaveBeenCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
-                  expect(console.error).toHaveBeenCalledTimes(0)
-                  expect(process.send).toHaveBeenCalledTimes(1)
-                  expect(process.send).toHaveBeenCalledWith({
-                    erred: false,
-                    type: IDLE,
-                  })
-
+                  expectSnapshot()
                   done()
                 }, 1)
               })
@@ -2246,16 +1129,20 @@ describe('worker', () => {
   })
 
   beforeEach(() => {
-    console.error.mockReset()
-    createReadStream.mockReset()
-    createWriteStream.mockReset()
-    mkdirp.mockReset()
-    readdir.mockReset()
-    readFile.mockReset()
-    stat.mockReset()
-    transform.mockReset()
-    unlink.mockReset()
-    writeFile.mockReset()
+    ;[
+      console.error,
+      createReadStream,
+      createWriteStream,
+      mkdirp,
+      readdir,
+      readFile,
+      stat,
+      transform,
+      unlink,
+      writeFile,
+    ].forEach(e => {
+      e.mockReset()
+    })
 
     process.send = jest.fn()
 
