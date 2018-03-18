@@ -8,7 +8,20 @@ import glob from 'glob'
 import watch from 'node-watch'
 import {cpus} from 'os'
 import master from '../master'
-import {IDLE, REMOVE_FILE, TRANSFORM_FILE} from '../actions'
+import {IDLE, TRANSFORM_FILE} from '../actions'
+
+function expectSnapshot(state) {
+  expect({
+    clusterFork: cluster.fork,
+    clusterOn: cluster.on,
+    consoleError: console.error,
+    consoleInfo: console.info,
+    glob,
+    processExit: process.exit,
+    state,
+    watch,
+  }).toMatchSnapshot()
+}
 
 function tests(description, {argv}) {
   describe(description, () => {
@@ -40,44 +53,11 @@ function tests(description, {argv}) {
     })
 
     it('functions as expected', () => {
-      const source = argv.source.replace(/\/$/, '')
       const state = master(argv, cluster.fork, cluster.on)
-
-      expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-      expect(cluster.on).toHaveBeenCalledTimes(1)
-      expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-      expect(console.info).toHaveBeenCalledTimes(1)
-      expect(console.info).toHaveBeenCalledWith(
-        `Spawned ${workerCount} workers`,
-      )
-      expect(glob).toHaveBeenCalledTimes(1)
-      expect(glob).toHaveBeenCalledWith(`${source}/**/*`, expect.any(Function))
-      expect(state).toEqual({
-        erred: false,
-        isWatching: argv.watch,
-        queue: [],
-        workers,
-      })
-      expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-      if (argv.watch) {
-        expect(watch).toHaveBeenCalledWith(
-          source,
-          {recursive: true},
-          expect.any(Function),
-        )
-      }
-
-      state.workers.forEach(({worker}) => {
-        expect(worker.on).toHaveBeenCalledTimes(1)
-        expect(worker.on).toHaveBeenCalledWith('message', expect.any(Function))
-      })
-
-      expect(process.exit).not.toHaveBeenCalled()
+      expectSnapshot(state)
     })
 
     it('replaces dead worker', () => {
-      const source = argv.source.replace(/\/$/, '')
       const state = master(argv, cluster.fork, cluster.on)
 
       clusterListeners.exit.forEach(callback => {
@@ -94,40 +74,7 @@ function tests(description, {argv}) {
         }),
       })
 
-      expect(cluster.fork).toHaveBeenCalledTimes(workerCount + 1)
-      expect(cluster.on).toHaveBeenCalledTimes(1)
-      expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-      expect(console.info).toHaveBeenCalledTimes(2)
-      expect(console.info).toHaveBeenCalledWith(
-        `Spawned ${workerCount} workers`,
-      )
-      expect(console.info).toHaveBeenCalledWith(
-        "Worker 1 died, spawning a new worker in it's place",
-      )
-      expect(glob).toHaveBeenCalledTimes(1)
-      expect(glob).toHaveBeenCalledWith(`${source}/**/*`, expect.any(Function))
-      expect(state).toEqual({
-        erred: false,
-        isWatching: argv.watch,
-        queue: [],
-        workers,
-      })
-      expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-      if (argv.watch) {
-        expect(watch).toHaveBeenCalledWith(
-          source,
-          {recursive: true},
-          expect.any(Function),
-        )
-      }
-
-      state.workers.forEach(({worker}) => {
-        expect(worker.on).toHaveBeenCalledTimes(1)
-        expect(worker.on).toHaveBeenCalledWith('message', expect.any(Function))
-      })
-
-      expect(process.exit).not.toHaveBeenCalled()
+      expectSnapshot(state)
     })
 
     it('functions as expected when glob fails', () => {
@@ -154,53 +101,7 @@ function tests(description, {argv}) {
       })
 
       it('functions as expected', () => {
-        const source = argv.source.replace(/\/$/, '')
-
-        expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-        expect(cluster.on).toHaveBeenCalledTimes(1)
-        expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-        expect(console.info).toHaveBeenCalledTimes(2)
-        expect(console.info).toHaveBeenCalledWith(
-          `Spawned ${workerCount} workers`,
-        )
-        expect(console.info).toHaveBeenCalledWith(
-          'Queuing up 0 files to be processed',
-        )
-        expect(glob).toHaveBeenCalledTimes(1)
-        expect(glob).toHaveBeenCalledWith(
-          `${source}/**/*`,
-          expect.any(Function),
-        )
-        expect(state).toEqual({
-          erred: false,
-          isWatching: argv.watch,
-          queue: [],
-          workers,
-        })
-        expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-        if (argv.watch) {
-          expect(watch).toHaveBeenCalledWith(
-            source,
-            {recursive: true},
-            expect.any(Function),
-          )
-        }
-
-        state.workers.forEach(({worker}) => {
-          expect(worker.on).toHaveBeenCalledTimes(1)
-          expect(worker.on).toHaveBeenCalledWith(
-            'message',
-            expect.any(Function),
-          )
-        })
-
-        if (!argv.watch) {
-          expect(process.exit).toHaveBeenCalledTimes(1)
-          expect(process.exit).toHaveBeenCalledWith(0)
-        } else {
-          expect(process.exit).not.toHaveBeenCalled()
-        }
+        expectSnapshot(state)
       })
     })
 
@@ -221,29 +122,11 @@ function tests(description, {argv}) {
       })
 
       it('functions as expected', () => {
-        const source = argv.source.replace(/\/$/, '')
-
         workers[workers.length - 1].idle = false
 
         if (workers.length > 1) {
           workers[workers.length - 2].idle = false
         }
-
-        expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-        expect(cluster.on).toHaveBeenCalledTimes(1)
-        expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-        expect(console.info).toHaveBeenCalledTimes(2)
-        expect(console.info).toHaveBeenCalledWith(
-          `Spawned ${workerCount} workers`,
-        )
-        expect(console.info).toHaveBeenCalledWith(
-          'Queuing up 4 files to be processed',
-        )
-        expect(glob).toHaveBeenCalledTimes(1)
-        expect(glob).toHaveBeenCalledWith(
-          `${source}/**/*`,
-          expect.any(Function),
-        )
 
         const queue = []
 
@@ -254,50 +137,10 @@ function tests(description, {argv}) {
           })
         }
 
-        expect(state).toEqual({
-          erred: false,
-          isWatching: argv.watch,
-          queue,
-          workers,
-        })
-        expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-        if (argv.watch) {
-          expect(watch).toHaveBeenCalledWith(
-            source,
-            {recursive: true},
-            expect.any(Function),
-          )
-        }
-
-        const firstBusyWorkerIndex = state.workers.length - 2
-
-        state.workers.forEach((workerInfo, index) => {
-          const {worker} = workerInfo
-
-          expect(worker.on).toHaveBeenCalledTimes(1)
-          expect(worker.on).toHaveBeenCalledWith(
-            'message',
-            expect.any(Function),
-          )
-
-          if (index >= firstBusyWorkerIndex) {
-            expect(worker.send).toHaveBeenCalledTimes(1)
-            expect(worker.send).toHaveBeenCalledWith({
-              filePath: expect.any(String), // TODO: improve check
-              type: TRANSFORM_FILE,
-            })
-          } else {
-            expect(worker.send).not.toHaveBeenCalled()
-          }
-        })
-
-        expect(process.exit).not.toHaveBeenCalled()
+        expectSnapshot(state)
       })
 
       it('functions as expected when it receives non-object message from worker', () => {
-        const source = argv.source.replace(/\/$/, '')
-
         state.workers[0].worker._trigger('message', 'foobar')
 
         workers[workers.length - 1].idle = false
@@ -306,26 +149,6 @@ function tests(description, {argv}) {
           workers[workers.length - 2].idle = false
         }
 
-        expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-        expect(cluster.on).toHaveBeenCalledTimes(1)
-        expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-        expect(console.info).toHaveBeenCalledTimes(2)
-        expect(console.info).toHaveBeenCalledWith(
-          `Spawned ${workerCount} workers`,
-        )
-        expect(console.info).toHaveBeenCalledWith(
-          'Queuing up 4 files to be processed',
-        )
-        expect(console.error).toHaveBeenCalledTimes(1)
-        expect(console.error).toHaveBeenCalledWith(
-          'Expected message from worker to be an object but instead received type string',
-        )
-        expect(glob).toHaveBeenCalledTimes(1)
-        expect(glob).toHaveBeenCalledWith(
-          `${source}/**/*`,
-          expect.any(Function),
-        )
-
         const queue = []
 
         if (workerCount === 1) {
@@ -335,50 +158,10 @@ function tests(description, {argv}) {
           })
         }
 
-        expect(state).toEqual({
-          erred: false,
-          isWatching: argv.watch,
-          queue,
-          workers,
-        })
-        expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-        if (argv.watch) {
-          expect(watch).toHaveBeenCalledWith(
-            source,
-            {recursive: true},
-            expect.any(Function),
-          )
-        }
-
-        const firstBusyWorkerIndex = state.workers.length - 2
-
-        state.workers.forEach((workerInfo, index) => {
-          const {worker} = workerInfo
-
-          expect(worker.on).toHaveBeenCalledTimes(1)
-          expect(worker.on).toHaveBeenCalledWith(
-            'message',
-            expect.any(Function),
-          )
-
-          if (index >= firstBusyWorkerIndex) {
-            expect(worker.send).toHaveBeenCalledTimes(1)
-            expect(worker.send).toHaveBeenCalledWith({
-              filePath: expect.any(String), // TODO: improve check
-              type: TRANSFORM_FILE,
-            })
-          } else {
-            expect(worker.send).not.toHaveBeenCalled()
-          }
-        })
-
-        expect(process.exit).not.toHaveBeenCalled()
+        expectSnapshot(state)
       })
 
       it('functions as expected when it receives null message from worker', () => {
-        const source = argv.source.replace(/\/$/, '')
-
         state.workers[0].worker._trigger('message', null)
 
         workers[workers.length - 1].idle = false
@@ -387,26 +170,6 @@ function tests(description, {argv}) {
           workers[workers.length - 2].idle = false
         }
 
-        expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-        expect(cluster.on).toHaveBeenCalledTimes(1)
-        expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-        expect(console.info).toHaveBeenCalledTimes(2)
-        expect(console.info).toHaveBeenCalledWith(
-          `Spawned ${workerCount} workers`,
-        )
-        expect(console.info).toHaveBeenCalledWith(
-          'Queuing up 4 files to be processed',
-        )
-        expect(console.error).toHaveBeenCalledTimes(1)
-        expect(console.error).toHaveBeenCalledWith(
-          'Expected message from worker to be present but instead received null',
-        )
-        expect(glob).toHaveBeenCalledTimes(1)
-        expect(glob).toHaveBeenCalledWith(
-          `${source}/**/*`,
-          expect.any(Function),
-        )
-
         const queue = []
 
         if (workerCount === 1) {
@@ -416,50 +179,10 @@ function tests(description, {argv}) {
           })
         }
 
-        expect(state).toEqual({
-          erred: false,
-          isWatching: argv.watch,
-          queue,
-          workers,
-        })
-        expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-        if (argv.watch) {
-          expect(watch).toHaveBeenCalledWith(
-            source,
-            {recursive: true},
-            expect.any(Function),
-          )
-        }
-
-        const firstBusyWorkerIndex = state.workers.length - 2
-
-        state.workers.forEach((workerInfo, index) => {
-          const {worker} = workerInfo
-
-          expect(worker.on).toHaveBeenCalledTimes(1)
-          expect(worker.on).toHaveBeenCalledWith(
-            'message',
-            expect.any(Function),
-          )
-
-          if (index >= firstBusyWorkerIndex) {
-            expect(worker.send).toHaveBeenCalledTimes(1)
-            expect(worker.send).toHaveBeenCalledWith({
-              filePath: expect.any(String), // TODO: improve check
-              type: TRANSFORM_FILE,
-            })
-          } else {
-            expect(worker.send).not.toHaveBeenCalled()
-          }
-        })
-
-        expect(process.exit).not.toHaveBeenCalled()
+        expectSnapshot(state)
       })
 
       it('functions as expected when it receives message from worker of unkown action type', () => {
-        const source = argv.source.replace(/\/$/, '')
-
         state.workers[0].worker._trigger('message', {type: 'FOOBAR'})
 
         workers[workers.length - 1].idle = false
@@ -468,26 +191,6 @@ function tests(description, {argv}) {
           workers[workers.length - 2].idle = false
         }
 
-        expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-        expect(cluster.on).toHaveBeenCalledTimes(1)
-        expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-        expect(console.info).toHaveBeenCalledTimes(2)
-        expect(console.info).toHaveBeenCalledWith(
-          `Spawned ${workerCount} workers`,
-        )
-        expect(console.info).toHaveBeenCalledWith(
-          'Queuing up 4 files to be processed',
-        )
-        expect(console.error).toHaveBeenCalledTimes(1)
-        expect(console.error).toHaveBeenCalledWith(
-          'Worker sent message with unknown action type FOOBAR',
-        )
-        expect(glob).toHaveBeenCalledTimes(1)
-        expect(glob).toHaveBeenCalledWith(
-          `${source}/**/*`,
-          expect.any(Function),
-        )
-
         const queue = []
 
         if (workerCount === 1) {
@@ -497,50 +200,10 @@ function tests(description, {argv}) {
           })
         }
 
-        expect(state).toEqual({
-          erred: false,
-          isWatching: argv.watch,
-          queue,
-          workers,
-        })
-        expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-        if (argv.watch) {
-          expect(watch).toHaveBeenCalledWith(
-            source,
-            {recursive: true},
-            expect.any(Function),
-          )
-        }
-
-        const firstBusyWorkerIndex = state.workers.length - 2
-
-        state.workers.forEach((workerInfo, index) => {
-          const {worker} = workerInfo
-
-          expect(worker.on).toHaveBeenCalledTimes(1)
-          expect(worker.on).toHaveBeenCalledWith(
-            'message',
-            expect.any(Function),
-          )
-
-          if (index >= firstBusyWorkerIndex) {
-            expect(worker.send).toHaveBeenCalledTimes(1)
-            expect(worker.send).toHaveBeenCalledWith({
-              filePath: expect.any(String), // TODO: improve check
-              type: TRANSFORM_FILE,
-            })
-          } else {
-            expect(worker.send).not.toHaveBeenCalled()
-          }
-        })
-
-        expect(process.exit).not.toHaveBeenCalled()
+        expectSnapshot(state)
       })
 
       it('functions as expected when it receives message from worker for idle action type (not erred)', () => {
-        const source = argv.source.replace(/\/$/, '')
-
         state.workers[state.workers.length - 1].worker._trigger('message', {
           erred: false,
           type: IDLE,
@@ -554,67 +217,10 @@ function tests(description, {argv}) {
           workers[workers.length - 2].idle = false
         }
 
-        expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-        expect(cluster.on).toHaveBeenCalledTimes(1)
-        expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-        expect(console.info).toHaveBeenCalledTimes(2)
-        expect(console.info).toHaveBeenCalledWith(
-          `Spawned ${workerCount} workers`,
-        )
-        expect(console.info).toHaveBeenCalledWith(
-          'Queuing up 4 files to be processed',
-        )
-        expect(console.error).toHaveBeenCalledTimes(0)
-        expect(glob).toHaveBeenCalledTimes(1)
-        expect(glob).toHaveBeenCalledWith(
-          `${source}/**/*`,
-          expect.any(Function),
-        )
-
-        expect(state).toEqual({
-          erred: false,
-          isWatching: argv.watch,
-          queue: [],
-          workers,
-        })
-        expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-        if (argv.watch) {
-          expect(watch).toHaveBeenCalledWith(
-            source,
-            {recursive: true},
-            expect.any(Function),
-          )
-        }
-
-        const firstBusyWorkerIndex = state.workers.length - 2
-
-        state.workers.forEach((workerInfo, index) => {
-          const {worker} = workerInfo
-
-          expect(worker.on).toHaveBeenCalledTimes(1)
-          expect(worker.on).toHaveBeenCalledWith(
-            'message',
-            expect.any(Function),
-          )
-
-          if (index >= firstBusyWorkerIndex) {
-            expect(worker.send).toHaveBeenCalledTimes(workerCount === 1 ? 2 : 1)
-            expect(worker.send).toHaveBeenCalledWith({
-              filePath: expect.any(String), // TODO: improve check
-              type: TRANSFORM_FILE,
-            })
-          } else {
-            expect(worker.send).not.toHaveBeenCalled()
-          }
-        })
-
-        expect(process.exit).not.toHaveBeenCalled()
+        expectSnapshot(state)
       })
 
       it('functions as expected when it receives message from worker for idle action type (erred)', () => {
-        const source = argv.source.replace(/\/$/, '')
-
         state.workers[state.workers.length - 1].worker._trigger('message', {
           erred: true,
           type: IDLE,
@@ -628,68 +234,11 @@ function tests(description, {argv}) {
           workers[workers.length - 2].idle = false
         }
 
-        expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-        expect(cluster.on).toHaveBeenCalledTimes(1)
-        expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-        expect(console.info).toHaveBeenCalledTimes(2)
-        expect(console.info).toHaveBeenCalledWith(
-          `Spawned ${workerCount} workers`,
-        )
-        expect(console.info).toHaveBeenCalledWith(
-          'Queuing up 4 files to be processed',
-        )
-        expect(console.error).toHaveBeenCalledTimes(0)
-        expect(glob).toHaveBeenCalledTimes(1)
-        expect(glob).toHaveBeenCalledWith(
-          `${source}/**/*`,
-          expect.any(Function),
-        )
-
-        expect(state).toEqual({
-          erred: true,
-          isWatching: argv.watch,
-          queue: [],
-          workers,
-        })
-        expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-        if (argv.watch) {
-          expect(watch).toHaveBeenCalledWith(
-            source,
-            {recursive: true},
-            expect.any(Function),
-          )
-        }
-
-        const firstBusyWorkerIndex = state.workers.length - 2
-
-        state.workers.forEach((workerInfo, index) => {
-          const {worker} = workerInfo
-
-          expect(worker.on).toHaveBeenCalledTimes(1)
-          expect(worker.on).toHaveBeenCalledWith(
-            'message',
-            expect.any(Function),
-          )
-
-          if (index >= firstBusyWorkerIndex) {
-            expect(worker.send).toHaveBeenCalledTimes(workerCount === 1 ? 2 : 1)
-            expect(worker.send).toHaveBeenCalledWith({
-              filePath: expect.any(String), // TODO: improve check
-              type: TRANSFORM_FILE,
-            })
-          } else {
-            expect(worker.send).not.toHaveBeenCalled()
-          }
-        })
-
-        expect(process.exit).not.toHaveBeenCalled()
+        expectSnapshot(state)
       })
 
       if (!argv.watch) {
         it('functions as expected once all files have been processed (not erred)', () => {
-          const source = argv.source.replace(/\/$/, '')
-
           state.erred = false
           state.queue = []
           state.workers.forEach(workerInfo => {
@@ -701,68 +250,10 @@ function tests(description, {argv}) {
             type: IDLE,
           })
 
-          expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-          expect(cluster.on).toHaveBeenCalledTimes(1)
-          expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-          expect(console.info).toHaveBeenCalledTimes(2)
-          expect(console.info).toHaveBeenCalledWith(
-            `Spawned ${workerCount} workers`,
-          )
-          expect(console.info).toHaveBeenCalledWith(
-            'Queuing up 4 files to be processed',
-          )
-          expect(console.error).toHaveBeenCalledTimes(0)
-          expect(glob).toHaveBeenCalledTimes(1)
-          expect(glob).toHaveBeenCalledWith(
-            `${source}/**/*`,
-            expect.any(Function),
-          )
-
-          expect(state).toEqual({
-            erred: false,
-            isWatching: argv.watch,
-            queue: [],
-            workers,
-          })
-          expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-          if (argv.watch) {
-            expect(watch).toHaveBeenCalledWith(
-              source,
-              {recursive: true},
-              expect.any(Function),
-            )
-          }
-
-          const firstBusyWorkerIndex = state.workers.length - 2
-
-          state.workers.forEach((workerInfo, index) => {
-            const {worker} = workerInfo
-
-            expect(worker.on).toHaveBeenCalledTimes(1)
-            expect(worker.on).toHaveBeenCalledWith(
-              'message',
-              expect.any(Function),
-            )
-
-            if (index >= firstBusyWorkerIndex) {
-              expect(worker.send).toHaveBeenCalledTimes(1)
-              expect(worker.send).toHaveBeenCalledWith({
-                filePath: expect.any(String), // TODO: improve check
-                type: TRANSFORM_FILE,
-              })
-            } else {
-              expect(worker.send).not.toHaveBeenCalled()
-            }
-          })
-
-          expect(process.exit).toHaveBeenCalledTimes(1)
-          expect(process.exit).toHaveBeenCalledWith(0)
+          expectSnapshot(state)
         })
 
         it('functions as expected once all files have been processed (erred)', () => {
-          const source = argv.source.replace(/\/$/, '')
-
           state.erred = true
           state.queue = []
           state.workers.forEach(workerInfo => {
@@ -774,71 +265,13 @@ function tests(description, {argv}) {
             type: IDLE,
           })
 
-          expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-          expect(cluster.on).toHaveBeenCalledTimes(1)
-          expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-          expect(console.info).toHaveBeenCalledTimes(2)
-          expect(console.info).toHaveBeenCalledWith(
-            `Spawned ${workerCount} workers`,
-          )
-          expect(console.info).toHaveBeenCalledWith(
-            'Queuing up 4 files to be processed',
-          )
-          expect(console.error).toHaveBeenCalledTimes(0)
-          expect(glob).toHaveBeenCalledTimes(1)
-          expect(glob).toHaveBeenCalledWith(
-            `${source}/**/*`,
-            expect.any(Function),
-          )
-
-          expect(state).toEqual({
-            erred: true,
-            isWatching: argv.watch,
-            queue: [],
-            workers,
-          })
-          expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-          if (argv.watch) {
-            expect(watch).toHaveBeenCalledWith(
-              source,
-              {recursive: true},
-              expect.any(Function),
-            )
-          }
-
-          const firstBusyWorkerIndex = state.workers.length - 2
-
-          state.workers.forEach((workerInfo, index) => {
-            const {worker} = workerInfo
-
-            expect(worker.on).toHaveBeenCalledTimes(1)
-            expect(worker.on).toHaveBeenCalledWith(
-              'message',
-              expect.any(Function),
-            )
-
-            if (index >= firstBusyWorkerIndex) {
-              expect(worker.send).toHaveBeenCalledTimes(1)
-              expect(worker.send).toHaveBeenCalledWith({
-                filePath: expect.any(String), // TODO: improve check
-                type: TRANSFORM_FILE,
-              })
-            } else {
-              expect(worker.send).not.toHaveBeenCalled()
-            }
-          })
-
-          expect(process.exit).toHaveBeenCalledTimes(1)
-          expect(process.exit).toHaveBeenCalledWith(1)
+          expectSnapshot(state)
         })
       }
     })
 
     if (argv.watch) {
       it('functions as expected when a file was updated', () => {
-        const source = argv.source.replace(/\/$/, '')
-
         watch.mockImplementation((...args) => {
           const handler = args[args.length - 1]
           handler('update', '/foo/alpha.js')
@@ -848,57 +281,10 @@ function tests(description, {argv}) {
 
         const state = master(argv, cluster.fork, cluster.on)
 
-        expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-        expect(cluster.on).toHaveBeenCalledTimes(1)
-        expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-        expect(console.info).toHaveBeenCalledTimes(1)
-        expect(console.info).toHaveBeenCalledWith(
-          `Spawned ${workerCount} workers`,
-        )
-        expect(glob).toHaveBeenCalledTimes(1)
-        expect(glob).toHaveBeenCalledWith(
-          `${source}/**/*`,
-          expect.any(Function),
-        )
-        expect(state).toEqual({
-          erred: false,
-          isWatching: argv.watch,
-          queue: [],
-          workers,
-        })
-        expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-        expect(watch).toHaveBeenCalledWith(
-          source,
-          {recursive: true},
-          expect.any(Function),
-        )
-        const firstBusyWorkerIndex = state.workers.length - 1
-
-        state.workers.forEach((workerInfo, index) => {
-          const {worker} = workerInfo
-
-          expect(worker.on).toHaveBeenCalledTimes(1)
-          expect(worker.on).toHaveBeenCalledWith(
-            'message',
-            expect.any(Function),
-          )
-
-          if (index >= firstBusyWorkerIndex) {
-            expect(worker.send).toHaveBeenCalledTimes(1)
-            expect(worker.send).toHaveBeenCalledWith({
-              filePath: '/foo/alpha.js',
-              type: TRANSFORM_FILE,
-            })
-          } else {
-            expect(worker.send).not.toHaveBeenCalled()
-          }
-        })
+        expectSnapshot(state)
       })
 
       it('functions as expected when a file was removed', () => {
-        const source = argv.source.replace(/\/$/, '')
-
         watch.mockImplementation((...args) => {
           const handler = args[args.length - 1]
           handler('remove', '/foo/alpha.js')
@@ -908,52 +294,7 @@ function tests(description, {argv}) {
 
         const state = master(argv, cluster.fork, cluster.on)
 
-        expect(cluster.fork).toHaveBeenCalledTimes(workerCount)
-        expect(cluster.on).toHaveBeenCalledTimes(1)
-        expect(cluster.on).toHaveBeenCalledWith('exit', expect.any(Function))
-        expect(console.info).toHaveBeenCalledTimes(1)
-        expect(console.info).toHaveBeenCalledWith(
-          `Spawned ${workerCount} workers`,
-        )
-        expect(glob).toHaveBeenCalledTimes(1)
-        expect(glob).toHaveBeenCalledWith(
-          `${source}/**/*`,
-          expect.any(Function),
-        )
-        expect(state).toEqual({
-          erred: false,
-          isWatching: argv.watch,
-          queue: [],
-          workers,
-        })
-        expect(watch).toHaveBeenCalledTimes(argv.watch ? 1 : 0)
-
-        expect(watch).toHaveBeenCalledWith(
-          source,
-          {recursive: true},
-          expect.any(Function),
-        )
-        const firstBusyWorkerIndex = state.workers.length - 1
-
-        state.workers.forEach((workerInfo, index) => {
-          const {worker} = workerInfo
-
-          expect(worker.on).toHaveBeenCalledTimes(1)
-          expect(worker.on).toHaveBeenCalledWith(
-            'message',
-            expect.any(Function),
-          )
-
-          if (index >= firstBusyWorkerIndex) {
-            expect(worker.send).toHaveBeenCalledTimes(1)
-            expect(worker.send).toHaveBeenCalledWith({
-              filePath: '/foo/alpha.js',
-              type: REMOVE_FILE,
-            })
-          } else {
-            expect(worker.send).not.toHaveBeenCalled()
-          }
-        })
+        expectSnapshot(state)
       })
     }
   })
@@ -1024,110 +365,246 @@ describe('master', () => {
     }).toThrowError('workerCount is expected to be a number not string')
   })
 
-  describe('when source has trailing separator', () => {
-    describe('when watch mode enabled', () => {
-      tests('when worker count argument is zero', {
-        argv: {
-          source: '/foo/',
-          watch: true,
-          workerCount: 0,
-        },
+  describe('when verbose', () => {
+    describe('when source has trailing separator', () => {
+      describe('when watch mode enabled', () => {
+        tests('when worker count argument is zero', {
+          argv: {
+            source: '/foo/',
+            verbose: true,
+            watch: true,
+            workerCount: 0,
+          },
+        })
+
+        tests('when worker count is one', {
+          argv: {
+            source: '/foo/',
+            verbose: true,
+            watch: true,
+            workerCount: 1,
+          },
+        })
+
+        tests('when worker count is two', {
+          argv: {
+            source: '/foo/',
+            verbose: true,
+            watch: true,
+            workerCount: 2,
+          },
+        })
       })
 
-      tests('when worker count is one', {
-        argv: {
-          source: '/foo/',
-          watch: true,
-          workerCount: 1,
-        },
-      })
+      describe('when watch mode disabled', () => {
+        tests('when worker count argument is zero', {
+          argv: {
+            source: '/foo/',
+            verbose: true,
+            watch: false,
+            workerCount: 0,
+          },
+        })
 
-      tests('when worker count is two', {
-        argv: {
-          source: '/foo/',
-          watch: true,
-          workerCount: 2,
-        },
+        tests('when worker count is one', {
+          argv: {
+            source: '/foo/',
+            verbose: true,
+            watch: false,
+            workerCount: 1,
+          },
+        })
+
+        tests('when worker count is two', {
+          argv: {
+            source: '/foo/',
+            verbose: true,
+            watch: false,
+            workerCount: 2,
+          },
+        })
       })
     })
 
-    describe('when watch mode disabled', () => {
-      tests('when worker count argument is zero', {
-        argv: {
-          source: '/foo/',
-          watch: false,
-          workerCount: 0,
-        },
+    describe('when source does not have trailing separator', () => {
+      describe('when watch mode enabled', () => {
+        tests('when worker count argument is zero', {
+          argv: {
+            source: '/foo',
+            verbose: true,
+            watch: true,
+            workerCount: 0,
+          },
+        })
+
+        tests('when worker count is one', {
+          argv: {
+            source: '/foo',
+            verbose: true,
+            watch: true,
+            workerCount: 1,
+          },
+        })
+
+        tests('when worker count is two', {
+          argv: {
+            source: '/foo',
+            verbose: true,
+            watch: true,
+            workerCount: 2,
+          },
+        })
       })
 
-      tests('when worker count is one', {
-        argv: {
-          source: '/foo/',
-          watch: false,
-          workerCount: 1,
-        },
-      })
+      describe('when watch mode disabled', () => {
+        tests('when worker count argument is zero', {
+          argv: {
+            source: '/foo',
+            verbose: true,
+            watch: false,
+            workerCount: 0,
+          },
+        })
 
-      tests('when worker count is two', {
-        argv: {
-          source: '/foo/',
-          watch: false,
-          workerCount: 2,
-        },
+        tests('when worker count is one', {
+          argv: {
+            source: '/foo',
+            verbose: true,
+            watch: false,
+            workerCount: 1,
+          },
+        })
+
+        tests('when worker count is two', {
+          argv: {
+            source: '/foo',
+            verbose: true,
+            watch: false,
+            workerCount: 2,
+          },
+        })
       })
     })
   })
 
-  describe('when source does not have trailing separator', () => {
-    describe('when watch mode enabled', () => {
-      tests('when worker count argument is zero', {
-        argv: {
-          source: '/foo',
-          watch: true,
-          workerCount: 0,
-        },
+  describe('when not verbose', () => {
+    describe('when source has trailing separator', () => {
+      describe('when watch mode enabled', () => {
+        tests('when worker count argument is zero', {
+          argv: {
+            source: '/foo/',
+            verbose: false,
+            watch: true,
+            workerCount: 0,
+          },
+        })
+
+        tests('when worker count is one', {
+          argv: {
+            source: '/foo/',
+            verbose: false,
+            watch: true,
+            workerCount: 1,
+          },
+        })
+
+        tests('when worker count is two', {
+          argv: {
+            source: '/foo/',
+            verbose: false,
+            watch: true,
+            workerCount: 2,
+          },
+        })
       })
 
-      tests('when worker count is one', {
-        argv: {
-          source: '/foo',
-          watch: true,
-          workerCount: 1,
-        },
-      })
+      describe('when watch mode disabled', () => {
+        tests('when worker count argument is zero', {
+          argv: {
+            source: '/foo/',
+            verbose: false,
+            watch: false,
+            workerCount: 0,
+          },
+        })
 
-      tests('when worker count is two', {
-        argv: {
-          source: '/foo',
-          watch: true,
-          workerCount: 2,
-        },
+        tests('when worker count is one', {
+          argv: {
+            source: '/foo/',
+            verbose: false,
+            watch: false,
+            workerCount: 1,
+          },
+        })
+
+        tests('when worker count is two', {
+          argv: {
+            source: '/foo/',
+            verbose: false,
+            watch: false,
+            workerCount: 2,
+          },
+        })
       })
     })
 
-    describe('when watch mode disabled', () => {
-      tests('when worker count argument is zero', {
-        argv: {
-          source: '/foo',
-          watch: false,
-          workerCount: 0,
-        },
+    describe('when source does not have trailing separator', () => {
+      describe('when watch mode enabled', () => {
+        tests('when worker count argument is zero', {
+          argv: {
+            source: '/foo',
+            verbose: false,
+            watch: true,
+            workerCount: 0,
+          },
+        })
+
+        tests('when worker count is one', {
+          argv: {
+            source: '/foo',
+            verbose: false,
+            watch: true,
+            workerCount: 1,
+          },
+        })
+
+        tests('when worker count is two', {
+          argv: {
+            source: '/foo',
+            verbose: false,
+            watch: true,
+            workerCount: 2,
+          },
+        })
       })
 
-      tests('when worker count is one', {
-        argv: {
-          source: '/foo',
-          watch: false,
-          workerCount: 1,
-        },
-      })
+      describe('when watch mode disabled', () => {
+        tests('when worker count argument is zero', {
+          argv: {
+            source: '/foo',
+            verbose: false,
+            watch: false,
+            workerCount: 0,
+          },
+        })
 
-      tests('when worker count is two', {
-        argv: {
-          source: '/foo',
-          watch: false,
-          workerCount: 2,
-        },
+        tests('when worker count is one', {
+          argv: {
+            source: '/foo',
+            verbose: false,
+            watch: false,
+            workerCount: 1,
+          },
+        })
+
+        tests('when worker count is two', {
+          argv: {
+            source: '/foo',
+            verbose: false,
+            watch: false,
+            workerCount: 2,
+          },
+        })
       })
     })
   })

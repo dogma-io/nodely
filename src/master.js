@@ -26,6 +26,7 @@ type State = {|
   erred: boolean,
   isWatching: boolean,
   queue: Action[],
+  verbose: boolean,
   workers: WorkerInfo[],
 |}
 
@@ -59,28 +60,33 @@ function processActionFromWorker(
     console.error(
       `Expected message from worker to be an object but instead received type ${typeof data}`,
     )
-    return
-  }
-
-  if (data === null) {
+    process.exit(FAILURE_EXIT_CODE)
+  } else if (data === null) {
     console.error(
       'Expected message from worker to be present but instead received null',
     )
-    return
-  }
+    process.exit(FAILURE_EXIT_CODE)
+  } else {
+    switch (data.type) {
+      case IDLE:
+        if (state.verbose) {
+          console.info(`Worker ${workerInfo.worker.id} idle`)
+        }
 
-  switch (data.type) {
-    case IDLE:
-      if (data.erred) {
-        state.erred = true
-      }
+        if (data.erred) {
+          state.erred = true
+        }
 
-      workerInfo.idle = true
-      processNextAction(state)
-      return
+        workerInfo.idle = true
+        processNextAction(state)
+        return
 
-    default:
-      console.error(`Worker sent message with unknown action type ${data.type}`)
+      default:
+        console.error(
+          `Worker sent message with unknown action type ${data.type}`,
+        )
+        process.exit(FAILURE_EXIT_CODE)
+    }
   }
 }
 
@@ -123,7 +129,7 @@ function processFiles(state: State, err: ?Error, files: string[]) {
  * @returns whether or not there are more idle workers
  */
 function processNextAction(state: State): boolean {
-  const {erred, isWatching, queue, workers} = state
+  const {erred, isWatching, queue, verbose, workers} = state
 
   if (
     !isWatching &&
@@ -151,6 +157,14 @@ function processNextAction(state: State): boolean {
         // Have idle worker process action
         const action = queue.shift()
         workerInfo.idle = false
+
+        if (verbose) {
+          console.info(
+            `Sending action to worker ${workerInfo.worker.id}`,
+            JSON.stringify(action),
+          )
+        }
+
         workerInfo.worker.send(action)
         processing = true
       }
@@ -274,12 +288,13 @@ export default function(
   fork: () => cluster$Worker,
   on: (event: string, listener: (worker: cluster$Worker) => void) => mixed,
 ): State {
-  let {source, watch: isWatching, workerCount} = argv
+  let {source, watch: isWatching, verbose, workerCount} = argv
 
   const state = {
     erred: false,
     isWatching,
     queue: [],
+    verbose,
     workers: [],
   }
 
