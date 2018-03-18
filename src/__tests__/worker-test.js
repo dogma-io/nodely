@@ -1106,6 +1106,38 @@ function tests(ctx, description, argv) {
       })
     })
 
+    describe('when JSON Babel config is invalid JSON', () => {
+      beforeEach(() => {
+        readdir.mockImplementation((...args) => {
+          args[args.length - 1](null, ['.babelrc.json'])
+        })
+        readFile.mockImplementationOnce((...args) => {
+          args[args.length - 1](null, '{')
+        })
+        worker(argv, process.on, process.send)
+      })
+
+      it('should function as expected', () => {
+        expectSnapshot()
+      })
+    })
+
+    describe('when fails to read JSON Babel config', () => {
+      beforeEach(() => {
+        readdir.mockImplementation((...args) => {
+          args[args.length - 1](null, ['.babelrc.json'])
+        })
+        readFile.mockImplementationOnce((...args) => {
+          args[args.length - 1](new Error('foo bar'))
+        })
+        worker(argv, process.on, process.send)
+      })
+
+      it('should function as expected', () => {
+        expectSnapshot()
+      })
+    })
+
     configTests(ctx, 'when JSON Babel config', argv, () => {
       readdir.mockImplementation((...args) => {
         args[args.length - 1](null, ['.babelrc.json'])

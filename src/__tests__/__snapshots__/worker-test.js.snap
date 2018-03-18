@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`worker when not verbose when neither output nor source has trailing separator when JSON Babel config is invalid JSON should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [SyntaxError: Unexpected end of JSON input],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
 exports[`worker when not verbose when neither output nor source has trailing separator when JSON Babel config when include argument allows Javascript and JSON when master sends message to transform file should skip CSS files 1`] = `
 Object {
   "consoleError": [MockFunction],
@@ -5172,6 +5200,34 @@ Object {
 }
 `;
 
+exports[`worker when not verbose when neither output nor source has trailing separator when fails to read JSON Babel config should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [Error: foo bar],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
 exports[`worker when not verbose when neither output nor source has trailing separator when fails to read files to look for Babel config when include argument allows Javascript and JSON when master sends message to transform file should skip CSS files 1`] = `
 Object {
   "consoleError": [MockFunction],
@@ -10037,6 +10093,34 @@ Object {
     ],
   },
   "readFile": [MockFunction],
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
+exports[`worker when not verbose when output and source has trailing separator when JSON Babel config is invalid JSON should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [SyntaxError: Unexpected end of JSON input],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
   "transform": [MockFunction],
   "writeFile": [MockFunction],
 }
@@ -15214,6 +15298,34 @@ Object {
 }
 `;
 
+exports[`worker when not verbose when output and source has trailing separator when fails to read JSON Babel config should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [Error: foo bar],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
 exports[`worker when not verbose when output and source has trailing separator when fails to read files to look for Babel config when include argument allows Javascript and JSON when master sends message to transform file should skip CSS files 1`] = `
 Object {
   "consoleError": [MockFunction],
@@ -20079,6 +20191,34 @@ Object {
     ],
   },
   "readFile": [MockFunction],
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
+exports[`worker when not verbose when output has trailing separator when JSON Babel config is invalid JSON should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [SyntaxError: Unexpected end of JSON input],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
   "transform": [MockFunction],
   "writeFile": [MockFunction],
 }
@@ -25256,6 +25396,34 @@ Object {
 }
 `;
 
+exports[`worker when not verbose when output has trailing separator when fails to read JSON Babel config should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [Error: foo bar],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
 exports[`worker when not verbose when output has trailing separator when fails to read files to look for Babel config when include argument allows Javascript and JSON when master sends message to transform file should skip CSS files 1`] = `
 Object {
   "consoleError": [MockFunction],
@@ -30121,6 +30289,34 @@ Object {
     ],
   },
   "readFile": [MockFunction],
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
+exports[`worker when not verbose when source has trailing separator when JSON Babel config is invalid JSON should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [SyntaxError: Unexpected end of JSON input],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
   "transform": [MockFunction],
   "writeFile": [MockFunction],
 }
@@ -35298,6 +35494,34 @@ Object {
 }
 `;
 
+exports[`worker when not verbose when source has trailing separator when fails to read JSON Babel config should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [Error: foo bar],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
 exports[`worker when not verbose when source has trailing separator when fails to read files to look for Babel config when include argument allows Javascript and JSON when master sends message to transform file should skip CSS files 1`] = `
 Object {
   "consoleError": [MockFunction],
@@ -40163,6 +40387,34 @@ Object {
     ],
   },
   "readFile": [MockFunction],
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
+exports[`worker when verbose when neither output nor source has trailing separator when JSON Babel config is invalid JSON should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [SyntaxError: Unexpected end of JSON input],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
   "transform": [MockFunction],
   "writeFile": [MockFunction],
 }
@@ -45580,6 +45832,34 @@ Object {
 }
 `;
 
+exports[`worker when verbose when neither output nor source has trailing separator when fails to read JSON Babel config should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [Error: foo bar],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
 exports[`worker when verbose when neither output nor source has trailing separator when fails to read files to look for Babel config when include argument allows Javascript and JSON when master sends message to transform file should skip CSS files 1`] = `
 Object {
   "consoleError": [MockFunction],
@@ -50685,6 +50965,34 @@ Object {
     ],
   },
   "readFile": [MockFunction],
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
+exports[`worker when verbose when output and source has trailing separator when JSON Babel config is invalid JSON should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [SyntaxError: Unexpected end of JSON input],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
   "transform": [MockFunction],
   "writeFile": [MockFunction],
 }
@@ -56102,6 +56410,34 @@ Object {
 }
 `;
 
+exports[`worker when verbose when output and source has trailing separator when fails to read JSON Babel config should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [Error: foo bar],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
 exports[`worker when verbose when output and source has trailing separator when fails to read files to look for Babel config when include argument allows Javascript and JSON when master sends message to transform file should skip CSS files 1`] = `
 Object {
   "consoleError": [MockFunction],
@@ -61207,6 +61543,34 @@ Object {
     ],
   },
   "readFile": [MockFunction],
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
+exports[`worker when verbose when output has trailing separator when JSON Babel config is invalid JSON should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [SyntaxError: Unexpected end of JSON input],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
   "transform": [MockFunction],
   "writeFile": [MockFunction],
 }
@@ -66624,6 +66988,34 @@ Object {
 }
 `;
 
+exports[`worker when verbose when output has trailing separator when fails to read JSON Babel config should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [Error: foo bar],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
 exports[`worker when verbose when output has trailing separator when fails to read files to look for Babel config when include argument allows Javascript and JSON when master sends message to transform file should skip CSS files 1`] = `
 Object {
   "consoleError": [MockFunction],
@@ -71729,6 +72121,34 @@ Object {
     ],
   },
   "readFile": [MockFunction],
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
+exports[`worker when verbose when source has trailing separator when JSON Babel config is invalid JSON should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [SyntaxError: Unexpected end of JSON input],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
   "transform": [MockFunction],
   "writeFile": [MockFunction],
 }
@@ -77141,6 +77561,34 @@ Object {
     ],
   },
   "readFile": [MockFunction],
+  "transform": [MockFunction],
+  "writeFile": [MockFunction],
+}
+`;
+
+exports[`worker when verbose when source has trailing separator when fails to read JSON Babel config should function as expected 1`] = `
+Object {
+  "consoleError": [MockFunction] {
+    "calls": Array [
+      Array [
+        [Error: foo bar],
+      ],
+    ],
+  },
+  "createReadStream": [MockFunction],
+  "createWriteStream": [MockFunction],
+  "mkdirp": [MockFunction],
+  "processOn": [MockFunction],
+  "processSend": [MockFunction],
+  "readFile": [MockFunction] {
+    "calls": Array [
+      Array [
+        "/Users/matthewdahl/github/nodely/.babelrc.json",
+        "utf8",
+        [Function],
+      ],
+    ],
+  },
   "transform": [MockFunction],
   "writeFile": [MockFunction],
 }

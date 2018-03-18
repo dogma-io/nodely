@@ -479,7 +479,7 @@ export default function(
   argv: Argv,
   on: (event: string, listener: Function) => mixed, // eslint-disable-line
   send: ProcessSend,
-) {
+): Promise<void> {
   let {include, output, source, target, verbose} = argv
 
   let includeRegex
@@ -502,9 +502,8 @@ export default function(
     output = output.substr(0, output.length - 1)
   }
 
-  getBabelConfig(target)
-    // eslint-disable-next-line flowtype/no-weak-types
-    .then((babelConfig: Object) => {
+  return getBabelConfig(target)
+    .then((babelConfig: Object) => { // eslint-disable-line
       on(
         'message',
         processActionFromMaster.bind(
@@ -520,6 +519,5 @@ export default function(
     })
     .catch((err: Error) => {
       console.error(err)
-      process.exit(1)
     })
 }
