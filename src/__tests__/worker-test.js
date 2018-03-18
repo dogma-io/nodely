@@ -51,7 +51,7 @@ function configTests(ctx, description, argv, init) {
     describe('when include argument not set', () => {
       beforeEach(() => {
         init()
-        worker(argv, process.on, process.send)
+        return worker(argv, process.on, process.send)
       })
 
       it('functions as expected', () => {
@@ -601,16 +601,20 @@ function configTests(ctx, description, argv, init) {
 
     it('should function as expected when include argument is invalid regex', () => {
       init()
-      expect(() => {
-        worker(Object.assign({include: '('}, argv), process.on, process.send)
-      }).toThrow('Include option is an invalid regex.')
+      return worker(
+        Object.assign({include: '('}, argv),
+        process.on,
+        process.send,
+      ).catch(err => {
+        expect(err).toEqual(new Error('Include option is an invalid regex.'))
+      })
     })
 
     describe('when include argument allows Javascript and JSON', () => {
       beforeEach(() => {
         init()
         // eslint-disable-next-line
-        worker(Object.assign({include: '\.js(on)?$'}, argv), process.on, process.send)
+        return worker(Object.assign({include: '\.js(on)?$'}, argv), process.on, process.send)
       })
 
       describe('when master sends message to transform file', () => {
@@ -1111,10 +1115,12 @@ function tests(ctx, description, argv) {
         readdir.mockImplementation((...args) => {
           args[args.length - 1](null, ['.babelrc.json'])
         })
+
         readFile.mockImplementationOnce((...args) => {
           args[args.length - 1](null, '{')
         })
-        worker(argv, process.on, process.send)
+
+        return worker(argv, process.on, process.send)
       })
 
       it('should function as expected', () => {
@@ -1127,10 +1133,12 @@ function tests(ctx, description, argv) {
         readdir.mockImplementation((...args) => {
           args[args.length - 1](null, ['.babelrc.json'])
         })
+
         readFile.mockImplementationOnce((...args) => {
           args[args.length - 1](new Error('foo bar'))
         })
-        worker(argv, process.on, process.send)
+
+        return worker(argv, process.on, process.send)
       })
 
       it('should function as expected', () => {

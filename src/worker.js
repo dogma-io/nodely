@@ -122,7 +122,7 @@ function createDirectoryForFile(
     ) => {
       mkdirp(outputDirectoryPath, (err: ?Error) => {
         if (err) {
-          throw new Error(`Failed to create directory ${outputDirectoryPath}`)
+          reject(Error(`Failed to create directory ${outputDirectoryPath}`))
         }
 
         const fileName = path.basename(filePath)
@@ -488,7 +488,7 @@ export default function(
     try {
       includeRegex = new RegExp(include)
     } catch (err) {
-      throw new Error('Include option is an invalid regex.')
+      return Promise.reject(new Error('Include option is an invalid regex.'))
     }
   }
 
