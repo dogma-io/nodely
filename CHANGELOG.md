@@ -1,3 +1,13 @@
+# 0.1.0 (2018-03-19)
+
+*   Changed default Node target from 4 to 6 since 6 is the current LTS.
+*   Changed minimum Node version to 6 which is the current LTS.
+*   Updated flow type definitions.
+*   Updated dependencies to latest versions.
+*   Lifted cluster and process methods out of master and worker so the code can eventually be run in a single process without clustering as well.
+*   Added more logging when verbose flag is set and made sure to have better error handling around various potential failure points.
+
+
 ## 0.0.29
 
 *   Upgrade to latest version of `flow-bin`.
