@@ -4,7 +4,6 @@
 
 /* global cluster$Worker */
 
-import cluster from 'cluster'
 import glob from 'glob'
 import watch from 'node-watch'
 import {cpus} from 'os'
@@ -27,6 +26,7 @@ type State = {|
   erred: boolean,
   isWatching: boolean,
   queue: Action[],
+  verbose: boolean,
   workers: WorkerInfo[],
 |}
 
@@ -40,7 +40,7 @@ const SUCCESS_EXIT_CODE = 0
  */
 function getWorkerInfo(worker: cluster$Worker): WorkerInfo {
   return {
-    idle: true,
+    idle: false,
     worker,
   }
 }
@@ -60,28 +60,33 @@ function processActionFromWorker(
     console.error(
       `Expected message from worker to be an object but instead received type ${typeof data}`,
     )
-    return
-  }
-
-  if (data === null) {
+    process.exit(FAILURE_EXIT_CODE)
+  } else if (data === null) {
     console.error(
       'Expected message from worker to be present but instead received null',
     )
-    return
-  }
+    process.exit(FAILURE_EXIT_CODE)
+  } else {
+    switch (data.type) {
+      case IDLE:
+        if (state.verbose) {
+          console.info(`Worker ${workerInfo.worker.id} idle`)
+        }
 
-  switch (data.type) {
-    case IDLE:
-      if (data.erred) {
-        state.erred = true
-      }
+        if (data.erred) {
+          state.erred = true
+        }
 
-      workerInfo.idle = true
-      processNextAction(state)
-      return
+        workerInfo.idle = true
+        processNextAction(state)
+        return
 
-    default:
-      console.error(`Worker sent message with unknown action type ${data.type}`)
+      default:
+        console.error(
+          `Worker sent message with unknown action type ${data.type}`,
+        )
+        process.exit(FAILURE_EXIT_CODE)
+    }
   }
 }
 
@@ -124,7 +129,7 @@ function processFiles(state: State, err: ?Error, files: string[]) {
  * @returns whether or not there are more idle workers
  */
 function processNextAction(state: State): boolean {
-  const {erred, isWatching, queue, workers} = state
+  const {erred, isWatching, queue, verbose, workers} = state
 
   if (
     !isWatching &&
@@ -152,6 +157,14 @@ function processNextAction(state: State): boolean {
         // Have idle worker process action
         const action = queue.shift()
         workerInfo.idle = false
+
+        if (verbose) {
+          console.info(
+            `Sending action to worker ${workerInfo.worker.id}`,
+            JSON.stringify(action),
+          )
+        }
+
         workerInfo.worker.send(action)
         processing = true
       }
@@ -195,12 +208,18 @@ function processWatchEvent(state: State, type: string, filePath: string) {
 
 /**
  * Listen for dead workers and spawn new workers in their place.
+ * @param fork - fork method
+ * @param on - event listener
  * @param state - current state
  */
-function replaceDeadWorkers(state: State) {
+function replaceDeadWorkers(
+  fork: () => cluster$Worker,
+  on: (event: string, listener: (worker: cluster$Worker) => void) => mixed,
+  state: State,
+) {
   const {workers} = state
 
-  cluster.on('exit', (deadWorker: cluster$Worker) => {
+  on('exit', (deadWorker: cluster$Worker) => {
     console.info(
       `Worker ${deadWorker.id} died, spawning a new worker in it's place`,
     )
@@ -212,17 +231,18 @@ function replaceDeadWorkers(state: State) {
     workers.splice(deadWorkerIndex, 1)
 
     // Add a new worker in it's place
-    spawnWorker(state)
+    spawnWorker(fork, state)
   })
 }
 
 /**
  * Spawn a single worker process and add it to list of workers.
+ * @param fork - fork method
  * @param state - current state
  */
-function spawnWorker(state: State) {
+function spawnWorker(fork: () => cluster$Worker, state: State) {
   const {workers} = state
-  const worker = cluster.fork()
+  const worker = fork()
   const workerInfo = getWorkerInfo(worker)
 
   worker.on('message', processActionFromWorker.bind(null, state, workerInfo))
@@ -231,10 +251,15 @@ function spawnWorker(state: State) {
 
 /**
  * Spawn worker processes
+ * @param fork - fork method
  * @param state - current state
  * @param workerCount - number of workers to spawn
  */
-function spawnWorkers(state: State, workerCount: number) {
+function spawnWorkers(
+  fork: () => cluster$Worker,
+  state: State,
+  workerCount: number,
+) {
   if (isNaN(workerCount)) {
     throw new Error(
       `workerCount is expected to be a number not ${typeof workerCount}`,
@@ -246,7 +271,7 @@ function spawnWorkers(state: State, workerCount: number) {
   }
 
   for (let i = workerCount; i > 0; i--) {
-    spawnWorker(state)
+    spawnWorker(fork, state)
   }
 
   console.info(`Spawned ${workerCount} workers`)
@@ -255,19 +280,26 @@ function spawnWorkers(state: State, workerCount: number) {
 /**
  * Spin up master process.
  * @param argv - command line arguments
+ * @param fork - fork method
+ * @param on - event listener
  */
-export default function(argv: Argv): State {
-  let {source, watch: isWatching, workerCount} = argv
+export default function(
+  argv: Argv,
+  fork: () => cluster$Worker,
+  on: (event: string, listener: (worker: cluster$Worker) => void) => mixed,
+): State {
+  let {source, watch: isWatching, verbose, workerCount} = argv
 
   const state = {
     erred: false,
     isWatching,
     queue: [],
+    verbose,
     workers: [],
   }
 
-  spawnWorkers(state, workerCount)
-  replaceDeadWorkers(state)
+  spawnWorkers(fork, state, workerCount)
+  replaceDeadWorkers(fork, on, state)
 
   // Make sure source does not have a trailing separator
   if (source[source.length - 1] === sep) {

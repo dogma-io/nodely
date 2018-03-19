@@ -10,7 +10,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "./lib/index.js -s ./src -o ./lib # && npm run gen-types",
+    "build": "./lib/index.js -s ./src -o ./lib -v # && npm run gen-types",
     "gen-types": "flow gen-flow-files src --out-dir lib",
     "postpublish": "codecov",
     "prepublishOnly": "npm run build",
@@ -43,21 +43,25 @@
   "homepage": "https://github.com/dogma-io/nodely#readme",
   "devDependencies": {
     "babel-core": "^7.0.0-0",
-    "babel-jest": "22.4.1",
+    "babel-jest": "23.0.0-alpha.0",
     "codecov": "3.0.0",
-    "jest-cli": "22.4.2",
+    "jest": "22.4.2",
+    "jest-serializer-path": "0.1.6",
     "lintly": "0.0.25"
   },
   "dependencies": {
-    "@babel/core": "7.0.0-beta.40",
-    "@babel/preset-env": "7.0.0-beta.40",
-    "@babel/preset-flow": "7.0.0-beta.40",
-    "@babel/preset-react": "7.0.0-beta.40",
-    "flow-bin": "0.66.0",
+    "@babel/core": "7.0.0-beta.42",
+    "@babel/preset-env": "7.0.0-beta.42",
+    "@babel/preset-flow": "7.0.0-beta.42",
+    "@babel/preset-react": "7.0.0-beta.42",
+    "flow-bin": "0.68.0",
     "glob": "7.1.2",
     "mkdirp": "0.5.1",
-    "node-watch": "0.5.7",
+    "node-watch": "0.5.8",
     "yargs": "11.0.0"
+  },
+  "engines": {
+    "node": ">= 6"
   },
   "jest": {
     "collectCoverage": true,
@@ -70,12 +74,15 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 100,
+        "branches": 99.12,
         "functions": 100,
-        "lines": 100,
-        "statements": 100
+        "lines": 99.14,
+        "statements": 99.14
       }
     },
+    "snapshotSerializers": [
+      "jest-serializer-path"
+    ],
     "testRegex": "/__tests__/.*-test\\.js$"
   }
 }

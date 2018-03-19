@@ -6,6 +6,7 @@ Write Node code using whatever syntax you want.
 
 *   [Installation](#installation)
 *   [Documentation](#documentation)
+*   [Code of Conduct](#code-of-conduct)
 *   [Contributing](#contributing)
 *   [License](#license)
 
@@ -47,7 +48,7 @@ nodely -s ./path/to/source -o ./path/to/output -i "\.js$"
 
 **Target**
 
-Nodely outputs code that should work with Node 4 and up, as that is the current Node version in maintenance LTS. If you'd like to target a different minimum Node version you can set the target like so:
+Nodely outputs code that should work with Node 6 and up, as that is the current Node version in LTS. If you'd like to target a different minimum Node version you can set the target like so:
 
 ```bash
 nodely -s ./path/to/source -o ./path/to/output -t 8
@@ -78,6 +79,10 @@ By default the server will spawn a worker process for all but one CPU, reserving
 ```bash
 nodely -s ./path/to/source -o ./path/to/output -n 3 # This will spawn 3 workers
 ```
+
+## Code of Conduct
+
+Please see the [code of conduct](CODE_OF_CONDUCT.md).
 
 ## Contributing
 

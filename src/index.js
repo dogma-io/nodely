@@ -30,7 +30,7 @@ const argv: Argv = (yargs
   })
   .option('target', {
     alias: 't',
-    default: '4',
+    default: '6',
     description: 'Target Node version.',
     type: 'string',
   })
@@ -57,7 +57,20 @@ const argv: Argv = (yargs
 // TODO: verify source directory exists
 
 if (cluster.isMaster) {
-  master(argv)
+  const fork = cluster.fork.bind(cluster)
+  const on = cluster.on.bind(cluster)
+  master(argv, fork, on)
 } else {
-  worker(argv)
+  const processSend = process.send
+
+  if (processSend) {
+    const on = process.on.bind(process)
+    const send = processSend.bind(process)
+    worker(argv, on, send).catch((err: Error) => {
+      console.error(err)
+      process.exit(1)
+    })
+  } else {
+    throw new Error('Expected process.send to be defined')
+  }
 }
