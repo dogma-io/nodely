@@ -531,19 +531,26 @@ export default function(
     output = output.substr(0, output.length - 1)
   }
 
-  // eslint-disable-next-line flowtype/no-weak-types
-  return getBabelConfig(target).then((babelConfig: Object) => {
-    on(
-      'message',
-      processActionFromMaster.bind(
-        null,
-        includeRegex,
-        source,
-        output,
-        verbose,
-        babelConfig,
-        send,
-      ),
-    )
-  })
+  return getBabelConfig(target)
+    .then((babelConfig: Object) => { // eslint-disable-line
+      on(
+        'message',
+        processActionFromMaster.bind(
+          null,
+          includeRegex,
+          source,
+          output,
+          verbose,
+          babelConfig,
+          send,
+        ),
+      )
+    })
+    .then(() => {
+      // Let master know we are now ready to start processing files
+      send({
+        erred: false,
+        type: IDLE,
+      })
+    })
 }

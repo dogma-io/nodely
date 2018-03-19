@@ -40,7 +40,7 @@ const SUCCESS_EXIT_CODE = 0
  */
 function getWorkerInfo(worker: cluster$Worker): WorkerInfo {
   return {
-    idle: true,
+    idle: false,
     worker,
   }
 }
