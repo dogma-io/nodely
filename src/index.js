@@ -66,7 +66,10 @@ if (cluster.isMaster) {
   if (processSend) {
     const on = process.on.bind(process)
     const send = processSend.bind(process)
-    worker(argv, on, send)
+    worker(argv, on, send).catch((err: Error) => {
+      console.error(err)
+      process.exit(1)
+    })
   } else {
     throw new Error('Expected process.send to be defined')
   }

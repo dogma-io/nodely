@@ -35,6 +35,7 @@ const TRANSFORM_OPTIONS = Object.freeze({
 function expectSnapshot() {
   expect({
     consoleError: console.error,
+    consoleInfo: console.info,
     createReadStream,
     createWriteStream,
     mkdirp,
@@ -1111,6 +1112,8 @@ function tests(ctx, description, argv) {
     })
 
     describe('when JSON Babel config is invalid JSON', () => {
+      let error
+
       beforeEach(() => {
         readdir.mockImplementation((...args) => {
           args[args.length - 1](null, ['.babelrc.json'])
@@ -1120,15 +1123,20 @@ function tests(ctx, description, argv) {
           args[args.length - 1](null, '{')
         })
 
-        return worker(argv, process.on, process.send)
+        return worker(argv, process.on, process.send).catch(err => {
+          error = err
+        })
       })
 
       it('should function as expected', () => {
         expectSnapshot()
+        expect(error).toEqual(new SyntaxError('Unexpected end of JSON input'))
       })
     })
 
     describe('when fails to read JSON Babel config', () => {
+      let error
+
       beforeEach(() => {
         readdir.mockImplementation((...args) => {
           args[args.length - 1](null, ['.babelrc.json'])
@@ -1138,11 +1146,14 @@ function tests(ctx, description, argv) {
           args[args.length - 1](new Error('foo bar'))
         })
 
-        return worker(argv, process.on, process.send)
+        return worker(argv, process.on, process.send).catch(err => {
+          error = err
+        })
       })
 
       it('should function as expected', () => {
         expectSnapshot()
+        expect(error).toEqual(new Error('foo bar'))
       })
     })
 
@@ -1162,15 +1173,18 @@ describe('worker', () => {
 
   beforeAll(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {})
+    jest.spyOn(console, 'info').mockImplementation(() => {})
   })
 
   afterAll(() => {
     console.error.mockRestore()
+    console.info.mockRestore()
   })
 
   beforeEach(() => {
     ;[
       console.error,
+      console.info,
       createReadStream,
       createWriteStream,
       mkdirp,

@@ -32,14 +32,16 @@ describe('index', () => {
 
     jest.mock('cluster')
     jest.mock('../master')
-    jest.mock('../worker')
+    jest.mock('../worker', () => {
+      return jest.fn().mockReturnValue(Promise.resolve())
+    })
 
     jest.spyOn(console, 'error').mockImplementation(() => {})
     jest.spyOn(process, 'exit').mockImplementation(() => {})
 
     cluster = require('cluster')
     master = require('../master').default
-    worker = require('../worker').default
+    worker = require('../worker')
 
     process.send = jest.fn()
   })
@@ -74,9 +76,17 @@ describe('index', () => {
       expect({worker, master}).toMatchSnapshot()
     })
 
-    describe('when process.send defined', () => {
-      it('functions as expected when process is cluster worker', () => {
+    describe('when process.send defined and process is cluster worker', () => {
+      it('functions as expected when worker resolves', () => {
         cluster.isMaster = false
+        require('../index')
+        expect({worker, master}).toMatchSnapshot()
+      })
+
+      it('functions as expected when worker rejects', () => {
+        cluster.isMaster = false
+        // $FlowFixMe
+        worker.mockReturnValue(Promise.reject(new Error('foo bar')))
         require('../index')
         expect({worker, master}).toMatchSnapshot()
       })
@@ -124,10 +134,20 @@ describe('index', () => {
       expect({worker, master}).toMatchSnapshot()
     })
 
-    it('functions as expected when process is cluster worker', () => {
-      cluster.isMaster = false
-      require('../index')
-      expect({worker, master}).toMatchSnapshot()
+    describe('when process is cluster worker', () => {
+      it('functions as expected when worker resolves', () => {
+        cluster.isMaster = false
+        require('../index')
+        expect({worker, master}).toMatchSnapshot()
+      })
+
+      it('functions as expected when worker rejects', () => {
+        cluster.isMaster = false
+        // $FlowFixMe
+        worker.mockReturnValue(Promise.reject(new Error('foo bar')))
+        require('../index')
+        expect({worker, master}).toMatchSnapshot()
+      })
     })
   })
 })

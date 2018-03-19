@@ -104,16 +104,22 @@ function copyFile(
  * @param source - source directory
  * @param output - output directory
  * @param filePath - full path to source file
+ * @param verbose - whether or not to have verbose logging
  * @returns resolves with output file path or rejects with error
  */
 function createDirectoryForFile(
   source: string,
   output: string,
   filePath: string,
+  verbose: boolean,
 ): Promise<string> {
   const relativeFilePath = path.relative(source, filePath)
   const relativeDirectoryPath = path.dirname(relativeFilePath)
   const outputDirectoryPath = path.join(output, relativeDirectoryPath)
+
+  if (verbose) {
+    console.info(`Making sure directory ${source} exists…`)
+  }
 
   return new Promise(
     (
@@ -222,9 +228,14 @@ function getBabelConfig(target: string): Promise<Object> {
 /**
  * Get contents of a file.
  * @param filePath - full path of file to get contents of
+ * @param verbose - whether or not to have verbose logging
  * @returns resolves with file contents or rejects with error
  */
-function getFileContents(filePath: string): Promise<string> {
+function getFileContents(filePath: string, verbose: boolean): Promise<string> {
+  if (verbose) {
+    console.info(`Getting contents of ${filePath}…`)
+  }
+
   return new Promise(
     (resolve: (data: string) => void, reject: (err: Error) => void) => {
       readFile(filePath, 'utf8', (err: ?Error, data: string) => {
@@ -315,6 +326,10 @@ function removeOutputFile(
   const fileName = path.basename(filePath)
   const outputFilePath = path.join(outputDirectoryPath, fileName)
 
+  if (verbose) {
+    console.info(`Removing ${outputFilePath}`)
+  }
+
   unlink(outputFilePath, (err: ?Error) => {
     if (err) {
       console.error(`Failed to remove file ${outputFilePath}`)
@@ -360,7 +375,7 @@ function transformFile(
     return
   }
 
-  createDirectoryForFile(source, output, filePath)
+  createDirectoryForFile(source, output, filePath, verbose)
     .then((outputFilePath: string): ?Promise<void> => {
       switch (extension) {
         case '': // Ignoring empty directories
@@ -412,10 +427,17 @@ function transformJavascriptFile(
   verbose: boolean,
   babelConfig: Object, // eslint-disable-line flowtype/no-weak-types
 ): Promise<void> {
-  return getFileContents(filePath).then((contents: string): Promise<void> => {
+  /* eslint-disable flowtype/generic-spacing */
+  return getFileContents(filePath, verbose).then((contents: string): Promise<
+    void,
+  > => {
     return new Promise((resolve: () => void, reject: (err: Error) => void) => {
       stat(filePath, (err1: ?ErrnoError, stats: Stats) => {
         const mode = err1 ? null : stats.mode
+
+        if (verbose) {
+          console.info(`Transforming ${filePath}…`)
+        }
 
         transform(
           contents,
@@ -428,7 +450,7 @@ function transformJavascriptFile(
 
               reject(err2)
             } else {
-              writeDataToFile(outputFilePath, result.code, mode)
+              writeDataToFile(outputFilePath, result.code, mode, verbose)
                 .then(resolve)
                 .catch(reject)
             }
@@ -437,6 +459,7 @@ function transformJavascriptFile(
       })
     })
   })
+  /* eslint-enable flowtype/generic-spacing */
 }
 
 /**
@@ -444,12 +467,14 @@ function transformJavascriptFile(
  * @param data - data to write
  * @param filePath - path of file to write to
  * @param mode - permission and sticky bits
+ * @param verbose - whether or not to have verbose logging
  * @returns resolves once file is written or rejects with an error
  */
 function writeDataToFile(
   filePath: string,
   data: string,
   mode: ?number,
+  verbose: boolean,
 ): Promise<void> {
   const options: WriteOptions = {
     encoding: 'utf8',
@@ -457,6 +482,10 @@ function writeDataToFile(
 
   if (mode !== null) {
     options.mode = mode
+  }
+
+  if (verbose) {
+    console.info(`Writing ${filePath}…`)
   }
 
   return new Promise((resolve: () => void, reject: (err: Error) => void) => {
@@ -502,22 +531,19 @@ export default function(
     output = output.substr(0, output.length - 1)
   }
 
-  return getBabelConfig(target)
-    .then((babelConfig: Object) => { // eslint-disable-line
-      on(
-        'message',
-        processActionFromMaster.bind(
-          null,
-          includeRegex,
-          source,
-          output,
-          verbose,
-          babelConfig,
-          send,
-        ),
-      )
-    })
-    .catch((err: Error) => {
-      console.error(err)
-    })
+  // eslint-disable-next-line flowtype/no-weak-types
+  return getBabelConfig(target).then((babelConfig: Object) => {
+    on(
+      'message',
+      processActionFromMaster.bind(
+        null,
+        includeRegex,
+        source,
+        output,
+        verbose,
+        babelConfig,
+        send,
+      ),
+    )
+  })
 }
