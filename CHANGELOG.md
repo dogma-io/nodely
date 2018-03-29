@@ -1,3 +1,7 @@
+# 0.1.1 (2018-03-29)
+
+*   Upgraded `flow-bin` to latest version.
+
 # 0.1.0 (2018-03-19)
 
 *   Changed default Node target from 4 to 6 since 6 is the current LTS.
