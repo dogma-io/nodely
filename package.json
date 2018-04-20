@@ -1,6 +1,6 @@
 {
   "name": "nodely",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Write Node code using whatever syntax you want.",
   "main": "lib/index.js",
   "bin": {

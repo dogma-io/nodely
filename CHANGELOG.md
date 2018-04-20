@@ -1,3 +1,8 @@
+# 0.1.3 (2018-04-20)
+
+*   Upgrading to version `0.70.0` of `flow-bin`.
+
+
 # 0.1.2 (2018-04-04)
 
 *   Upgraded to latest Babel 7 beta.
