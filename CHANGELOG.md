@@ -1,3 +1,7 @@
+# 0.1.6 (2018-05-16)
+
+*   Upgrade dependencies to latest versions.
+
 # 0.1.5 (2018-05-10)
 
 *   Upgrade `flow-bin` to latest version.
