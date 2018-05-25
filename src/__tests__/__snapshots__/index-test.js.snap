@@ -28,6 +28,12 @@ Object {
         [Function],
       ],
     ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": undefined,
+      },
+    ],
   },
   "worker": [MockFunction],
 }
@@ -62,6 +68,12 @@ Object {
         [Function],
       ],
     ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": Promise {},
+      },
+    ],
   },
 }
 `;
@@ -95,6 +107,12 @@ Object {
         [Function],
       ],
     ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": Promise {},
+      },
+    ],
   },
 }
 `;
@@ -126,6 +144,12 @@ Object {
         [Function],
         [Function],
       ],
+    ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": undefined,
+      },
     ],
   },
   "worker": [MockFunction],
@@ -161,6 +185,12 @@ Object {
         [Function],
       ],
     ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": Promise {},
+      },
+    ],
   },
 }
 `;
@@ -193,6 +223,12 @@ Object {
         [Function],
         [Function],
       ],
+    ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": Promise {},
+      },
     ],
   },
 }

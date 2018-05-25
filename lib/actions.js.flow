@@ -1,0 +1,8 @@
+// @flow
+
+declare export var IDLE: "IDLE";
+export type IdleAction = $Exact<{erred: boolean, type: "IDLE"}>;
+declare export var REMOVE_FILE: "REMOVE_FILE";
+export type RemoveFileAction = $Exact<{filePath: string, type: "REMOVE_FILE"}>;
+declare export var TRANSFORM_FILE: "TRANSFORM_FILE";
+export type TransformFileAction = $Exact<{filePath: string, type: "TRANSFORM_FILE"}>;
