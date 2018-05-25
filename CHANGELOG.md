@@ -1,3 +1,9 @@
+# 0.2.0 (2018-05-25)
+
+*   Generate updated flow types.
+*   Update dependencies to latest versions.
+
+
 # 0.1.6 (2018-05-16)
 
 *   Upgrade dependencies to latest versions.
