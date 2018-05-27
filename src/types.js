@@ -15,7 +15,7 @@ export type Argv = {|
 export type ProcessSend = (
   /* eslint-disable flowtype/no-weak-types */
   message: any,
-  sendHandleOrCallback?: net$Socket | net$Server | Function,
+  sendHandleOrCallback?: any,
   callback?: Function,
   /* eslint-enable flowtype/no-weak-types */
 ) => void
