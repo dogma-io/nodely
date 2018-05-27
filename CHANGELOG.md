@@ -1,3 +1,7 @@
+# 0.3.0 (2018-05-27)
+
+*   Stop using default exports as they provide no real benefit and can cause issues with tree-shaking.
+
 # 0.2.1 (2018-05-27)
 
 *   Change Flow type so auto-generated Flow types won't break downstream projects using Flow.
