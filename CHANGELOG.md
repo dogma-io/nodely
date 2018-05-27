@@ -1,3 +1,7 @@
+# 0.4.0 (2018-05-27)
+
+*   Upgrade to latest Babel 7 beta packages.
+
 # 0.3.0 (2018-05-27)
 
 *   Stop using default exports as they provide no real benefit and can cause issues with tree-shaking.
