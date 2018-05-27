@@ -50,10 +50,10 @@
     "lintly": "0.1.4"
   },
   "dependencies": {
-    "@babel/core": "7.0.0-beta.48",
-    "@babel/preset-env": "7.0.0-beta.48",
-    "@babel/preset-flow": "7.0.0-beta.48",
-    "@babel/preset-react": "7.0.0-beta.48",
+    "@babel/core": "7.0.0-beta.49",
+    "@babel/preset-env": "7.0.0-beta.49",
+    "@babel/preset-flow": "7.0.0-beta.49",
+    "@babel/preset-react": "7.0.0-beta.49",
     "flow-bin": "0.73.0",
     "glob": "7.1.2",
     "mkdirp": "0.5.1",
