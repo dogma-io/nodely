@@ -6,40 +6,4 @@ import path from "path";
 import mkdirp from "mkdirp";
 import {createReadStream, createWriteStream, readdir, readFile, ReadStream, stat, Stats, unlink, writeFile, WriteStream} from "fs";
 import {transform} from "@babel/core";
-declare class Class0 extends stream$Duplex {
-
-  bufferSize: number;
-  bytesRead: number;
-  bytesWritten: number;
-  localAddress: string;
-  localPort: number;
-  remoteAddress: string | void;
-  remoteFamily: string;
-  remotePort: number;
-  address(): {address: string, family: string, port: number};
-  connect(options: Object, connectListener?: Function): void;
-  constructor(options?: Object): void;
-  destroy(exception?: Error): void;
-  end(chunk?: string | Buffer, encodingOrCallback?: string | (data: any) => void, callback?: (data: any) => void): void;
-  pause(): stream$Readable;
-  ref(): Class0;
-  resume(): stream$Readable;
-  setEncoding(encoding?: string): stream$Readable;
-  setKeepAlive(enable?: boolean, initialDelay?: number): Class0;
-  setNoDelay(noDelay?: boolean): Class0;
-  setTimeout(timeout: number, callback?: Function): Class0;
-  unref(): Class0;
-  write(chunk?: string | Buffer, encodingOrCallback?: string | (data: any) => void, callback?: (data: any) => void): boolean;
-}
-declare class Class1 extends events$EventEmitter {
-
-  connections: number;
-  maxConnections: number;
-  address(): {address: string, family: string, port: number};
-  close(callback?: Function): Class1;
-  getConnections(callback: Function): void;
-  mixed /* UNEXPECTED TYPE: IntersectionT */;
-  ref(): Class1;
-  unref(): Class1;
-}
-declare export default function(argv: $Exact<{include: ?string, output: string, source: string, target: string, verbose: boolean, watch: boolean, workerCount: number}>, on: (event: string, listener: Function) => mixed, send: (message: any, sendHandleOrCallback?: Class0 | Class1 | Function, callback?: Function) => void): Promise<void>;
+declare export default function(argv: $Exact<{include: ?string, output: string, source: string, target: string, verbose: boolean, watch: boolean, workerCount: number}>, on: (event: string, listener: Function) => mixed, send: (message: any, sendHandleOrCallback?: any, callback?: Function) => void): Promise<void>;
