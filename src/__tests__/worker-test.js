@@ -15,7 +15,7 @@ import {
 import mkdirp from 'mkdirp'
 import {Readable, Writable} from 'stream'
 import {REMOVE_FILE, TRANSFORM_FILE} from '../actions'
-import worker from '../worker'
+import {worker} from '../worker'
 
 const TRANSFORM_OPTIONS = Object.freeze({
   presets: [

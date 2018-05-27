@@ -33,15 +33,17 @@ describe('index', () => {
     jest.mock('cluster')
     jest.mock('../master')
     jest.mock('../worker', () => {
-      return jest.fn().mockReturnValue(Promise.resolve())
+      return {
+        worker: jest.fn().mockReturnValue(Promise.resolve()),
+      }
     })
 
     jest.spyOn(console, 'error').mockImplementation(() => {})
     jest.spyOn(process, 'exit').mockImplementation(() => {})
 
     cluster = require('cluster')
-    master = require('../master').default
-    worker = require('../worker')
+    master = require('../master').master
+    worker = require('../worker').worker
 
     process.send = jest.fn()
   })

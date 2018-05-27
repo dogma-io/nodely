@@ -7,7 +7,7 @@ import cluster from 'cluster'
 import glob from 'glob'
 import watch from 'node-watch'
 import {cpus} from 'os'
-import master from '../master'
+import {master} from '../master'
 import {IDLE, TRANSFORM_FILE} from '../actions'
 
 function expectSnapshot(state) {

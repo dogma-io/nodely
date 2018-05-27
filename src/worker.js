@@ -504,7 +504,7 @@ function writeDataToFile(
  * Spin up worker process.
  * @param argv - command line arguments
  */
-export default function(
+export function worker(
   argv: Argv,
   on: (event: string, listener: Function) => mixed, // eslint-disable-line
   send: ProcessSend,

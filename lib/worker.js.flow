@@ -6,4 +6,4 @@ import path from "path";
 import mkdirp from "mkdirp";
 import {createReadStream, createWriteStream, readdir, readFile, ReadStream, stat, Stats, unlink, writeFile, WriteStream} from "fs";
 import {transform} from "@babel/core";
-declare export default function(argv: $Exact<{include: ?string, output: string, source: string, target: string, verbose: boolean, watch: boolean, workerCount: number}>, on: (event: string, listener: Function) => mixed, send: (message: any, sendHandleOrCallback?: any, callback?: Function) => void): Promise<void>;
+declare export function worker(argv: $Exact<{include: ?string, output: string, source: string, target: string, verbose: boolean, watch: boolean, workerCount: number}>, on: (event: string, listener: Function) => mixed, send: (message: any, sendHandleOrCallback?: any, callback?: Function) => void): Promise<void>;

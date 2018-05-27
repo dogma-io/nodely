@@ -283,7 +283,7 @@ function spawnWorkers(
  * @param fork - fork method
  * @param on - event listener
  */
-export default function(
+export function master(
   argv: Argv,
   fork: () => cluster$Worker,
   on: (event: string, listener: (worker: cluster$Worker) => void) => mixed,
