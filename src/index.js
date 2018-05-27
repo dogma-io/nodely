@@ -6,9 +6,9 @@
 
 import cluster from 'cluster'
 import yargs from 'yargs'
-import master from './master'
+import {master} from './master'
 import type {Argv} from './types'
-import worker from './worker'
+import {worker} from './worker'
 
 const argv: Argv = (yargs
   .option('include', {

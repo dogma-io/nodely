@@ -43,9 +43,9 @@
   "homepage": "https://github.com/dogma-io/nodely#readme",
   "devDependencies": {
     "babel-core": "^7.0.0-0",
-    "babel-jest": "23.0.0",
+    "babel-jest": "23.0.1",
     "codecov": "3.0.2",
-    "jest": "23.0.0",
+    "jest": "23.0.1",
     "jest-serializer-path": "0.1.15",
     "lintly": "0.1.4"
   },
