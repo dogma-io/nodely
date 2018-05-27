@@ -1,3 +1,8 @@
+# 0.2.1 (2018-05-27)
+
+*   Change Flow type so auto-generated Flow types won't break downstream projects using Flow.
+
+
 # 0.2.0 (2018-05-25)
 
 *   Generate updated flow types.
