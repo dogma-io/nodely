@@ -1,3 +1,8 @@
+# 0.5.0 (2018-05-28)
+
+*   Use `babel-preset-nodely` for config and Babel dependencies.
+
+
 # 0.4.0 (2018-05-27)
 
 *   Upgrade to latest Babel 7 beta packages.
