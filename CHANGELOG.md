@@ -1,3 +1,8 @@
+# 0.5.1 (2018-05-28)
+
+*   Add `@babel/core` back to dependencies to not break consumers.
+
+
 # 0.5.0 (2018-05-28)
 
 *   Use `babel-preset-nodely` for config and Babel dependencies.
