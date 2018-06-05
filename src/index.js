@@ -30,7 +30,6 @@ const argv: Argv = (yargs
   })
   .option('target', {
     alias: 't',
-    default: '6',
     description: 'Target Node version.',
     type: 'string',
   })

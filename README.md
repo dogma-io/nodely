@@ -48,7 +48,7 @@ nodely -s ./path/to/source -o ./path/to/output -i "\.js$"
 
 **Target**
 
-Nodely outputs code that should work with Node 6 and up, as that is the current Node version in LTS. If you'd like to target a different minimum Node version you can set the target like so:
+By default Nodely outputs code in ES5 which should work for both Node and browsers (as long as you aren't using target specific API's such as `fs`). If you'd like your build to target a specific Node version you can set the target like so:
 
 ```bash
 nodely -s ./path/to/source -o ./path/to/output -t 8

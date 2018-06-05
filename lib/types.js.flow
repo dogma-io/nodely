@@ -1,6 +1,6 @@
 // @flow
 
-export type Argv = $Exact<{include: ?string, output: string, source: string, target: string, verbose: boolean, watch: boolean, workerCount: number}>;
+export type Argv = $Exact<{include: ?string, output: string, source: string, target?: string, verbose: boolean, watch: boolean, workerCount: number}>;
 export type ProcessSend = (message: any, sendHandleOrCallback?: any, callback?: Function) => void;
 
 declare module.exports: {};
