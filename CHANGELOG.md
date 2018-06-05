@@ -1,3 +1,7 @@
+# 0.6.0 (2018-06-05)
+
+*   Change default builds to target ES5 instead of Node 6.
+
 # 0.5.1 (2018-05-28)
 
 *   Add `@babel/core` back to dependencies to not break consumers.
