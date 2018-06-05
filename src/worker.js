@@ -160,7 +160,7 @@ function error(message: string, send: ProcessSend) {
  * @param target - Node target
  * @returns Babel configuration
  */
-function getBabelConfig(target: string): Promise<Object> {
+function getBabelConfig(target?: string): Promise<Object> {
   const cwd = process.cwd()
 
   return new Promise(
@@ -205,19 +205,12 @@ function getBabelConfig(target: string): Promise<Object> {
           }
         }
 
+        const env = target
+          ? ['@babel/env', {targets: {node: target}}]
+          : '@babel/env'
+
         resolve({
-          presets: [
-            [
-              '@babel/env',
-              {
-                targets: {
-                  node: target,
-                },
-              },
-            ],
-            '@babel/flow',
-            '@babel/react',
-          ],
+          presets: [env, '@babel/flow', '@babel/react'],
         })
       })
     },
