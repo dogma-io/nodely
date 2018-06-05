@@ -69,10 +69,10 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 99.12,
+        "branches": 98.26,
         "functions": 100,
-        "lines": 99.14,
-        "statements": 99.14
+        "lines": 99.15,
+        "statements": 99.15
       }
     },
     "snapshotSerializers": [
