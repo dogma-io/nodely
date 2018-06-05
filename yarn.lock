@@ -1003,9 +1003,9 @@ babel-preset-jest@^23.0.1:
     babel-plugin-jest-hoist "^23.0.1"
     babel-plugin-syntax-object-rest-spread "^6.13.0"
 
-babel-preset-nodely@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/babel-preset-nodely/-/babel-preset-nodely-0.1.0.tgz#1c4ef93a02e4a0712f304b528437ce571cf826aa"
+babel-preset-nodely@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/babel-preset-nodely/-/babel-preset-nodely-0.1.1.tgz#1c49ca30bfe932a85880405c26f75b4d8caa03c9"
   dependencies:
     "@babel/core" "7.0.0-beta.49"
     "@babel/plugin-proposal-class-properties" "7.0.0-beta.49"
