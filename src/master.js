@@ -106,15 +106,19 @@ function processFiles(state: State, err: ?Error, files: string[]) {
   console.info(`Queuing up ${files.length} files to be processed`)
 
   const actions = files
-    .filter((filePath: string): boolean => {
-      return !/(__mocks__|__tests__)/.test(filePath)
-    })
-    .map((filePath: string): Action => {
-      return {
-        filePath,
-        type: TRANSFORM_FILE,
-      }
-    })
+    .filter(
+      (filePath: string): boolean => {
+        return !/(__mocks__|__tests__)/.test(filePath)
+      },
+    )
+    .map(
+      (filePath: string): Action => {
+        return {
+          filePath,
+          type: TRANSFORM_FILE,
+        }
+      },
+    )
 
   queue.push(...actions)
 
@@ -134,9 +138,11 @@ function processNextAction(state: State): boolean {
   if (
     !isWatching &&
     queue.length === 0 &&
-    workers.every((w: WorkerInfo): boolean => {
-      return w.idle
-    })
+    workers.every(
+      (w: WorkerInfo): boolean => {
+        return w.idle
+      },
+    )
   ) {
     process.exit(erred ? FAILURE_EXIT_CODE : SUCCESS_EXIT_CODE)
   }
@@ -225,9 +231,11 @@ function replaceDeadWorkers(
     )
 
     // Remove dead worker from worker info list
-    const deadWorkerIndex = workers.findIndex((w: WorkerInfo): boolean => {
-      return w.worker.id === deadWorker.id
-    })
+    const deadWorkerIndex = workers.findIndex(
+      (w: WorkerInfo): boolean => {
+        return w.worker.id === deadWorker.id
+      },
+    )
     workers.splice(deadWorkerIndex, 1)
 
     // Add a new worker in it's place

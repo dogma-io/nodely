@@ -48,7 +48,7 @@
     "codecov": "3.0.2",
     "jest": "23.1.0",
     "jest-serializer-path": "0.1.15",
-    "lintly": "0.2.0"
+    "lintly": "0.2.1"
   },
   "dependencies": {
     "@babel/core": "7.0.0-beta.49",
