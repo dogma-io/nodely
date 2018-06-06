@@ -167,9 +167,11 @@ function getBabelConfig(target?: string): Promise<Object> {
     (resolve: (babelConfig: Object) => void, reject: (err: Error) => void) => {
       readdir(cwd, (err: ?ErrnoError, files: Array<string>) => {
         if (!err) {
-          const configFile = files.find((fileName: string): boolean => {
-            return /^\.babelrc(\.[a-zA-Z]+)?$/.test(fileName)
-          })
+          const configFile = files.find(
+            (fileName: string): boolean => {
+              return /^\.babelrc(\.[a-zA-Z]+)?$/.test(fileName)
+            },
+          )
 
           if (configFile) {
             const filePath = path.join(cwd, configFile)
@@ -369,35 +371,41 @@ function transformFile(
   }
 
   createDirectoryForFile(source, output, filePath, verbose)
-    .then((outputFilePath: string): ?Promise<void> => {
-      switch (extension) {
-        case '': // Ignoring empty directories
-          return
+    .then(
+      (outputFilePath: string): ?Promise<void> => {
+        switch (extension) {
+          case '': // Ignoring empty directories
+            return
 
-        case '.js':
-          return transformJavascriptFile(
-            filePath,
-            outputFilePath,
-            verbose,
-            babelConfig,
-          )
+          case '.js':
+            return transformJavascriptFile(
+              filePath,
+              outputFilePath,
+              verbose,
+              babelConfig,
+            )
 
-        default:
-          return copyFile(filePath, outputFilePath, verbose)
-      }
-    })
-    .then((): boolean => {
-      return false
-    })
-    .catch((err: Error): boolean => {
-      console.error(`Failed to process file ${filePath}`)
+          default:
+            return copyFile(filePath, outputFilePath, verbose)
+        }
+      },
+    )
+    .then(
+      (): boolean => {
+        return false
+      },
+    )
+    .catch(
+      (err: Error): boolean => {
+        console.error(`Failed to process file ${filePath}`)
 
-      if (verbose) {
-        console.error(err)
-      }
+        if (verbose) {
+          console.error(err)
+        }
 
-      return true
-    })
+        return true
+      },
+    )
     .then((erred: boolean) => {
       send({
         erred,
@@ -421,37 +429,39 @@ function transformJavascriptFile(
   babelConfig: Object, // eslint-disable-line flowtype/no-weak-types
 ): Promise<void> {
   /* eslint-disable flowtype/generic-spacing */
-  return getFileContents(filePath, verbose).then((contents: string): Promise<
-    void,
-  > => {
-    return new Promise((resolve: () => void, reject: (err: Error) => void) => {
-      stat(filePath, (err1: ?ErrnoError, stats: Stats) => {
-        const mode = err1 ? null : stats.mode
+  return getFileContents(filePath, verbose).then(
+    (contents: string): Promise<void> => {
+      return new Promise(
+        (resolve: () => void, reject: (err: Error) => void) => {
+          stat(filePath, (err1: ?ErrnoError, stats: Stats) => {
+            const mode = err1 ? null : stats.mode
 
-        if (verbose) {
-          console.info(`Transforming ${filePath}…`)
-        }
-
-        transform(
-          contents,
-          Object.assign({filename: filePath}, babelConfig),
-          (err2: ?Error, result: {code: string}) => {
-            if (err2) {
-              if (verbose) {
-                console.error(`Failed to transform ${filePath}`)
-              }
-
-              reject(err2)
-            } else {
-              writeDataToFile(outputFilePath, result.code, mode, verbose)
-                .then(resolve)
-                .catch(reject)
+            if (verbose) {
+              console.info(`Transforming ${filePath}…`)
             }
-          },
-        )
-      })
-    })
-  })
+
+            transform(
+              contents,
+              Object.assign({filename: filePath}, babelConfig),
+              (err2: ?Error, result: {code: string}) => {
+                if (err2) {
+                  if (verbose) {
+                    console.error(`Failed to transform ${filePath}`)
+                  }
+
+                  reject(err2)
+                } else {
+                  writeDataToFile(outputFilePath, result.code, mode, verbose)
+                    .then(resolve)
+                    .catch(reject)
+                }
+              },
+            )
+          })
+        },
+      )
+    },
+  )
   /* eslint-enable flowtype/generic-spacing */
 }
 
