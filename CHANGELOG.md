@@ -1,3 +1,8 @@
+# 0.7.0 (2018-06-13)
+
+*   Upgrade to latest dependencies which now uses latest version of Babel 7 alpha pacakges.
+
+
 # 0.6.0 (2018-06-05)
 
 *   Change default builds to target ES5 instead of Node 6.
