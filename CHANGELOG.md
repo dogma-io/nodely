@@ -1,3 +1,8 @@
+# 0.8.0 (2018-09-02)
+
+*   Upgrade dependeices to latest versions.
+
+
 # 0.7.0 (2018-06-13)
 
 *   Upgrade to latest dependencies which now uses latest version of Babel 7 alpha pacakges.
