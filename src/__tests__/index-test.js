@@ -4,7 +4,6 @@
 
 function missingArgumentsTest(message: string) {
   require('../index')
-  expect(console.error).toHaveBeenCalledTimes(2)
   expect(console.error).toHaveBeenCalledWith(`Options:
   --help             Show help                                         [boolean]
   --version          Show version number                               [boolean]
@@ -18,8 +17,7 @@ function missingArgumentsTest(message: string) {
                                                       [boolean] [default: false]
   --watch, -w        Whether or not to watch for changes and continue
                      transpiling.                     [boolean] [default: false]
-  --workerCount, -n  Number of worker process to spawn.    [number] [default: 0]
-`)
+  --workerCount, -n  Number of worker process to spawn.    [number] [default: 0]`)
   expect(console.error).toHaveBeenCalledWith(message)
   expect(process.exit).toHaveBeenCalledTimes(1)
 }
