@@ -9,7 +9,7 @@ module.exports = {
       branches: 98.26,
       functions: 100,
       lines: 99.15,
-      statements: 99.15,
+      statements: 99.15
     }
   },
   snapshotSerializers: ['jest-serializer-path'],
