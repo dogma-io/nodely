@@ -167,11 +167,9 @@ function getBabelConfig(target?: string): Promise<Object> {
     (resolve: (babelConfig: Object) => void, reject: (err: Error) => void) => {
       readdir(cwd, (err: ?ErrnoError, files: Array<string>) => {
         if (!err) {
-          const configFile = files.find(
-            (fileName: string): boolean => {
-              return /^\.babelrc(\.[a-zA-Z]+)?$/.test(fileName)
-            },
-          )
+          const configFile = files.find((fileName: string): boolean => {
+            return /^\.babelrc(\.[a-zA-Z]+)?$/.test(fileName)
+          })
 
           if (configFile) {
             const filePath = path.join(cwd, configFile)
@@ -371,41 +369,35 @@ function transformFile(
   }
 
   createDirectoryForFile(source, output, filePath, verbose)
-    .then(
-      (outputFilePath: string): ?Promise<void> => {
-        switch (extension) {
-          case '': // Ignoring empty directories
-            return
+    .then((outputFilePath: string): ?Promise<void> => {
+      switch (extension) {
+        case '': // Ignoring empty directories
+          return
 
-          case '.js':
-            return transformJavascriptFile(
-              filePath,
-              outputFilePath,
-              verbose,
-              babelConfig,
-            )
+        case '.js':
+          return transformJavascriptFile(
+            filePath,
+            outputFilePath,
+            verbose,
+            babelConfig,
+          )
 
-          default:
-            return copyFile(filePath, outputFilePath, verbose)
-        }
-      },
-    )
-    .then(
-      (): boolean => {
-        return false
-      },
-    )
-    .catch(
-      (err: Error): boolean => {
-        console.error(`Failed to process file ${filePath}`)
+        default:
+          return copyFile(filePath, outputFilePath, verbose)
+      }
+    })
+    .then((): boolean => {
+      return false
+    })
+    .catch((err: Error): boolean => {
+      console.error(`Failed to process file ${filePath}`)
 
-        if (verbose) {
-          console.error(err)
-        }
+      if (verbose) {
+        console.error(err)
+      }
 
-        return true
-      },
-    )
+      return true
+    })
     .then((erred: boolean) => {
       send({
         erred,

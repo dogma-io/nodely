@@ -47,6 +47,7 @@ describe('index', () => {
   })
 
   afterEach(() => {
+    // $FlowFixMe - Flow doesn't realize this is a Jest mock
     console.error.mockReset()
     process.exit.mockReset()
   })
