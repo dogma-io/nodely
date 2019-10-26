@@ -47,7 +47,7 @@ function expectSnapshot() {
   }).toMatchSnapshot()
 }
 
-function configTests(ctx, description, argv, init) {
+function configTests(ctx, description, argv, readConfig, init) {
   describe(description, () => {
     describe('when include argument not set', () => {
       beforeEach(() => {
@@ -59,10 +59,54 @@ function configTests(ctx, description, argv, init) {
         expectSnapshot()
       })
 
-      it('functions as expected when master sends non-object message', () => {
+      it('should have one message listener', () => {
         expect(ctx.listeners.message).toHaveLength(1)
-        ctx.listeners.message[0]('test')
-        expectSnapshot()
+      })
+
+      describe('when master sends non-object message', () => {
+        beforeEach(() => {
+          ctx.listeners.message[0]('test')
+        })
+
+        it('should print expected error', () => {
+          expect(console.error).toHaveBeenCalledTimes(1)
+          expect(console.error).lastCalledWith(
+            'Expected message from master to be an object but instead received type string',
+          )
+        })
+
+        it('should not log info', () => {
+          expect(console.info).not.toHaveBeenCalled()
+        })
+
+        it('should not create read stream', () => {
+          expect(createReadStream).not.toHaveBeenCalled()
+        })
+
+        it('should not create write stream', () => {
+          expect(createWriteStream).not.toHaveBeenCalled()
+        })
+
+        it('should not make directory', () => {
+          expect(mkdirp).not.toHaveBeenCalled()
+        })
+
+        it('should send error back to master', () => {
+          expect(process.send).toHaveBeenCalledTimes(2)
+          expect(process.send).lastCalledWith({erred: true, type: 'IDLE'})
+        })
+
+        it('should not read any additional files after babel config', () => {
+          expect(readFile).toHaveBeenCalledTimes(readConfig ? 1 : 0)
+        })
+
+        it('should not transform any files', () => {
+          expect(transform).not.toHaveBeenCalled()
+        })
+
+        it('should not write any files', () => {
+          expect(writeFile).not.toHaveBeenCalled()
+        })
       })
 
       it('functions as expected when master sends null message', () => {
@@ -1092,6 +1136,7 @@ function tests(ctx, description, argv) {
       ctx,
       'when fails to read files to look for Babel config',
       argv,
+      false,
       () => {
         readdir.mockImplementation((...args) => {
           args[args.length - 1](new Error('foo bar'))
@@ -1099,13 +1144,13 @@ function tests(ctx, description, argv) {
       },
     )
 
-    configTests(ctx, 'when no Babel config', argv, () => {
+    configTests(ctx, 'when no Babel config', argv, false, () => {
       readdir.mockImplementation((...args) => {
         args[args.length - 1](null, [])
       })
     })
 
-    configTests(ctx, 'when Javascript Babel config', argv, () => {
+    configTests(ctx, 'when Javascript Babel config', argv, false, () => {
       readdir.mockImplementation((...args) => {
         args[args.length - 1](null, ['.babelrc.js'])
       })
@@ -1157,7 +1202,7 @@ function tests(ctx, description, argv) {
       })
     })
 
-    configTests(ctx, 'when JSON Babel config', argv, () => {
+    configTests(ctx, 'when JSON Babel config', argv, true, () => {
       readdir.mockImplementation((...args) => {
         args[args.length - 1](null, ['.babelrc.json'])
       })
