@@ -1018,76 +1018,245 @@ function configTests(ctx, description, argv, readConfig, init) {
                 })
               })
 
-              it('functions as expected when read stream receives an error', done => {
-                const error = new Error('foo bar')
-                const readStream = new Readable({read: jest.fn()})
-                const writeStream = new Writable({write: jest.fn()})
+              describe('when it fails to create write stream', () => {
+                let error
 
-                createReadStream.mockReturnValue(readStream)
-                createWriteStream.mockReturnValue(writeStream)
+                beforeEach(done => {
+                  error = new Error('foo bar')
 
-                expect(ctx.listeners.message).toHaveLength(1)
+                  const readStream = new Readable({read: jest.fn()})
+                  const writeStream = new Writable({write: jest.fn()})
 
-                ctx.listeners.message[0]({
-                  filePath: '/foo/alpha/bravo.json',
-                  type: TRANSFORM_FILE,
+                  createReadStream.mockReturnValue(readStream)
+                  createWriteStream.mockReturnValue(writeStream)
+
+                  expect(ctx.listeners.message).toHaveLength(1)
+
+                  ctx.listeners.message[0]({
+                    filePath: '/foo/alpha/bravo.json',
+                    type: TRANSFORM_FILE,
+                  })
+
+                  readStream.destroy(error)
+
+                  process.nextTick(() => {
+                    process.nextTick(() => {
+                      done()
+                    })
+                  })
                 })
 
-                readStream.destroy(error)
+                it('should log expected error(s)', () => {
+                  expect(console.error).toHaveBeenCalledTimes(
+                    argv.verbose ? 3 : 1,
+                  )
 
-                process.nextTick(() => {
-                  process.nextTick(() => {
-                    expectSnapshot()
-                    done()
-                  })
+                  if (argv.verbose) {
+                    expect(console.error).toHaveBeenCalledWith(
+                      'Failed reading /foo/alpha/bravo.json',
+                    )
+
+                    expect(console.error).toHaveBeenCalledWith(error)
+                  }
+
+                  expect(console.error).toHaveBeenCalledWith(
+                    'Failed to process file /foo/alpha/bravo.json',
+                  )
+                })
+
+                // TODO: console.info
+
+                it('should create expected read stream', () => {
+                  expect(createReadStream).toHaveBeenCalledTimes(1)
+                  expect(createReadStream).lastCalledWith(
+                    '/foo/alpha/bravo.json',
+                  )
+                })
+
+                it('should create expected write stream', () => {
+                  expect(createWriteStream).toHaveBeenCalledTimes(1)
+                  expect(createWriteStream).lastCalledWith(
+                    '/bar/alpha/bravo.json',
+                    {},
+                  )
+                })
+
+                it('should make expected directory', () => {
+                  expect(mkdirp).toHaveBeenCalledTimes(1)
+                  expect(mkdirp).lastCalledWith(
+                    '/bar/alpha',
+                    expect.any(Function),
+                  )
+                })
+
+                // TODO: process.on
+                // TODO: process.send
+
+                it('should not read any additional files after babel config', () => {
+                  expect(readFile).toHaveBeenCalledTimes(readConfig ? 1 : 0)
+                })
+
+                it('should not transform file', () => {
+                  expect(transform).not.toHaveBeenCalled()
+                })
+
+                it('should not write file', () => {
+                  expect(writeFile).not.toHaveBeenCalled()
                 })
               })
 
-              it('functions as expected when write stream receives an error', done => {
-                const error = new Error('foo bar')
-                const readStream = new Readable({read: jest.fn()})
-                const writeStream = new Writable({write: jest.fn()})
+              describe('when write stream receives an error', () => {
+                let error
 
-                createReadStream.mockReturnValue(readStream)
-                createWriteStream.mockReturnValue(writeStream)
+                beforeEach(done => {
+                  error = new Error('foo bar')
 
-                expect(ctx.listeners.message).toHaveLength(1)
+                  const readStream = new Readable({read: jest.fn()})
+                  const writeStream = new Writable({write: jest.fn()})
 
-                ctx.listeners.message[0]({
-                  filePath: '/foo/alpha/bravo.json',
-                  type: TRANSFORM_FILE,
+                  createReadStream.mockReturnValue(readStream)
+                  createWriteStream.mockReturnValue(writeStream)
+
+                  expect(ctx.listeners.message).toHaveLength(1)
+
+                  ctx.listeners.message[0]({
+                    filePath: '/foo/alpha/bravo.json',
+                    type: TRANSFORM_FILE,
+                  })
+
+                  writeStream.destroy(error)
+
+                  process.nextTick(() => {
+                    process.nextTick(() => {
+                      done()
+                    })
+                  })
                 })
 
-                writeStream.destroy(error)
+                it('should log expected error(s)', () => {
+                  expect(console.error).toHaveBeenCalledTimes(
+                    argv.verbose ? 3 : 1,
+                  )
 
-                process.nextTick(() => {
-                  process.nextTick(() => {
-                    expectSnapshot()
-                    done()
-                  })
+                  if (argv.verbose) {
+                    expect(console.error).toHaveBeenCalledWith(
+                      'Failed writing /bar/alpha/bravo.json',
+                    )
+
+                    expect(console.error).toHaveBeenCalledWith(error)
+                  }
+
+                  expect(console.error).toHaveBeenCalledWith(
+                    'Failed to process file /foo/alpha/bravo.json',
+                  )
+                })
+
+                // TODO: console.info
+
+                it('should create expected read stream', () => {
+                  expect(createReadStream).toHaveBeenCalledTimes(1)
+                  expect(createReadStream).lastCalledWith(
+                    '/foo/alpha/bravo.json',
+                  )
+                })
+
+                it('should create expected write stream', () => {
+                  expect(createWriteStream).toHaveBeenCalledTimes(1)
+                  expect(createWriteStream).lastCalledWith(
+                    '/bar/alpha/bravo.json',
+                    {},
+                  )
+                })
+
+                it('should make expected directory', () => {
+                  expect(mkdirp).toHaveBeenCalledTimes(1)
+                  expect(mkdirp).lastCalledWith(
+                    '/bar/alpha',
+                    expect.any(Function),
+                  )
+                })
+
+                // TODO: process.on
+                // TODO: process.send
+
+                it('should not read any additional files after babel config', () => {
+                  expect(readFile).toHaveBeenCalledTimes(readConfig ? 1 : 0)
+                })
+
+                it('should not transform file', () => {
+                  expect(transform).not.toHaveBeenCalled()
+                })
+
+                it('should not write file', () => {
+                  expect(writeFile).not.toHaveBeenCalled()
                 })
               })
 
-              it('functions as expected when file is successfully copied', done => {
-                const readStream = new Readable({read: jest.fn()})
-                const writeStream = new Writable({write: jest.fn()})
+              describe('when file is successfully copied', () => {
+                beforeEach(done => {
+                  const readStream = new Readable({read: jest.fn()})
+                  const writeStream = new Writable({write: jest.fn()})
 
-                createReadStream.mockReturnValue(readStream)
-                createWriteStream.mockReturnValue(writeStream)
+                  createReadStream.mockReturnValue(readStream)
+                  createWriteStream.mockReturnValue(writeStream)
 
-                expect(ctx.listeners.message).toHaveLength(1)
+                  expect(ctx.listeners.message).toHaveLength(1)
 
-                ctx.listeners.message[0]({
-                  filePath: '/foo/alpha/bravo.json',
-                  type: TRANSFORM_FILE,
+                  ctx.listeners.message[0]({
+                    filePath: '/foo/alpha/bravo.json',
+                    type: TRANSFORM_FILE,
+                  })
+
+                  readStream.destroy()
+
+                  setTimeout(() => {
+                    done()
+                  }, 1)
                 })
 
-                readStream.destroy()
+                it('should not log error', () => {
+                  expect(console.error).not.toHaveBeenCalled()
+                })
 
-                setTimeout(() => {
-                  expectSnapshot()
-                  done()
-                }, 1)
+                // TODO: console.info
+
+                it('should create expected read stream', () => {
+                  expect(createReadStream).toHaveBeenCalledTimes(1)
+                  expect(createReadStream).lastCalledWith(
+                    '/foo/alpha/bravo.json',
+                  )
+                })
+
+                it('should create expected write stream', () => {
+                  expect(createWriteStream).toHaveBeenCalledTimes(1)
+                  expect(createWriteStream).lastCalledWith(
+                    '/bar/alpha/bravo.json',
+                    {},
+                  )
+                })
+
+                it('should make expected directory', () => {
+                  expect(mkdirp).toHaveBeenCalledTimes(1)
+                  expect(mkdirp).lastCalledWith(
+                    '/bar/alpha',
+                    expect.any(Function),
+                  )
+                })
+
+                // TODO: process.on
+                // TODO: process.send
+
+                it('should not read any additional files after babel config', () => {
+                  expect(readFile).toHaveBeenCalledTimes(readConfig ? 1 : 0)
+                })
+
+                it('should not transform file', () => {
+                  expect(transform).not.toHaveBeenCalled()
+                })
+
+                it('should not write file', () => {
+                  expect(writeFile).not.toHaveBeenCalled()
+                })
               })
             })
 
