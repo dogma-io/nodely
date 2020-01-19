@@ -928,10 +928,9 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should create expected write stream', () => {
                   expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).lastCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
+                  expect(
+                    createWriteStream,
+                  ).lastCalledWith('/bar/alpha/bravo.json', {mode: 0o666})
                 })
 
                 it('should make expected directory', () => {
@@ -1015,10 +1014,9 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should create expected write stream', () => {
                   expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).lastCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
+                  expect(
+                    createWriteStream,
+                  ).lastCalledWith('/bar/alpha/bravo.json', {mode: 0o666})
                 })
 
                 it('should make expected directory', () => {
@@ -1102,10 +1100,9 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should create expected write stream', () => {
                   expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).lastCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
+                  expect(
+                    createWriteStream,
+                  ).lastCalledWith('/bar/alpha/bravo.json', {mode: 0o666})
                 })
 
                 it('should make expected directory', () => {
@@ -1169,10 +1166,9 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should create expected write stream', () => {
                   expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).lastCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
+                  expect(
+                    createWriteStream,
+                  ).lastCalledWith('/bar/alpha/bravo.json', {mode: 0o666})
                 })
 
                 it('should make expected directory', () => {
@@ -1972,10 +1968,9 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should create expected write stream', () => {
                   expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).lastCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
+                  expect(
+                    createWriteStream,
+                  ).lastCalledWith('/bar/alpha/bravo.json', {mode: 0o666})
                 })
 
                 it('should make expected directory', () => {
@@ -2059,10 +2054,9 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should create expected write stream', () => {
                   expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).lastCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
+                  expect(
+                    createWriteStream,
+                  ).lastCalledWith('/bar/alpha/bravo.json', {mode: 0o666})
                 })
 
                 it('should make expected directory', () => {
@@ -2146,10 +2140,9 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should create expected write stream', () => {
                   expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).lastCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
+                  expect(
+                    createWriteStream,
+                  ).lastCalledWith('/bar/alpha/bravo.json', {mode: 0o666})
                 })
 
                 it('should make expected directory', () => {
@@ -2213,10 +2206,9 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should create expected write stream', () => {
                   expect(createWriteStream).toHaveBeenCalledTimes(1)
-                  expect(createWriteStream).lastCalledWith(
-                    '/bar/alpha/bravo.json',
-                    {mode: 0o666},
-                  )
+                  expect(
+                    createWriteStream,
+                  ).lastCalledWith('/bar/alpha/bravo.json', {mode: 0o666})
                 })
 
                 it('should make expected directory', () => {
