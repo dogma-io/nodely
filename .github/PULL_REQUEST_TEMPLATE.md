@@ -6,5 +6,14 @@
 *   [ ] #major# - incompatible API change
 
 ## CHANGELOG
+### Added
 
-*   Please add a description of your change here, it will be automatically prepended to the `CHANGELOG.md` file.
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
