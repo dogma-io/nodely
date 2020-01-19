@@ -1,6 +1,11 @@
+# 1.0.0 (2019-10-26)
+
+*   **Changed** CI to use `bumper` instead of `pr-bumper`
+*   **Changed** dependencies to latest versions
+
 # 0.8.0 (2018-09-02)
 
-*   Upgrade dependeices to latest versions.
+*   Upgrade dependencies to latest versions.
 
 
 # 0.7.0 (2018-06-13)
