@@ -6,6 +6,7 @@
 *   [ ] #major# - incompatible API change
 
 ## CHANGELOG
+
 ### Added
 
 ### Changed
