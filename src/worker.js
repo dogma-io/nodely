@@ -435,7 +435,7 @@ function transformJavascriptFile(
             transform(
               contents,
               Object.assign({filename: filePath}, babelConfig),
-              (err2: ?Error, result: {code: string}) => {
+              (err2: ?Error, result: {|code: string|}) => {
                 if (err2) {
                   if (verbose) {
                     console.error(`Failed to transform ${filePath}`)
