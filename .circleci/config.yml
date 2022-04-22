@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: "Install"
-          command: "yarn add bumpr@^2.7.2 && yarn install"
+          command: "yarn global add bumpr@^2.7.2 && yarn install"
       - run:
           name: "Test"
           command: "bumpr check && yarn test"
