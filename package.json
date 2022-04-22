@@ -55,7 +55,7 @@
     "@babel/core": "^7.0.0",
     "flow-bin": "0.116.1",
     "glob": "^7.0.0",
-    "mkdirp": "0.5.1",
+    "mkdirp": "1.0.4",
     "node-watch": "0.6.3",
     "yargs": "^15.0.0"
   }
