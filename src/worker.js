@@ -121,23 +121,16 @@ function createDirectoryForFile(
     console.info(`Making sure directory ${source} exists…`)
   }
 
-  return new Promise(
-    (
-      resolve: (outputFilePath: string) => void,
-      reject: (err: Error) => void,
-    ) => {
-      mkdirp(outputDirectoryPath, (err: ?Error) => {
-        if (err) {
-          reject(Error(`Failed to create directory ${outputDirectoryPath}`))
-        }
+  return mkdirp(outputDirectoryPath)
+    .then((): string => {
+      const fileName = path.basename(filePath)
+      const outputFilePath = path.join(outputDirectoryPath, fileName)
 
-        const fileName = path.basename(filePath)
-        const outputFilePath = path.join(outputDirectoryPath, fileName)
-
-        resolve(outputFilePath)
-      })
-    },
-  )
+      return outputFilePath
+    })
+    .catch(() => {
+      throw Error(`Failed to create directory ${outputDirectoryPath}`)
+    })
 }
 
 /**

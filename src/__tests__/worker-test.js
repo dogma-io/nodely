@@ -16,6 +16,7 @@ import mkdirp from 'mkdirp'
 import {Readable, Writable} from 'stream'
 import {REMOVE_FILE, TRANSFORM_FILE} from '../actions'
 import {worker} from '../worker'
+import {Resolver} from './utils'
 
 const TRANSFORM_OPTIONS = Object.freeze({
   presets: [
@@ -160,10 +161,11 @@ function configTests(ctx, description, argv, readConfig, init) {
       describe('when master sends message to transform file', () => {
         it('functions as expected when it fails to create directory for file', done => {
           const error = new Error('foo bar')
+          const resolver = new Resolver()
 
-          mkdirp.mockImplementation((...args) => {
-            const callback = args[args.length - 1]
-            callback(error)
+          mkdirp.mockImplementation(() => {
+            resolver.reject(error)
+            return resolver.promise
           })
 
           expect(ctx.listeners.message).toHaveLength(1)
@@ -181,9 +183,10 @@ function configTests(ctx, description, argv, readConfig, init) {
 
         describe('when it successfully creates directory for file', () => {
           beforeEach(() => {
-            mkdirp.mockImplementation((...args) => {
-              const callback = args[args.length - 1]
-              callback(null)
+            mkdirp.mockImplementation(() => {
+              const resolver = new Resolver()
+              resolver.resolve('')
+              return resolver.promise
             })
           })
 
@@ -453,10 +456,7 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should make expected directory', () => {
                   expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).lastCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
+                  expect(mkdirp).lastCalledWith('/bar/alpha')
                 })
 
                 // TODO: process.on
@@ -533,10 +533,7 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should make expected directory', () => {
                   expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).lastCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
+                  expect(mkdirp).lastCalledWith('/bar/alpha')
                 })
 
                 // TODO: process.on
@@ -620,10 +617,7 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should make expected directory', () => {
                   expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).lastCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
+                  expect(mkdirp).lastCalledWith('/bar/alpha')
                 })
 
                 // TODO: process.on
@@ -707,10 +701,7 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should make expected directory', () => {
                   expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).lastCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
+                  expect(mkdirp).lastCalledWith('/bar/alpha')
                 })
 
                 // TODO: process.on
@@ -774,10 +765,7 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should make expected directory', () => {
                   expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).lastCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
+                  expect(mkdirp).lastCalledWith('/bar/alpha')
                 })
 
                 // TODO: process.on
@@ -856,10 +844,7 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should make expected directory', () => {
                   expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).lastCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
+                  expect(mkdirp).lastCalledWith('/bar/alpha')
                 })
 
                 // TODO: process.on
@@ -935,10 +920,7 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should make expected directory', () => {
                   expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).lastCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
+                  expect(mkdirp).lastCalledWith('/bar/alpha')
                 })
 
                 // TODO: process.on
@@ -1021,10 +1003,7 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should make expected directory', () => {
                   expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).lastCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
+                  expect(mkdirp).lastCalledWith('/bar/alpha')
                 })
 
                 // TODO: process.on
@@ -1107,10 +1086,7 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should make expected directory', () => {
                   expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).lastCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
+                  expect(mkdirp).lastCalledWith('/bar/alpha')
                 })
 
                 // TODO: process.on
@@ -1173,10 +1149,7 @@ function configTests(ctx, description, argv, readConfig, init) {
 
                 it('should make expected directory', () => {
                   expect(mkdirp).toHaveBeenCalledTimes(1)
-                  expect(mkdirp).lastCalledWith(
-                    '/bar/alpha',
-                    expect.any(Function),
-                  )
+                  expect(mkdirp).lastCalledWith('/bar/alpha')
                 })
 
                 // TODO: process.on
